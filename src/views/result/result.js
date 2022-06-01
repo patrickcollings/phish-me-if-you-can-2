@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import emails from "../../assets/emails";
 import EmailDisplay from "../../components/email-display/email-display";
@@ -24,10 +24,16 @@ const Container = styled.div`
   height: 100%;
 `;
 
+// Grab saved list from localstorage so user doesn't start again
+const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
+const savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
+
 export default function Result(props) {
   const [selectedEmail, setSelectedEmail] = useState(emails[0]);
-  const [scamList, setScamList] = useState([]);
-  const [emailList, setEmailList] = useState(emails);
+  const [scamList, setScamList] = useState(savedScamList ? savedScamList : []);
+  const [emailList, setEmailList] = useState(
+    savedEmailList ? savedEmailList : emails
+  );
   const [isScamSelected, setIsScamSelected] = useState(false);
 
   function selectEmail(index) {
@@ -69,13 +75,22 @@ export default function Result(props) {
   }
 
   function finishTest() {
-    const scamsMissed = emailList.filter(email => !!email.scam);
+    const scamsMissed = emailList.filter((email) => !!email.scam);
     const normalsCaught = scamList.filter((email) => !email.scam);
     const totalScamsCaught = scamList.length - normalsCaught.length;
-    console.log('scams missed ', scamsMissed.length);
+    console.log("scams missed ", scamsMissed.length);
     console.log("scams caught ", totalScamsCaught);
     console.log("normal emails accidentally caught ", normalsCaught.length);
   }
+
+  useEffect(() => {
+    console.log("Updated State", scamList);
+    localStorage.setItem("phishme_scamList", JSON.stringify(scamList));
+  }, [scamList]);
+
+  useEffect(() => {
+    localStorage.setItem("phishme_emailList", JSON.stringify(emailList));
+  }, [emailList]);
 
   return (
     <>
@@ -92,7 +107,7 @@ export default function Result(props) {
           </div>
         </EmailSidebarContainer>
         <EmailDisplayContainer>
-            <h1 onClick={finishTest}>Finished?</h1>
+          <h1 onClick={finishTest}>Finished?</h1>
           <EmailDisplay
             selectedEmail={selectedEmail}
             isScamEmail={isScamSelected}
