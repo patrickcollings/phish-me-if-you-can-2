@@ -1,3 +1,5 @@
+import { getHoursAndMinutes } from "../../assets/helper";
+
 let styles = {
   //   borderTop: "1px solid grey",
   borderBottom: "1px solid lightgrey",
@@ -65,7 +67,7 @@ export default function EmailListItem(props) {
           </span>
           <span
             style={{
-              color: "grey"
+              color: "grey",
             }}
           >
             This is the email body...
@@ -78,9 +80,10 @@ export default function EmailListItem(props) {
               top: "0",
               right: "0",
               fontSize: "9px",
+              fontWeight: props.email.read ? "" : "bold",
             }}
           >
-            12:48 am
+            {getHoursAndMinutes(props.email.time)}
           </span>
         </div>
       </div>

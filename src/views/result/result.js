@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import emails from "../../assets/emails";
+import { orderListByTime } from "../../assets/helper";
 import EmailDisplay from "../../components/email-display/email-display";
 import EmailSidebar from "../../components/email-sidebar/email-sidebar";
 
@@ -25,8 +26,12 @@ const Container = styled.div`
 `;
 
 // Grab saved list from localstorage so user doesn't start again
-const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
-const savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
+// const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
+const savedEmailList = null;
+// const savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
+const savedScamList = null;
+console.log(emails);
+orderListByTime(emails);
 
 export default function Result(props) {
   const [selectedEmail, setSelectedEmail] = useState();
@@ -61,8 +66,11 @@ export default function Result(props) {
   function addToScamList() {
     const index = findEmailIndex(selectedEmail);
     if (index < 0) return;
-    setScamList([...scamList, emailList[index]]);
+    let newScamList = [...scamList, emailList[index]];
+    orderListByTime(newScamList);
+    setScamList(newScamList);
     emailList.splice(index, 1);
+    orderListByTime(emailList);
     setEmailList([...emailList]);
     setSelectedEmail(null);
   }
@@ -70,8 +78,11 @@ export default function Result(props) {
   function removeFromScamList() {
     const index = findScamEmailIndex(selectedEmail);
     if (index < 0) return;
-    setEmailList([...emailList, scamList[index]]);
+    let newEmailList = [...emailList, scamList[index]];
+    orderListByTime(newEmailList);
+    setEmailList(newEmailList);
     scamList.splice(index, 1);
+    orderListByTime(scamList);
     setScamList([...scamList]);
     setSelectedEmail(null);
   }
