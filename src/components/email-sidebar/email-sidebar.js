@@ -40,14 +40,13 @@ function a11yProps(index) {
 }
 
 function getEmailList(list, selectEmail, selectedEmail) {
-    
   return list.map((email, index) => (
     <EmailListItem
       key={index}
       email={email}
       index={index}
       onClick={selectEmail}
-      isSelected={selectedEmail == email}
+      isSelected={selectedEmail && selectedEmail.id === email.id}
     ></EmailListItem>
   ));
 }

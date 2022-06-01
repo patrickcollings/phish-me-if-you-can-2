@@ -54,12 +54,22 @@ export default function EmailListItem(props) {
         )}
       >
         <div style={circleStyle}>
-          <p>M</p>
+          <p>M {props.email.read}</p>
         </div>
         <div style={textStyle}>
-          <span>{props.email.title}</span>
-          <span>Welcome To us</span>
-          <span style={{ color: "grey" }}>This is the email body...</span>
+          <span style={{ fontWeight: props.email.read ? "" : "bold" }}>
+            {props.email.title}
+          </span>
+          <span style={{ fontWeight: props.email.read ? "" : "bold" }}>
+            Welcome To us
+          </span>
+          <span
+            style={{
+              color: "grey"
+            }}
+          >
+            This is the email body...
+          </span>
         </div>
         <div style={timestampStyle}>
           <span

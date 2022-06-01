@@ -29,7 +29,7 @@ const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
 const savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
 
 export default function Result(props) {
-  const [selectedEmail, setSelectedEmail] = useState(emails[0]);
+  const [selectedEmail, setSelectedEmail] = useState();
   const [scamList, setScamList] = useState(savedScamList ? savedScamList : []);
   const [emailList, setEmailList] = useState(
     savedEmailList ? savedEmailList : emails
@@ -38,8 +38,10 @@ export default function Result(props) {
 
   function selectEmail(index) {
     console.log("selecting email", index);
+    emailList[index]['read'] = true;
     setIsScamSelected(false);
     setSelectedEmail(emailList[index]);
+    setEmailList([...emailList]);
   }
 
   function selectScamEmail(index) {
@@ -84,7 +86,6 @@ export default function Result(props) {
   }
 
   useEffect(() => {
-    console.log("Updated State", scamList);
     localStorage.setItem("phishme_scamList", JSON.stringify(scamList));
   }, [scamList]);
 
