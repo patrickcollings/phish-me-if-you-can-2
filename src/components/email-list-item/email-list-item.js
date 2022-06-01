@@ -1,18 +1,78 @@
 let styles = {
-  borderTop: '1px solid grey',
-  borderBottom: '1px solid grey'
+  //   borderTop: "1px solid grey",
+  borderBottom: "1px solid lightgrey",
+  display: "flex",
+  alignItems: "center",
+  padding: "0.2rem",
+  justifyContent: "space-between",
 };
+
+let textStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "left",
+  textAlign: "left",
+};
+
+let circleStyle = {
+  backgroundColor: "red",
+  borderRadius: "50%",
+  width: "30px",
+  height: "30px",
+  textAlign: "center",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  margin: "0 0.5rem",
+  p: {
+    color: "white",
+  },
+  color: "white",
+};
+
+let timestampStyle = {
+    display: 'flex',
+    alignItems: 'right',
+    justifyContent: 'top'
+}
 
 export default function EmailListItem(props) {
   return (
     <>
       <div
         onClick={() => props.onClick(props.index)}
-        style={Object.assign({}, styles, props.isSelected ? { borderColor: 'blue', backgroundColor: 'lightgrey' } : {})}
+        style={Object.assign(
+          {},
+          styles,
+          props.isSelected
+            ? {
+                borderColor: "blue",
+                backgroundColor: "lightgrey",
+                borderTop: "1px solid blue",
+              }
+            : { borderColor: "lightgrey", borderTop: "none" }
+        )}
       >
-        <h1>{props.email.title}</h1>
-        <h2>Welcome To us</h2>
-        <p>This is the email body...</p>
+        <div style={circleStyle}>
+          <p>M</p>
+        </div>
+        <div style={textStyle}>
+          <span>{props.email.title}</span>
+          <span>Welcome To us</span>
+          <span style={{ color: "grey" }}>This is the email body...</span>
+        </div>
+        <div style={timestampStyle}>
+          <span
+            style={{
+              position: "sticky",
+              top: "0",
+              right: "0",
+              fontSize: "9px",
+            }}
+          >
+            12:48 am
+          </span>
+        </div>
       </div>
     </>
   );

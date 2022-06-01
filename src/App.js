@@ -4,7 +4,7 @@ import Result from './views/result/result';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{maxHeight: '100vh', height: '100vh'}}>
       <Result></Result>
     </div>
   );

@@ -20,10 +20,11 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      style={{height: '100%'}}
       {...other}
     >
       {value === index && (
-        <Box>
+        <Box sx={{overflowY: 'scroll', height: '100%'}}>
           {children}
         </Box>
       )}
@@ -58,10 +59,8 @@ export default function EmailSidebar(props) {
     setValue(newValue);
   };
 
-  const emailList = props.list;
-
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: '100%', height: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -74,10 +73,10 @@ export default function EmailSidebar(props) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        {getEmailList(emailList, props.selectEmail, props.selectedEmail)}
+        {getEmailList(props.emailList, props.selectEmail, props.selectedEmail)}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {getEmailList(emailList, props.selectEmail, props.selectedEmail)}
+        {getEmailList(props.scamList, props.selectScamEmail, props.selectedEmail)}
       </TabPanel>
     </Box>
   );
