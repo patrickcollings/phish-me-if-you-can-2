@@ -4,6 +4,8 @@ import emails from "../../assets/emails";
 import { orderListByTime } from "../../assets/helper";
 import EmailDisplay from "../../components/email-display/email-display";
 import EmailSidebar from "../../components/email-sidebar/email-sidebar";
+import FinishedDialog from "../../components/finished-dialog/finished-dialog";
+import Button from "@mui/material/Button";
 
 const EmailSidebarContainer = styled.div`
   width: 400px;
@@ -26,11 +28,10 @@ const Container = styled.div`
 `;
 
 // Grab saved list from localstorage so user doesn't start again
-// const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
-const savedEmailList = null;
-// const savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
-const savedScamList = null;
-console.log(emails);
+const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
+// const savedEmailList = null;
+const savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
+// const savedScamList = null;
 orderListByTime(emails);
 
 export default function Result(props) {
@@ -40,6 +41,8 @@ export default function Result(props) {
     savedEmailList ? savedEmailList : emails
   );
   const [isScamSelected, setIsScamSelected] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [result, setResult] = useState({});
 
   function selectEmail(index) {
     console.log("selecting email", index);
@@ -91,10 +94,19 @@ export default function Result(props) {
     const scamsMissed = emailList.filter((email) => !!email.scam);
     const normalsCaught = scamList.filter((email) => !email.scam);
     const totalScamsCaught = scamList.length - normalsCaught.length;
-    console.log("scams missed ", scamsMissed.length);
-    console.log("scams caught ", totalScamsCaught);
-    console.log("normal emails accidentally caught ", normalsCaught.length);
+    return {missed: scamsMissed.length, accidental: normalsCaught.length, caught: totalScamsCaught};
   }
+
+  const handleClickOpen = () => {
+    const results = finishTest();
+    setResult(results);
+    setOpen(true);
+  };
+
+    const handleClose = (isFinished) => {
+      console.log(isFinished);
+      setOpen(false);
+    };
 
   useEffect(() => {
     localStorage.setItem("phishme_scamList", JSON.stringify(scamList));
@@ -119,7 +131,10 @@ export default function Result(props) {
           </div>
         </EmailSidebarContainer>
         <EmailDisplayContainer>
-          <h1 onClick={finishTest}>Finished?</h1>
+          <Button variant="outlined" onClick={handleClickOpen}>
+            Click here when finished
+          </Button>
+          <FinishedDialog open={open} handleClose={handleClose} result={result}></FinishedDialog>
           <EmailDisplay
             selectedEmail={selectedEmail}
             isScamEmail={isScamSelected}

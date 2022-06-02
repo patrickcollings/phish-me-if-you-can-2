@@ -12,11 +12,12 @@ export function getRandomTime() {
 } 
 
 function compare(a, b) {
-    console.log(a.time, b.time);
-  if (a.time.getTime() < b.time.getTime()) {
+  const aDate = new Date(a.time);
+  const bDate = new Date(b.time);
+  if (aDate.getTime() < bDate.getTime()) {
     return 1;
   }
-  if (a.time.getTime() > b.time.getTime()) {
+  if (aDate.getTime() > bDate.getTime()) {
     return -1;
   }
   return 0;
@@ -26,7 +27,6 @@ function compare(a, b) {
 export function orderListByTime(emailList) {
     if (!emailList) return;
     const t = emailList.sort(compare);
-    console.log(t);
 }
 
 export function getHoursAndMinutes(time) {
