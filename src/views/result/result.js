@@ -8,7 +8,8 @@ import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
 
 const EmailSidebarContainer = styled.div`
-  width: 400px;
+  width: 300px;
+  max-width: 300px;
   height: 100%;
   padding: 0;
   margin: 0;

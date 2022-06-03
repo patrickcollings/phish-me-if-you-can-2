@@ -3,25 +3,26 @@ import { getRandomTime } from "./helper";
 export default [
   {
     id: 1,
-    subject: "subject 1",
-    name: "Bob Smith",
-    email: "bobsmith@gmail.com",
+    subject: "Renewal Successful super long subject name what what what",
+    name: "Norton Software Security Super long email name",
+    email: "norton.support@gmail.com",
     to: "you",
-    body: "body 1",
+    template: "1",
     scam: true,
     time: getRandomTime(),
     read: false,
   },
   {
     id: 2,
-    subject: "subject 2",
-    name: "Bob Smith",
-    email: "bobsmith@gmail.com",
+    subject: "Problem with your account",
+    name: "Paypal Support",
+    email: "technical.support@palpay.com",
     to: "you",
     body: "body 2",
     scam: true,
     time: getRandomTime(),
     read: false,
+    template: "2",
   },
   {
     id: 3,
@@ -33,6 +34,7 @@ export default [
     scam: true,
     time: getRandomTime(),
     read: false,
+    template: "3",
   },
   {
     id: 4,
@@ -43,6 +45,7 @@ export default [
     body: "body 4",
     time: getRandomTime(),
     read: false,
+    template: "1",
   },
   {
     id: 5,
@@ -53,6 +56,7 @@ export default [
     body: "body 5",
     time: getRandomTime(),
     read: false,
+    template: "1",
   },
   {
     id: 6,
@@ -63,6 +67,7 @@ export default [
     body: "body 6",
     time: getRandomTime(),
     read: false,
+    template: "1",
   },
   {
     id: 7,
@@ -73,6 +78,7 @@ export default [
     body: "body 7",
     time: getRandomTime(),
     read: false,
+    template: "1",
   },
   {
     id: 8,
@@ -83,6 +89,7 @@ export default [
     body: "body 8",
     time: getRandomTime(),
     read: false,
+    template: "1",
   },
   {
     id: 9,
@@ -93,5 +100,6 @@ export default [
     body: "body 9",
     time: getRandomTime(),
     read: false,
+    template: "1",
   },
 ];

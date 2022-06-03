@@ -1,11 +1,15 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
+import Divider from "@mui/material/Divider";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { getHoursAndMinutes } from "../../assets/helper";
 
 export default function EmailDisplay(props) {
+  let Template =
+    props.selectedEmail &&
+    React.lazy(() => import("../../assets/email-templates/" + props.selectedEmail.template))
   if (props.selectedEmail) {
     return (
       <>
@@ -42,7 +46,8 @@ export default function EmailDisplay(props) {
                   color="text.primary"
                   gutterBottom
                 >
-                  {props.selectedEmail.name} {"<" + props.selectedEmail.email + ">"}
+                  {props.selectedEmail.name}{" "}
+                  {"<" + props.selectedEmail.email + ">"}
                 </Typography>
                 <Typography
                   sx={{ fontSize: 15, textAlign: "left" }}
@@ -60,6 +65,10 @@ export default function EmailDisplay(props) {
                 {getHoursAndMinutes(props.selectedEmail.time)}
               </Typography>
             </div>
+            <Divider/>
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <Template />
+            </React.Suspense>
           </CardContent>
         </Card>
       </>
