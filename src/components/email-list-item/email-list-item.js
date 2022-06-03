@@ -7,6 +7,7 @@ let styles = {
   alignItems: "center",
   padding: "0.2rem",
   justifyContent: "space-between",
+  cursor: "pointer"
 };
 
 let textStyle = {
@@ -39,6 +40,10 @@ let timestampStyle = {
 }
 
 export default function EmailListItem(props) {
+  let color = 'none';
+  if (props.showResult) {
+    color = props.email.correct ? "green" :  "red";
+  }  
   return (
     <>
       <div
@@ -56,21 +61,26 @@ export default function EmailListItem(props) {
         )}
       >
         <div style={circleStyle}>
-          <p>M {props.email.read}</p>
+          <p>{props.email.name[0].toUpperCase()}</p>
         </div>
         <div style={textStyle}>
-          <span style={{ fontWeight: props.email.read ? "" : "bold" }}>
-            {props.email.title}
+          <span
+            style={{
+              fontWeight: props.email.read ? "" : "bold",
+              color,
+            }}
+          >
+            {props.email.name}
           </span>
           <span style={{ fontWeight: props.email.read ? "" : "bold" }}>
-            Welcome To us
+            {props.email.subject}
           </span>
           <span
             style={{
               color: "grey",
             }}
           >
-            This is the email body...
+            {props.email.body}
           </span>
         </div>
         <div style={timestampStyle}>

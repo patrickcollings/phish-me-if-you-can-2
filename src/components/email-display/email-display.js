@@ -2,28 +2,64 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import { getHoursAndMinutes } from "../../assets/helper";
 
 export default function EmailDisplay(props) {
   if (props.selectedEmail) {
     return (
       <>
-        {props.isScamEmail ? (
-          <h1 onClick={props.remove}>Remove from scam</h1>
-        ) : (
-          <h1 onClick={props.add}>Add to scam</h1>
-        )}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            paddingBottom: "1rem",
+          }}
+        >
+          {props.isScamEmail ? (
+            <Button variant="outlined" onClick={props.remove}>
+              Remove from scam
+            </Button>
+          ) : (
+            <Button variant="outlined" onClick={props.add}>
+              Add to scam
+            </Button>
+          )}
+        </div>
         <Card sx={{ minWidth: 275, minHeight: "50vh" }}>
           <CardContent>
-            <Typography
-              sx={{ fontSize: 30 }}
-              color="text.secondary"
-              gutterBottom
-            >
-              {props.selectedEmail.title}
-            </Typography>
-            <Typography sx={{ fontSize: 20 }} color="text.secondary">
-              {props.selectedEmail.body}
-            </Typography>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>
+                <Typography
+                  sx={{ fontSize: 25, textAlign: "left", fontWeight: "400" }}
+                  color="text.primary"
+                  gutterBottom
+                >
+                  {props.selectedEmail.subject}
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 15, textAlign: "left" }}
+                  color="text.primary"
+                  gutterBottom
+                >
+                  {props.selectedEmail.name} {"<" + props.selectedEmail.email + ">"}
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 15, textAlign: "left" }}
+                  color="text.primary"
+                  gutterBottom
+                >
+                  To: {props.selectedEmail.to}
+                </Typography>
+              </div>
+              <Typography
+                sx={{ fontSize: 12, textAlign: "right" }}
+                color="text.secondary"
+                gutterBottom
+              >
+                {getHoursAndMinutes(props.selectedEmail.time)}
+              </Typography>
+            </div>
           </CardContent>
         </Card>
       </>
@@ -33,7 +69,7 @@ export default function EmailDisplay(props) {
       <Card sx={{ minWidth: 275, minHeight: "50vh" }}>
         <CardContent>
           <Typography sx={{ fontSize: 30 }} color="text.secondary" gutterBottom>
-            Select an email to read it
+            No email selected
           </Typography>
         </CardContent>
       </Card>

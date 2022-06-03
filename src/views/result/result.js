@@ -5,7 +5,7 @@ import { orderListByTime } from "../../assets/helper";
 import EmailDisplay from "../../components/email-display/email-display";
 import EmailSidebar from "../../components/email-sidebar/email-sidebar";
 import FinishedDialog from "../../components/finished-dialog/finished-dialog";
-import Button from "@mui/material/Button";
+import NavBar from "../../components/nav-bar/nav-bar";
 
 const EmailSidebarContainer = styled.div`
   width: 400px;
@@ -15,7 +15,7 @@ const EmailSidebarContainer = styled.div`
 `;
 
 const EmailDisplayContainer = styled.div`
-  padding: 0 20px;
+  padding: 20px;
   width: 100%;
   min-height: 50vh;
 `;
@@ -27,21 +27,24 @@ const Container = styled.div`
   height: 100%;
 `;
 
+
 // Grab saved list from localstorage so user doesn't start again
 const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
 // const savedEmailList = null;
 const savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
+const savedShowResult = JSON.parse(localStorage.getItem("phishme_showResult"));
 // const savedScamList = null;
 orderListByTime(emails);
 
 export default function Result(props) {
   const [selectedEmail, setSelectedEmail] = useState();
-  const [scamList, setScamList] = useState(savedScamList ? savedScamList : []);
+  const [scamList, setScamList] = useState(savedScamList ?? []);
   const [emailList, setEmailList] = useState(
-    savedEmailList ? savedEmailList : emails
+    savedEmailList ?? [...emails]
   );
   const [isScamSelected, setIsScamSelected] = useState(false);
   const [open, setOpen] = useState(false);
+  const [showResult, setShowResult] = useState(savedShowResult ?? false);
   const [result, setResult] = useState({});
 
   function selectEmail(index) {
@@ -97,14 +100,46 @@ export default function Result(props) {
     return {missed: scamsMissed.length, accidental: normalsCaught.length, caught: totalScamsCaught};
   }
 
+  const showResults = () => {
+    // Go through email list and flag any emails as correct or wrong
+    emailList.map(email => {
+      email.correct = !email.scam;
+      return email;
+    });
+    setEmailList([...emailList]);
+    // Go through scam list and flag any emails as correct or wrong
+    scamList.map((email) => {
+      email.correct = email.scam;
+      return email;
+    });
+    setScamList([...scamList]);
+    console.log(emailList);
+    console.log(scamList);
+  }
+
   const handleClickOpen = () => {
     const results = finishTest();
     setResult(results);
     setOpen(true);
   };
 
+  const handleClickReset = () => {
+    localStorage.removeItem('phishme_scamList');
+    localStorage.removeItem("phishme_emailList");
+    localStorage.removeItem("phishme_showResult");
+    setScamList([]);
+    setEmailList([...emails]);
+    setSelectedEmail(null);
+    setShowResult(false);
+    setOpen(false);
+    setIsScamSelected(false);
+    setResult({});
+  };
+
     const handleClose = (isFinished) => {
       console.log(isFinished);
+      isFinished && showResults();
+      setShowResult(isFinished);
       setOpen(false);
     };
 
@@ -116,8 +151,13 @@ export default function Result(props) {
     localStorage.setItem("phishme_emailList", JSON.stringify(emailList));
   }, [emailList]);
 
+  useEffect(() => {
+    localStorage.setItem("phishme_showResult", showResult);
+  }, [showResult]);
+
   return (
     <>
+      <NavBar openClick={handleClickOpen} resetClick={handleClickReset}/>
       <Container>
         <EmailSidebarContainer>
           <div style={{ height: "100%" }}>
@@ -127,14 +167,22 @@ export default function Result(props) {
               selectEmail={selectEmail}
               selectScamEmail={selectScamEmail}
               selectedEmail={selectedEmail}
-            ></EmailSidebar>
+              showResult={showResult}
+            />
           </div>
         </EmailSidebarContainer>
         <EmailDisplayContainer>
-          <Button variant="outlined" onClick={handleClickOpen}>
+          {/* <Button variant="outlined" onClick={handleClickOpen}>
             Click here when finished
           </Button>
-          <FinishedDialog open={open} handleClose={handleClose} result={result}></FinishedDialog>
+          <Button variant="outlined" onClick={handleClickReset}>
+            Reset
+          </Button> */}
+          <FinishedDialog
+            open={open}
+            handleClose={handleClose}
+            result={result}
+          ></FinishedDialog>
           <EmailDisplay
             selectedEmail={selectedEmail}
             isScamEmail={isScamSelected}
