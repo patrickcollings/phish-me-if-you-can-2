@@ -37,7 +37,7 @@ export default function FinishedDialog(props) {
               props.handleClose(false);
             }}
           >
-            Disagree
+            Keep trying
           </Button>
           <Button
             onClick={() => {
@@ -45,7 +45,7 @@ export default function FinishedDialog(props) {
             }}
             autoFocus
           >
-            Agree
+            Show Results
           </Button>
         </DialogActions>
       </Dialog>

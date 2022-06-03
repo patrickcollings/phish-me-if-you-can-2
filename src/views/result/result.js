@@ -40,7 +40,7 @@ export default function Result(props) {
   const [selectedEmail, setSelectedEmail] = useState();
   const [scamList, setScamList] = useState(savedScamList ?? []);
   const [emailList, setEmailList] = useState(
-    savedEmailList ?? [...emails]
+    savedEmailList ?? JSON.parse(JSON.stringify(emails))
   );
   const [isScamSelected, setIsScamSelected] = useState(false);
   const [open, setOpen] = useState(false);
@@ -48,7 +48,6 @@ export default function Result(props) {
   const [result, setResult] = useState({});
 
   function selectEmail(index) {
-    console.log("selecting email", index);
     emailList[index]['read'] = true;
     setIsScamSelected(false);
     setSelectedEmail(emailList[index]);
@@ -56,7 +55,6 @@ export default function Result(props) {
   }
 
   function selectScamEmail(index) {
-    console.log("selecting scam email", scamList[index]);
     setIsScamSelected(true);
     setSelectedEmail(scamList[index]);
   }
@@ -101,20 +99,16 @@ export default function Result(props) {
   }
 
   const showResults = () => {
-    // Go through email list and flag any emails as correct or wrong
     emailList.map(email => {
       email.correct = !email.scam;
       return email;
     });
     setEmailList([...emailList]);
-    // Go through scam list and flag any emails as correct or wrong
     scamList.map((email) => {
       email.correct = email.scam;
       return email;
     });
     setScamList([...scamList]);
-    console.log(emailList);
-    console.log(scamList);
   }
 
   const handleClickOpen = () => {
@@ -128,7 +122,7 @@ export default function Result(props) {
     localStorage.removeItem("phishme_emailList");
     localStorage.removeItem("phishme_showResult");
     setScamList([]);
-    setEmailList([...emails]);
+    setEmailList(JSON.parse(JSON.stringify(emails)));
     setSelectedEmail(null);
     setShowResult(false);
     setOpen(false);
@@ -137,7 +131,6 @@ export default function Result(props) {
   };
 
     const handleClose = (isFinished) => {
-      console.log(isFinished);
       isFinished && showResults();
       setShowResult(isFinished);
       setOpen(false);

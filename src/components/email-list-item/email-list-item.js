@@ -1,4 +1,5 @@
 import { getHoursAndMinutes } from "../../assets/helper";
+import { Cancel, CheckCircle }  from "@mui/icons-material/";
 
 let styles = {
   //   borderTop: "1px solid grey",
@@ -39,11 +40,15 @@ let timestampStyle = {
     justifyContent: 'top'
 }
 
+const getResult = (props) => {
+  return props.email.correct ? (
+    <CheckCircle style={{ color: "green" }} />
+  ) : (
+    <Cancel style={{ color: "red" }} />
+  );
+}
+
 export default function EmailListItem(props) {
-  let color = 'none';
-  if (props.showResult) {
-    color = props.email.correct ? "green" :  "red";
-  }  
   return (
     <>
       <div
@@ -66,8 +71,7 @@ export default function EmailListItem(props) {
         <div style={textStyle}>
           <span
             style={{
-              fontWeight: props.email.read ? "" : "bold",
-              color,
+              fontWeight: props.email.read ? "" : "bold"
             }}
           >
             {props.email.name}
@@ -84,6 +88,7 @@ export default function EmailListItem(props) {
           </span>
         </div>
         <div style={timestampStyle}>
+          {((!!props.showResult) ? getResult(props) : 
           <span
             style={{
               position: "sticky",
@@ -94,7 +99,7 @@ export default function EmailListItem(props) {
             }}
           >
             {getHoursAndMinutes(props.email.time)}
-          </span>
+          </span>)}
         </div>
       </div>
     </>
