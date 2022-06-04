@@ -17,10 +17,11 @@ let textStyle = {
   alignItems: "left",
   textAlign: "left",
   maxWidth: '65%',
+  flex: '1',
 };
 
 let circleStyle = {
-  backgroundColor: "red",
+  backgroundColor: '#1976d2',
   borderRadius: "50%",
   width: "30px",
   height: "30px",
@@ -48,6 +49,14 @@ const getResult = (props) => {
     <Cancel style={{ color: "red" }} />
   );
 };
+
+function getDarkColor() {
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += Math.floor(Math.random() * 10);
+  }
+  return color;
+}
 
 export default function EmailListItem(props) {
   return (
