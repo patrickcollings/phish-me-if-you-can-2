@@ -6,10 +6,21 @@ import EmailDisplay from "../../components/email-display/email-display";
 import EmailSidebar from "../../components/email-sidebar/email-sidebar";
 import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
+import mixpanel from "mixpanel-browser";
+
+mixpanel.init("", { debug: true });
 
 const EmailSidebarContainer = styled.div`
   width: 300px;
   max-width: 300px;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+`;
+
+const EmailSidebarContainerMobile = styled.div`
+  width: 100%;
+  max-width: 100%;
   height: 100%;
   padding: 0;
   margin: 0;
@@ -27,7 +38,6 @@ const Container = styled.div`
   display: flex;
   height: 100%;
 `;
-
 
 // Grab saved list from localstorage so user doesn't start again
 const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
@@ -47,9 +57,15 @@ export default function Result(props) {
   const [open, setOpen] = useState(false);
   const [showResult, setShowResult] = useState(savedShowResult ?? false);
   const [result, setResult] = useState({});
+  const [width, setWindowWidth] = useState(0);
+
+  const updateDimensions = () => {
+    const width = window.innerWidth;
+    setWindowWidth(width);
+  };
 
   function selectEmail(index) {
-    emailList[index]['read'] = true;
+    emailList[index]["read"] = true;
     setIsScamSelected(false);
     setSelectedEmail(emailList[index]);
     setEmailList([...emailList]);
@@ -92,15 +108,24 @@ export default function Result(props) {
     setSelectedEmail(null);
   }
 
+  function handleDeselect() {
+    setSelectedEmail(null);
+  }
+
   function finishTest() {
     const scamsMissed = emailList.filter((email) => !!email.scam);
     const normalsCaught = scamList.filter((email) => !email.scam);
     const totalScamsCaught = scamList.length - normalsCaught.length;
-    return {missed: scamsMissed.length, accidental: normalsCaught.length, caught: totalScamsCaught};
+    mixpanel.track("finished_test", {scamsMissed, normalsCaught, score: {scamsMissed: scamsMissed.length, accidental: normalsCaught.length, caught: totalScamsCaught}});
+    return {
+      missed: scamsMissed.length,
+      accidental: normalsCaught.length,
+      caught: totalScamsCaught,
+    };
   }
 
   const showResults = () => {
-    emailList.map(email => {
+    emailList.map((email) => {
       email.correct = !email.scam;
       return email;
     });
@@ -110,7 +135,8 @@ export default function Result(props) {
       return email;
     });
     setScamList([...scamList]);
-  }
+    
+  };
 
   const handleClickOpen = () => {
     const results = finishTest();
@@ -119,9 +145,10 @@ export default function Result(props) {
   };
 
   const handleClickReset = () => {
-    localStorage.removeItem('phishme_scamList');
+    localStorage.removeItem("phishme_scamList");
     localStorage.removeItem("phishme_emailList");
     localStorage.removeItem("phishme_showResult");
+    localStorage.removeItem("phishme_hide_welcome_dialog");
     setScamList([]);
     setEmailList(JSON.parse(JSON.stringify(emails)));
     setSelectedEmail(null);
@@ -131,11 +158,38 @@ export default function Result(props) {
     setResult({});
   };
 
-    const handleClose = (isFinished) => {
-      isFinished && showResults();
-      setShowResult(isFinished);
-      setOpen(false);
-    };
+  const handleClose = (isFinished) => {
+    isFinished && showResults();
+    setShowResult(isFinished);
+    setOpen(false);
+  };
+
+  const getEmailSidebar = () => {
+    return (
+
+          <EmailSidebar
+            emailList={emailList}
+            scamList={scamList}
+            selectEmail={selectEmail}
+            selectScamEmail={selectScamEmail}
+            selectedEmail={selectedEmail}
+            showResult={showResult}
+          />
+    );
+  };
+
+  const getEmailDisplay = (isMobile = false) => {
+    return (
+      <EmailDisplay
+        selectedEmail={selectedEmail}
+        isScamEmail={isScamSelected}
+        add={addToScamList}
+        remove={removeFromScamList}
+        isMobile={isMobile}
+        handleDeselect={handleDeselect}
+      ></EmailDisplay>
+    );
+  };
 
   useEffect(() => {
     localStorage.setItem("phishme_scamList", JSON.stringify(scamList));
@@ -149,42 +203,38 @@ export default function Result(props) {
     localStorage.setItem("phishme_showResult", showResult);
   }, [showResult]);
 
+  useEffect(() => {
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
   return (
     <>
-      <NavBar openClick={handleClickOpen} resetClick={handleClickReset}/>
-      <Container>
-        <EmailSidebarContainer>
-          <div style={{ height: "100%" }}>
-            <EmailSidebar
-              emailList={emailList}
-              scamList={scamList}
-              selectEmail={selectEmail}
-              selectScamEmail={selectScamEmail}
-              selectedEmail={selectedEmail}
-              showResult={showResult}
-            />
-          </div>
-        </EmailSidebarContainer>
-        <EmailDisplayContainer>
-          {/* <Button variant="outlined" onClick={handleClickOpen}>
-            Click here when finished
-          </Button>
-          <Button variant="outlined" onClick={handleClickReset}>
-            Reset
-          </Button> */}
-          <FinishedDialog
-            open={open}
-            handleClose={handleClose}
-            result={result}
-          ></FinishedDialog>
-          <EmailDisplay
-            selectedEmail={selectedEmail}
-            isScamEmail={isScamSelected}
-            add={addToScamList}
-            remove={removeFromScamList}
-          ></EmailDisplay>
-        </EmailDisplayContainer>
-      </Container>
+      <NavBar openClick={handleClickOpen} resetClick={handleClickReset} />
+      <FinishedDialog
+        open={open}
+        handleClose={handleClose}
+        result={result}
+      ></FinishedDialog>
+      {width > 800 && (
+        <Container>
+          <EmailSidebarContainer>
+            <div style={{ height: "100%" }}>{getEmailSidebar()}</div>
+          </EmailSidebarContainer>
+          <EmailDisplayContainer>{getEmailDisplay()}</EmailDisplayContainer>
+        </Container>
+      )}
+      {width < 800 && !selectedEmail && (
+        <EmailSidebarContainerMobile>
+          <div style={{ height: "100%" }}>{getEmailSidebar()}</div>
+        </EmailSidebarContainerMobile>
+      )}
+      {width < 800 && !!selectedEmail && (
+        <EmailSidebarContainerMobile>
+          <div style={{ height: "100%" }}>{getEmailDisplay(true)}</div>
+        </EmailSidebarContainerMobile>
+      )}
     </>
   );
 }

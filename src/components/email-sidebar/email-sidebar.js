@@ -24,7 +24,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{overflowY: 'scroll', height: '100%'}}>
+        <Box sx={{overflowY: 'scroll', height: '100%', width: '100%', minWidth: '300px'}}>
           {children}
         </Box>
       )}
@@ -60,7 +60,7 @@ export default function EmailSidebar(props) {
   };
 
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
+    <Box sx={{ width: "100%", height: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -68,15 +68,25 @@ export default function EmailSidebar(props) {
           aria-label="basic tabs example"
           centered
         >
-          <Tab label="Inbox" {...a11yProps(0)} />
-          <Tab label="Scambox" {...a11yProps(1)} />
+          <Tab label={`Inbox (${props.emailList.length})`} {...a11yProps(0)} />
+          <Tab label={`Scambox (${props.scamList.length})`} {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        {getEmailList(props.emailList, props.selectEmail, props.selectedEmail, props.showResult)}
+        {getEmailList(
+          props.emailList,
+          props.selectEmail,
+          props.selectedEmail,
+          props.showResult
+        )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {getEmailList(props.scamList, props.selectScamEmail, props.selectedEmail, props.showResult)}
+        {getEmailList(
+          props.scamList,
+          props.selectScamEmail,
+          props.selectedEmail,
+          props.showResult
+        )}
       </TabPanel>
     </Box>
   );

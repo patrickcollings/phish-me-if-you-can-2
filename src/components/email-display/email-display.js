@@ -14,10 +14,15 @@ export default function EmailDisplay(props) {
         <div
           style={{
             display: "flex",
-            justifyContent: "flex-end",
-            paddingBottom: "1rem",
+            justifyContent: props.isMobile ? "space-between" : "flex-end",
+            padding: props.isMobile ? "0.6rem" : "0 0 1rem 0",
           }}
         >
+          {props.isMobile && (
+            <Button variant="outlined" onClick={props.handleDeselect}>
+              Go back
+            </Button>
+          )}
           {props.isScamEmail ? (
             <Button variant="outlined" onClick={props.remove}>
               Remove from scambox
@@ -63,9 +68,9 @@ export default function EmailDisplay(props) {
                 {getHoursAndMinutes(props.selectedEmail.time)}
               </Typography>
             </div>
-            <Divider/>
+            <Divider />
             <React.Suspense fallback={<div>Loading...</div>}>
-              <Template template={props.selectedEmail.template}/>
+              <Template template={props.selectedEmail.template} />
             </React.Suspense>
           </CardContent>
         </Card>
