@@ -8,7 +8,7 @@ import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
 import mixpanel from "mixpanel-browser";
 
-mixpanel.init("2e8c366f7230134973d763a5f39fcf43", { debug: true });
+mixpanel.init("");
 
 const EmailSidebarContainer = styled.div`
   width: 300px;
@@ -56,7 +56,7 @@ export default function Result(props) {
   const [isScamSelected, setIsScamSelected] = useState(false);
   const [open, setOpen] = useState(false);
   const [showResult, setShowResult] = useState(savedShowResult ?? false);
-  const [result, setResult] = useState({});
+  const [result, setResult] = useState(showResult ? calculateResults : {});
   const [width, setWindowWidth] = useState(0);
 
   const updateDimensions = () => {
@@ -112,15 +112,21 @@ export default function Result(props) {
     setSelectedEmail(null);
   }
 
-  function finishTest() {
+  function calculateResults() {
+    console.log('calculating results');
     const scamsMissed = emailList.filter((email) => !!email.scam);
     const normalsCaught = scamList.filter((email) => !email.scam);
     const totalScamsCaught = scamList.length - normalsCaught.length;
     mixpanel.track("finished_test", {scamsMissed, normalsCaught, score: {scamsMissed: scamsMissed.length, accidental: normalsCaught.length, caught: totalScamsCaught}});
+    const penalty = (normalsCaught.length > 0) ? (normalsCaught.length / 2) : 0;
+    const totalScore = totalScamsCaught - penalty;
+    console.log(totalScore, totalScamsCaught, penalty);
+    const score = Math.round((totalScore / (totalScamsCaught + scamsMissed.length)) * 100);
     return {
       missed: scamsMissed.length,
       accidental: normalsCaught.length,
       caught: totalScamsCaught,
+      score
     };
   }
 
@@ -135,11 +141,11 @@ export default function Result(props) {
       return email;
     });
     setScamList([...scamList]);
-    
   };
 
   const handleClickOpen = () => {
-    const results = finishTest();
+    const results = calculateResults();
+    console.log(results);
     setResult(results);
     setOpen(true);
   };
@@ -211,7 +217,7 @@ export default function Result(props) {
 
   return (
     <>
-      <NavBar openClick={handleClickOpen} resetClick={handleClickReset} />
+      <NavBar openClick={handleClickOpen} resetClick={handleClickReset} showResult={showResult} result={result} />
       <FinishedDialog
         open={open}
         handleClose={handleClose}

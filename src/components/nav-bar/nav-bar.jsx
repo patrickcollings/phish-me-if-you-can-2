@@ -12,12 +12,22 @@ export default function NavBar(props) {
       <AppBar position="static">
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <img src={logo} style={{ height: "64px", width: "64px" }} />
+          <span>phishmeifyoucan.com</span>
+          {props.showResult && (
+            <span
+              style={{ fontSize: "28px", color: "white", fontWeight: "bold" }}
+            >
+              You scored: {props.result.score}%
+            </span>
+          )}
           <div style={{ display: "flex" }}>
             <RestartAlt
               onClick={props.resetClick}
               style={{ marginRight: "1rem", cursor: "pointer" }}
             />
-            <Done onClick={props.openClick} style={{ cursor: "pointer" }} />
+            {!props.showResult && (
+              <Done onClick={props.openClick} style={{ cursor: "pointer" }} />
+            )}
           </div>
         </Toolbar>
       </AppBar>

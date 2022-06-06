@@ -19,15 +19,15 @@ export default function FinishedDialog(props) {
         <DialogContent>
           {!!props.result && (
             <>
-              <DialogContentText id="alert-dialog-description">
+              {/* <DialogContentText id="alert-dialog-description">
                 Missed {props.result.missed ?? 0}
-              </DialogContentText>
+              </DialogContentText> */}
               <DialogContentText id="alert-dialog-description">
-                Caught {props.result.caught ?? 0}
+                You've caught {props.result.caught ?? 0} phishing email(s)
               </DialogContentText>
-              <DialogContentText id="alert-dialog-description">
+              {/* <DialogContentText id="alert-dialog-description">
                 Accidental {props.result.accidental ?? 0}
-              </DialogContentText>
+              </DialogContentText> */}
             </>
           )}
         </DialogContent>

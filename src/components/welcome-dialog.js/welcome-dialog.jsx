@@ -11,16 +11,37 @@ export default function WelcomeDialog(props) {
     <div>
       <Dialog
         open={props.open}
-        onClose={props.handleClose}
+        onClose={() => {
+          props.handleClose(false);
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Welcome"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {"Phish Me If You Can"}
+        </DialogTitle>
         <DialogContent>
-          Yes
+          <p>
+            <b>Aim of the game</b>: find and add all phishing emails to your
+            scambox
+          </p>
+          <ul>
+            <li>
+              This is a mock mailbox using some real world examples of scam
+              emails that I have received over the last few years.
+            </li>
+            <li>
+              personally identifying links have been removed but some links will
+              still direct you to a live website
+            </li>
+            <li>
+              it's better to be safe than sorry: you will only lose half points for accidentally flagging a real email.
+            </li>
+          </ul>
         </DialogContent>
         <DialogActions>
-        <Button
+          <Button
+            variant="outlined"
             onClick={() => {
               props.handleClose(true);
             }}
@@ -28,12 +49,13 @@ export default function WelcomeDialog(props) {
             Don't show again
           </Button>
           <Button
+            variant="contained"
             onClick={() => {
-              props.handleClose();
+              props.handleClose(false);
             }}
             autoFocus
           >
-            Go
+            Start
           </Button>
         </DialogActions>
       </Dialog>
