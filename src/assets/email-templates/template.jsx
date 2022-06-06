@@ -8,7 +8,7 @@ export default function Template(props) {
     }
     return (
         <>
-            {( exists && <div dangerouslySetInnerHTML={{ __html: template }} /> )}
+            {( exists && <div style={{overflowX: 'scroll'}} dangerouslySetInnerHTML={{ __html: template }} /> )}
         </>
     );
 }

@@ -8,7 +8,7 @@ import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
 import mixpanel from "mixpanel-browser";
 
-mixpanel.init("", { debug: true });
+mixpanel.init("2e8c366f7230134973d763a5f39fcf43", { debug: true });
 
 const EmailSidebarContainer = styled.div`
   width: 300px;
