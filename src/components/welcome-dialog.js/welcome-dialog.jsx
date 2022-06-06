@@ -27,6 +27,9 @@ export default function WelcomeDialog(props) {
           </p>
           <ul>
             <li>
+              Click the tick in the top right once you've finished
+            </li>
+            <li>
               This is a mock mailbox using some real world examples of scam
               emails that I have received over the last few years.
             </li>
@@ -35,7 +38,8 @@ export default function WelcomeDialog(props) {
               still direct you to a live website
             </li>
             <li>
-              it's better to be safe than sorry: you will only lose half points for accidentally flagging a real email.
+              it's better to be safe than sorry: you will only lose half points
+              for accidentally flagging a real email.
             </li>
           </ul>
         </DialogContent>

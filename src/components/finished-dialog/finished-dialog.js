@@ -11,7 +11,7 @@ export default function FinishedDialog(props) {
     <div>
       <Dialog
         open={props.open}
-        onClose={props.handleClose}
+        onClose={() => {props.handleClose(false)}}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -40,12 +40,13 @@ export default function FinishedDialog(props) {
             Keep trying
           </Button>
           <Button
+           variant="contained"
             onClick={() => {
               props.handleClose(true);
             }}
             autoFocus
           >
-            Show Results
+            Finish
           </Button>
         </DialogActions>
       </Dialog>
