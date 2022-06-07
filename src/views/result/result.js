@@ -113,14 +113,12 @@ export default function Result(props) {
   }
 
   function calculateResults() {
-    console.log('calculating results');
     const scamsMissed = emailList.filter((email) => !!email.scam);
     const normalsCaught = scamList.filter((email) => !email.scam);
     const totalScamsCaught = scamList.length - normalsCaught.length;
     mixpanel.track("finished_test", {scamsMissed, normalsCaught, score: {scamsMissed: scamsMissed.length, accidental: normalsCaught.length, caught: totalScamsCaught}});
     const penalty = (normalsCaught.length > 0) ? (normalsCaught.length / 2) : 0;
     const totalScore = totalScamsCaught - penalty;
-    console.log(totalScore, totalScamsCaught, penalty);
     const score = Math.round((totalScore / (totalScamsCaught + scamsMissed.length)) * 100);
     return {
       missed: scamsMissed.length,
@@ -145,7 +143,6 @@ export default function Result(props) {
 
   const handleClickOpen = () => {
     const results = calculateResults();
-    console.log(results);
     setResult(results);
     setOpen(true);
   };

@@ -33,7 +33,6 @@ export default function ConfirmationDialog(props) {
             onClick={() => {
               props.handleClose(true);
             }}
-            autoFocus
           >
             Yes
           </Button>

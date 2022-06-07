@@ -78,10 +78,10 @@ export default function EmailDisplay(props) {
     );
   } else {
     return (
-      <Card sx={{ minWidth: 275, minHeight: "50vh" }}>
+      <Card sx={{ minWidth: 275, minHeight: "50vh", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <CardContent>
           <Typography sx={{ fontSize: 30 }} color="text.secondary" gutterBottom>
-            No email selected
+            Nothing is selected
           </Typography>
         </CardContent>
       </Card>

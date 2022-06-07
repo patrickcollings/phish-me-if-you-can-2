@@ -118,6 +118,4 @@ emails = emails.map((email, index) => {
   return email;
 });
 
-console.log(emails);
-
 export default emails;

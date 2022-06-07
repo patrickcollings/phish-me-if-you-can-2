@@ -57,7 +57,6 @@ export default function WelcomeDialog(props) {
             onClick={() => {
               props.handleClose(false);
             }}
-            autoFocus
           >
             Start
           </Button>

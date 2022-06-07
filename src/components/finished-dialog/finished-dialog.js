@@ -15,16 +15,16 @@ export default function FinishedDialog(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Your Results"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Completed?"}</DialogTitle>
         <DialogContent>
           {!!props.result && (
             <>
               {/* <DialogContentText id="alert-dialog-description">
                 Missed {props.result.missed ?? 0}
               </DialogContentText> */}
-              <DialogContentText id="alert-dialog-description">
+              {/* <DialogContentText id="alert-dialog-description">
                 You've caught {props.result.caught ?? 0} phishing email(s)
-              </DialogContentText>
+              </DialogContentText> */}
               {/* <DialogContentText id="alert-dialog-description">
                 Accidental {props.result.accidental ?? 0}
               </DialogContentText> */}
@@ -44,7 +44,6 @@ export default function FinishedDialog(props) {
             onClick={() => {
               props.handleClose(true);
             }}
-            autoFocus
           >
             Finish
           </Button>
