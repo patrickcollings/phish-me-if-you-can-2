@@ -20,11 +20,18 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      style={{height: '100%'}}
+      style={{
+        position: 'absolute',
+        top: '48px',
+        left: 0,
+        bottom: 0,
+        width: '400px',
+        overflowY: 'auto',
+      }}
       {...other}
     >
       {value === index && (
-        <Box sx={{overflowY: 'scroll', height: '100%', width: '100%', minWidth: '300px'}}>
+        <Box sx={{width: '100%', minWidth: '300px'}}>
           {children}
         </Box>
       )}

@@ -99,6 +99,14 @@ const normalList = [
     to: "you",
     template: "barclays-important-document-added",
   },
+  {
+    subject:
+      "Important document added to your library in My Barclays documents. Account number ending ****6789",
+    name: "TEST TEST TEST",
+    email: "email.correspondence@assure4.barclays.co.uk",
+    to: "you",
+    template: "test",
+  },
 ];
 
 const addDefaults = (email, scam) => {

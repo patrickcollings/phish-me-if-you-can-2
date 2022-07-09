@@ -8,14 +8,19 @@ import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
 import mixpanel from "mixpanel-browser";
 
-mixpanel.init("");
+mixpanel.init("123");
+mixpanel.track("joined");
 
 const EmailSidebarContainer = styled.div`
-  width: 300px;
-  max-width: 300px;
-  height: 100%;
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  width: 400px;
+  max-width: 400px;
   padding: 0;
   margin: 0;
+  overflow: hidden;
 `;
 
 const EmailSidebarContainerMobile = styled.div`
@@ -27,16 +32,19 @@ const EmailSidebarContainerMobile = styled.div`
 `;
 
 const EmailDisplayContainer = styled.div`
-  padding: 20px;
-  width: 100%;
-  min-height: 50vh;
+  position: absolute;
+  left: 400px;
+  top: 64px;
+  right: 0;
+  bottom: 0;
+  padding-bottom: 20px;
+  overflow: hidden;
 `;
 
 const Container = styled.div`
   max-width: 100%;
   width: 100%;
   display: flex;
-  height: 100%;
 `;
 
 // Grab saved list from localstorage so user doesn't start again
@@ -44,6 +52,7 @@ const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
 // const savedEmailList = null;
 const savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
 const savedShowResult = JSON.parse(localStorage.getItem("phishme_showResult"));
+const savedAttempts = JSON.parse(localStorage.getItem("phishme_attempts"));
 // const savedScamList = null;
 orderListByTime(emails);
 
@@ -56,6 +65,7 @@ export default function Result(props) {
   const [isScamSelected, setIsScamSelected] = useState(false);
   const [open, setOpen] = useState(false);
   const [showResult, setShowResult] = useState(savedShowResult ?? false);
+  const [numberAttempts, setNumberAttempts] = useState(savedAttempts ?? 0);
   const [result, setResult] = useState(showResult ? calculateResults : {});
   const [width, setWindowWidth] = useState(0);
 
@@ -85,6 +95,7 @@ export default function Result(props) {
   }
 
   function addToScamList() {
+    console.log('adding');
     const index = findEmailIndex(selectedEmail);
     if (index < 0) return;
     let newScamList = [...scamList, emailList[index]];

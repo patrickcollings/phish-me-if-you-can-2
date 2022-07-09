@@ -6,7 +6,7 @@ let styles = {
   borderBottom: "1px solid lightgrey",
   display: "flex",
   alignItems: "center",
-  padding: "0.2rem",
+  padding: "0.75rem 0.5rem",
   justifyContent: "space-between",
   cursor: "pointer",
 };
@@ -16,7 +16,7 @@ let textStyle = {
   flexDirection: "column",
   alignItems: "left",
   textAlign: "left",
-  maxWidth: '65%',
+  maxWidth: '70%',
   flex: '1',
 };
 
@@ -68,11 +68,9 @@ export default function EmailListItem(props) {
           styles,
           props.isSelected
             ? {
-                borderColor: "blue",
-                backgroundColor: "lightgrey",
-                borderTop: "1px solid blue",
+                backgroundColor: "#c9c7d3",
               }
-            : { borderColor: "lightgrey", borderTop: "none" }
+            : {}
         )}
       >
         <div style={circleStyle}>
