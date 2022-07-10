@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { getHoursAndMinutes } from "../../assets/helper";
 import Template from "../../assets/email-templates/template";
 import EmailOptionBar from "../email-option-bar/email-option-bar";
+import Attachment from "./attachment";
 
 export default function EmailDisplay({
   selectedEmail,
@@ -26,21 +27,24 @@ export default function EmailDisplay({
           add={add}
           isMobile={isMobile}
         />
+
         {/* <Card sx={{ minWidth: 275, minHeight: "50vh" }}>
           <CardContent> */}
-        <div style={{
-          position: 'absolute',
-          right: 0,
-          left: 0,
-          bottom: 0,
-          top: '46px',
-          overflowY: 'auto',
-        }}>
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            left: 0,
+            bottom: 0,
+            top: "46px",
+            overflowY: "auto",
+          }}
+        >
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
-              padding: "1rem",
+              padding: "1rem 1rem 0",
             }}
           >
             <div>
@@ -74,6 +78,12 @@ export default function EmailDisplay({
               {getHoursAndMinutes(selectedEmail.time)}
             </Typography>
           </div>
+          {selectedEmail.attachment && (
+            <Attachment
+              name={selectedEmail.attachmentName}
+              extension={selectedEmail.attachmentExtension}
+            ></Attachment>
+          )}
           <Divider />
           <React.Suspense fallback={<div>Loading...</div>}>
             <Template template={selectedEmail.template} />

@@ -4,6 +4,7 @@ import Result from './views/result/result';
 import WelcomeDialog from './components/welcome-dialog.js/welcome-dialog';
 import { useState } from 'react';
 import mixpanel from "mixpanel-browser";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'; 
 
 mixpanel.init("2e8c366f7230134973d763a5f39fcf43", { debug: true });
 
@@ -17,10 +18,12 @@ function App() {
     setOpen(false);
   }
   return (
-    <div className="App" style={{ maxHeight: "100vh", height: "100vh" }}>
-      <WelcomeDialog open={open} handleClose={handleClose} />
-      <Result></Result>
-    </div>
+    <Router>
+      <div className="App" style={{ maxHeight: "100vh", height: "100vh" }}>
+        <WelcomeDialog open={open} handleClose={handleClose} />
+        <Result></Result>
+      </div>
+    </Router>
   );
 }
 

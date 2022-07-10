@@ -7,6 +7,9 @@ const scamList = [
     email: "norton.support@gmail.com",
     to: "you",
     template: "norton-renewal",
+    attachment: true,
+    attachmentExtension: 'pdf',
+    attachmentName: 'openme'
   },
   {
     subject: "Problem with your account",

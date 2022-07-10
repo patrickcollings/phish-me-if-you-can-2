@@ -3,19 +3,50 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import logo from "../../assets/white-logo.png";
-import { RestartAlt, Done } from "@mui/icons-material/";
+import { Done } from "@mui/icons-material/";
 import ConfirmationDialog from "../confirmation-dialog/confirmation-dialog";
 import { useState } from "react";
-import { IconButton } from "@mui/material";
 
-export default function NavBar(props) {
+export default function NavBar({openClick, resetClick, attempts}) {
   const [open, setOpen] = useState(false);
 
+
+
+
+  const getScore = (score, type) => {
+    switch (type) {
+      case "previous":
+        return <span style={{ color: "#A3A3A3" }}>{score}%</span>;
+      case "current":
+        return <span style={{ WebkitTextStroke: "1px red" }}>?</span>;
+      case "future":
+        return <span style={{ color: "#A3A3A3" }}>?</span>;
+      case "complete":
+        return <span style={{ color: "white" }}>{score}%</span>;
+    }  
+  }
+
+  const setupScores = () => {
+    const attemptNumber = attempts.length; 
+    const attemptCopy = [...attempts];
+
+    while (attemptCopy.length < 3) {
+      attemptCopy.push(false);
+    }
+
+    return attemptCopy.map((attempt, index) => 
+    {
+      if (attemptNumber === 3) return getScore(attempt, 'complete');
+      if (index === attemptNumber) return getScore(attempt, 'current');
+      if (typeof attempt === 'boolean') return getScore(attempt, "future"); 
+      return (getScore(attempt, 'previous'));
+    })
+  }
+
   const confirmReset = (confirm) => {
-    if (confirm) props.resetClick();
+    if (confirm) resetClick();
     setOpen(false);
   }
-  console.log(process.env.REACT_APP_LANDING_URL);
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -42,28 +73,19 @@ export default function NavBar(props) {
                   fontSize: "14px",
                 }}
               >
-                2 attempts remaining
+                {3 - attempts.length} attempts remaining
               </p>
               <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  minWidth: "100px",
+                  width: "200px",
                   fontSize: "25px",
                 }}
               >
-                <span style={{ color: "#A3A3A3" }}>15%</span>
-                <span style={{ "-webkit-text-stroke": "1px red" }}>?</span>
-                <span style={{ color: "#A3A3A3" }}>?</span>
+                {setupScores()}
               </div>
             </div>
-            {/* {props.showResult && (
-              <span
-                style={{ fontSize: "28px", fontWeight: "bold", color: "black" }}
-              >
-                You scored: {props.result.score}%
-              </span>
-            )} */}
             <div
               style={{
                 display: "flex",
@@ -75,15 +97,23 @@ export default function NavBar(props) {
               <Button
                 variant="contained"
                 style={{ backgroundColor: "white", color: "black" }}
-                onClick={props.openClick}
+                onClick={openClick}
               >
                 Submit
+                <Done />
+              </Button>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "white", color: "black" }}
+                onClick={resetClick}
+              >
+                Reset
                 <Done />
               </Button>
               {/* <IconButton
                 aria-label="done"
                 style={{ color: "white", cursor: "pointer" }}
-                onClick={props.openClick}
+                onClick={openClick}
               >
                 <Done />
               </IconButton> */}

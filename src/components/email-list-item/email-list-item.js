@@ -1,5 +1,6 @@
 import { getHoursAndMinutes } from "../../assets/helper";
 import { Cancel, CheckCircle } from "@mui/icons-material/";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 let styles = {
   //   borderTop: "1px solid grey",
@@ -110,17 +111,20 @@ export default function EmailListItem(props) {
           {!!props.showResult ? (
             getResult(props)
           ) : (
-            <span
-              style={{
-                position: "sticky",
-                top: "0",
-                right: "0",
-                fontSize: "9px",
-                fontWeight: props.email.read ? "" : "bold",
-              }}
-            >
-              {getHoursAndMinutes(props.email.time)}
-            </span>
+            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+              {props.email.attachment && <AttachFileIcon fontSize="1.2rem"/>}
+              <span
+                style={{
+                  position: "sticky",
+                  top: "0",
+                  right: "0",
+                  fontSize: "9px",
+                  fontWeight: props.email.read ? "" : "bold",
+                }}
+              >
+                {getHoursAndMinutes(props.email.time)}
+              </span>
+            </div>
           )}
         </div>
       </div>

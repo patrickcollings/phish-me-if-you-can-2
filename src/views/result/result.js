@@ -65,7 +65,7 @@ export default function Result(props) {
   const [isScamSelected, setIsScamSelected] = useState(false);
   const [open, setOpen] = useState(false);
   const [showResult, setShowResult] = useState(savedShowResult ?? false);
-  const [numberAttempts, setNumberAttempts] = useState(savedAttempts ?? 0);
+  const [attempts, setAttempts] = useState(savedAttempts ?? []);
   const [result, setResult] = useState(showResult ? calculateResults : {});
   const [width, setWindowWidth] = useState(0);
 
@@ -153,8 +153,6 @@ export default function Result(props) {
   };
 
   const handleClickOpen = () => {
-    const results = calculateResults();
-    setResult(results);
     setOpen(true);
   };
 
@@ -163,6 +161,7 @@ export default function Result(props) {
     localStorage.removeItem("phishme_emailList");
     localStorage.removeItem("phishme_showResult");
     localStorage.removeItem("phishme_hide_welcome_dialog");
+    localStorage.removeItem("phishme_attempts");
     setScamList([]);
     setEmailList(JSON.parse(JSON.stringify(emails)));
     setSelectedEmail(null);
@@ -170,12 +169,18 @@ export default function Result(props) {
     setOpen(false);
     setIsScamSelected(false);
     setResult({});
+    setAttempts([]);
   };
 
   const handleClose = (isFinished) => {
-    isFinished && showResults();
-    setShowResult(isFinished);
     setOpen(false);
+    if (attempts.length >= 3) return;
+    if (isFinished) {
+      const results = calculateResults();
+      setResult(results);
+      setAttempts([...attempts, results.score]);
+      setShowResult(true);
+    } 
   };
 
   const getEmailSidebar = () => {
@@ -214,8 +219,18 @@ export default function Result(props) {
   }, [emailList]);
 
   useEffect(() => {
+    if (attempts.length === 3 && showResult) {
+      showResults();
+    } else {
+      setShowResult(false);
+    }
     localStorage.setItem("phishme_showResult", showResult);
   }, [showResult]);
+
+  useEffect(() => {
+    console.log(attempts);
+    localStorage.setItem("phishme_attempts", JSON.stringify(attempts));
+  }, [attempts]);
 
   useEffect(() => {
     updateDimensions();
@@ -225,7 +240,7 @@ export default function Result(props) {
 
   return (
     <>
-      <NavBar openClick={handleClickOpen} resetClick={handleClickReset} showResult={showResult} result={result} />
+      <NavBar openClick={handleClickOpen} resetClick={handleClickReset} showResult={showResult} result={result} attempts={attempts} />
       <FinishedDialog
         open={open}
         handleClose={handleClose}
