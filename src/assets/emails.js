@@ -9,7 +9,7 @@ const scamList = [
     template: "norton-renewal",
     attachment: true,
     attachmentExtension: 'pdf',
-    attachmentName: 'openme'
+    attachmentName: 'openme',
   },
   {
     subject: "Problem with your account",
@@ -120,8 +120,8 @@ const addDefaults = (email, scam) => {
 }  
 
 let emails = [
-  ...scamList.map((email) => addDefaults(email, true)),
-  ...normalList.map((email) => addDefaults(email, false)),
+  ...scamList.map((email, index) => addDefaults(email, true)),
+  ...normalList.map((email, index) => addDefaults(email, false)),
 ];
 
 emails = emails.map((email, index) => {

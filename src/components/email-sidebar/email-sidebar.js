@@ -1,9 +1,10 @@
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import EmailListItem from "../email-list-item/email-list-item";
+import { useNavigate, useLocation, matchRoutes, Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const tabStyles = {
     '.MuiBox-root': {
@@ -59,11 +60,26 @@ function getEmailList(list, selectEmail, selectedEmail, showResult) {
   ));
 }
 
+const routes = [
+  { path: "/inbox/:emailId", value: 0 },
+  { path: "/scambox/:emailId", value: 1 },
+  { path: "/inbox", value: 0 },
+  { path: "/scambox", value: 1 },
+];
+
 export default function EmailSidebar(props) {
   const [value, setValue] = React.useState(0);
+  let navigate = useNavigate();
+  const location = useLocation();
+  
+  useEffect(() => {
+    const [{ route }] = matchRoutes(routes, location);
+    setValue(route.value !== -1 ? route.value : 0);
+  }, [location, routes]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    navigate(routes[newValue]);
   };
 
   return (
@@ -75,8 +91,18 @@ export default function EmailSidebar(props) {
           aria-label="basic tabs example"
           centered
         >
-          <Tab label={`Inbox (${props.emailList.length})`} {...a11yProps(0)} />
-          <Tab label={`Scambox (${props.scamList.length})`} {...a11yProps(1)} />
+          <Tab
+            label={`Inbox (${props.emailList.length})`}
+            component={Link}
+            to={"/inbox"}
+            {...a11yProps(0)}
+          />
+          <Tab
+            label={`Scambox (${props.scamList.length})`}
+            component={Link}
+            to={"/scambox"}
+            {...a11yProps(1)}
+          />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>

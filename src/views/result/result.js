@@ -7,6 +7,7 @@ import EmailSidebar from "../../components/email-sidebar/email-sidebar";
 import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
 import mixpanel from "mixpanel-browser";
+import { useParams, useNavigate } from "react-router-dom";
 
 mixpanel.init("123");
 mixpanel.track("joined");
@@ -57,7 +58,12 @@ const savedAttempts = JSON.parse(localStorage.getItem("phishme_attempts"));
 orderListByTime(emails);
 
 export default function Result(props) {
-  const [selectedEmail, setSelectedEmail] = useState();
+  let params = useParams();
+  let navigate = useNavigate();
+
+  const [selectedEmail, setSelectedEmail] = useState(
+    params.emailId && emails.find(email => email.id === parseInt(params.emailId))
+  );
   const [scamList, setScamList] = useState(savedScamList ?? []);
   const [emailList, setEmailList] = useState(
     savedEmailList ?? JSON.parse(JSON.stringify(emails))
@@ -79,11 +85,13 @@ export default function Result(props) {
     setIsScamSelected(false);
     setSelectedEmail(emailList[index]);
     setEmailList([...emailList]);
+    navigate(`/inbox/${emailList[index].id}`);
   }
 
   function selectScamEmail(index) {
     setIsScamSelected(true);
     setSelectedEmail(scamList[index]);
+    navigate(`/scambox/${scamList[index].id}`);
   }
 
   function findEmailIndex(selectedEmail) {
@@ -95,7 +103,6 @@ export default function Result(props) {
   }
 
   function addToScamList() {
-    console.log('adding');
     const index = findEmailIndex(selectedEmail);
     if (index < 0) return;
     let newScamList = [...scamList, emailList[index]];
@@ -228,7 +235,6 @@ export default function Result(props) {
   }, [showResult]);
 
   useEffect(() => {
-    console.log(attempts);
     localStorage.setItem("phishme_attempts", JSON.stringify(attempts));
   }, [attempts]);
 

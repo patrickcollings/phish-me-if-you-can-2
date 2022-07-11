@@ -13,16 +13,28 @@ export default function NavBar({openClick, resetClick, attempts}) {
 
 
 
-  const getScore = (score, type) => {
+  const getScore = (score, type, index) => {
     switch (type) {
       case "previous":
-        return <span style={{ color: "#A3A3A3" }}>{score}%</span>;
+        return <span style={{ color: "#A3A3A3" }} key={index}>{score}%</span>;
       case "current":
-        return <span style={{ WebkitTextStroke: "1px red" }}>?</span>;
+        return (
+          <span style={{ WebkitTextStroke: "1px red" }} key={index}>
+            ?
+          </span>
+        );
       case "future":
-        return <span style={{ color: "#A3A3A3" }}>?</span>;
+        return (
+          <span style={{ color: "#A3A3A3" }} key={index}>
+            ?
+          </span>
+        );
       case "complete":
-        return <span style={{ color: "white" }}>{score}%</span>;
+        return (
+          <span style={{ color: "white" }} key={index}>
+            {score}%
+          </span>
+        );
     }  
   }
 
@@ -36,9 +48,9 @@ export default function NavBar({openClick, resetClick, attempts}) {
 
     return attemptCopy.map((attempt, index) => 
     {
-      if (attemptNumber === 3) return getScore(attempt, 'complete');
-      if (index === attemptNumber) return getScore(attempt, 'current');
-      if (typeof attempt === 'boolean') return getScore(attempt, "future"); 
+      if (attemptNumber === 3) return getScore(attempt, 'complete', index);
+      if (index === attemptNumber) return getScore(attempt, 'current', index);
+      if (typeof attempt === 'boolean') return getScore(attempt, "future", index); 
       return (getScore(attempt, 'previous'));
     })
   }

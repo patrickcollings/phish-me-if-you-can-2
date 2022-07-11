@@ -3,7 +3,6 @@ import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { getHoursAndMinutes } from "../../assets/helper";
 import Template from "../../assets/email-templates/template";
 import EmailOptionBar from "../email-option-bar/email-option-bar";
@@ -28,8 +27,6 @@ export default function EmailDisplay({
           isMobile={isMobile}
         />
 
-        {/* <Card sx={{ minWidth: 275, minHeight: "50vh" }}>
-          <CardContent> */}
         <div
           style={{
             position: "absolute",
@@ -89,8 +86,6 @@ export default function EmailDisplay({
             <Template template={selectedEmail.template} />
           </React.Suspense>
         </div>
-        {/* </CardContent>
-        </Card> */}
       </>
     );
   } else {
