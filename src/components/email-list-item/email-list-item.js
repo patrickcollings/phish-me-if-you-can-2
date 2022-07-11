@@ -95,6 +95,8 @@ export default function EmailListItem(props) {
               overflow: "hidden",
               textOverflow: "ellipsis",
               fontSize: "13px",
+              fontWeight: props.email.read ? "" : "bold",
+              color: !props.email.read && "#493698",
             }}
           >
             {props.email.subject}
@@ -111,8 +113,15 @@ export default function EmailListItem(props) {
           {!!props.showResult ? (
             getResult(props)
           ) : (
-            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
-              {props.email.attachment && <AttachFileIcon fontSize="1.2rem"/>}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+              }}
+            >
+              {props.email.attachment && <AttachFileIcon fontSize="1.2rem" />}
               <span
                 style={{
                   position: "sticky",
