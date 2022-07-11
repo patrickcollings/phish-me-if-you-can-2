@@ -19,13 +19,15 @@ export default function EmailDisplay({
   if (selectedEmail) {
     return (
       <>
-        <EmailOptionBar
-          isScamEmail={isScamEmail}
-          handleDeselect={handleDeselect}
-          remove={remove}
-          add={add}
-          isMobile={isMobile}
-        />
+        {"correct" in selectedEmail === false && (
+          <EmailOptionBar
+            isScamEmail={isScamEmail}
+            handleDeselect={handleDeselect}
+            remove={remove}
+            add={add}
+            isMobile={isMobile}
+          />
+        )}
 
         <div
           style={{
@@ -37,54 +39,63 @@ export default function EmailDisplay({
             overflowY: "auto",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "1rem 1rem 0",
-            }}
-          >
-            <div>
+          {"correct" in selectedEmail && !selectedEmail.correct && (
+            <div style={{ padding: "0 3rem" }}>
+              <h1>Why is this a scam?</h1>
+              <p>{selectedEmail.description}</p>
+            </div>
+          )}
+
+          <div style={{ opacity: "correct" in selectedEmail ? "0.8" : "1" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                padding: "1rem 1rem 0",
+              }}
+            >
+              <div>
+                <Typography
+                  sx={{ fontSize: 25, textAlign: "left", fontWeight: "400" }}
+                  color="text.primary"
+                  gutterBottom
+                >
+                  {selectedEmail.subject}
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 15, textAlign: "left" }}
+                  color="text.primary"
+                  gutterBottom
+                >
+                  {selectedEmail.name} {"<" + selectedEmail.email + ">"}
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 15, textAlign: "left" }}
+                  color="text.primary"
+                  gutterBottom
+                >
+                  To: {selectedEmail.to}
+                </Typography>
+              </div>
               <Typography
-                sx={{ fontSize: 25, textAlign: "left", fontWeight: "400" }}
-                color="text.primary"
+                sx={{ fontSize: 12, textAlign: "right" }}
+                color="text.secondary"
                 gutterBottom
               >
-                {selectedEmail.subject}
-              </Typography>
-              <Typography
-                sx={{ fontSize: 15, textAlign: "left" }}
-                color="text.primary"
-                gutterBottom
-              >
-                {selectedEmail.name} {"<" + selectedEmail.email + ">"}
-              </Typography>
-              <Typography
-                sx={{ fontSize: 15, textAlign: "left" }}
-                color="text.primary"
-                gutterBottom
-              >
-                To: {selectedEmail.to}
+                {getHoursAndMinutes(selectedEmail.time)}
               </Typography>
             </div>
-            <Typography
-              sx={{ fontSize: 12, textAlign: "right" }}
-              color="text.secondary"
-              gutterBottom
-            >
-              {getHoursAndMinutes(selectedEmail.time)}
-            </Typography>
+            {selectedEmail.attachment && (
+              <Attachment
+                name={selectedEmail.attachmentName}
+                extension={selectedEmail.attachmentExtension}
+              ></Attachment>
+            )}
+            <Divider />
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <Template template={selectedEmail.template} />
+            </React.Suspense>
           </div>
-          {selectedEmail.attachment && (
-            <Attachment
-              name={selectedEmail.attachmentName}
-              extension={selectedEmail.attachmentExtension}
-            ></Attachment>
-          )}
-          <Divider />
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <Template template={selectedEmail.template} />
-          </React.Suspense>
         </div>
       </>
     );

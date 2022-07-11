@@ -8,8 +8,9 @@ const scamList = [
     to: "you",
     template: "norton-renewal",
     attachment: true,
-    attachmentExtension: 'pdf',
-    attachmentName: 'openme',
+    attachmentExtension: "pdf",
+    attachmentName: "openme",
+    description: "This is a scam email because:",
   },
   {
     subject: "Problem with your account",
@@ -18,6 +19,7 @@ const scamList = [
     to: "you",
     body: "body 2",
     template: "paypal-problem-with-your-account",
+    description: "This is a scam email because:",
   },
   {
     subject: "£5 from us to you",
@@ -26,6 +28,7 @@ const scamList = [
     to: "you",
     body: "body 5",
     template: "paypal-free-five-pound",
+    description: "This is a scam email because:",
   },
   {
     subject: "Please update your Spotify password.",
@@ -33,6 +36,7 @@ const scamList = [
     email: "support@royal-intermodal.com",
     to: "you",
     template: "spotify-reset-password",
+    description: "This is a scam email because:",
   },
   {
     subject: "Someone has tried to reset your password",
@@ -40,6 +44,7 @@ const scamList = [
     email: "no-reply@rnyfitnesspal.com",
     to: "you",
     template: "myfitnesspal-someone-reset-password",
+    description: "This is a scam email because:",
   },
   {
     subject: "URGENT",
@@ -47,6 +52,7 @@ const scamList = [
     email: "laura@startup.com",
     to: "andrew@startup.com",
     template: "spear-phishing-1",
+    description: "This is a scam email because:",
   },
   {
     subject: "Verified Twitter has messaged you",
@@ -54,6 +60,7 @@ const scamList = [
     email: "verified@twittersupport.co.uk",
     to: "you",
     template: "twitter-verified-user-mentioned-you",
+    description: "This is a scam email because:",
   },
 ];
 
