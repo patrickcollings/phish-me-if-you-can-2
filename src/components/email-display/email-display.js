@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { getHoursAndMinutes } from "../../assets/helper";
 import Template from "../../assets/email-templates/template";
-import EmailOptionBar from "../email-option-bar/email-option-bar";
+import EmailOptionBar from "./email-option-bar";
 import Attachment from "./attachment";
 
 export default function EmailDisplay({
@@ -19,15 +19,14 @@ export default function EmailDisplay({
   if (selectedEmail) {
     return (
       <>
-        {"correct" in selectedEmail === false && (
-          <EmailOptionBar
-            isScamEmail={isScamEmail}
-            handleDeselect={handleDeselect}
-            remove={remove}
-            add={add}
-            isMobile={isMobile}
-          />
-        )}
+        <EmailOptionBar
+          isScamEmail={isScamEmail}
+          isComplete={"correct" in selectedEmail}
+          handleDeselect={handleDeselect}
+          remove={remove}
+          add={add}
+          isMobile={isMobile}
+        />
 
         <div
           style={{
@@ -39,7 +38,7 @@ export default function EmailDisplay({
             overflowY: "auto",
           }}
         >
-          {"correct" in selectedEmail && !selectedEmail.correct && (
+          {"correct" in selectedEmail && selectedEmail.scam && (
             <div style={{ padding: "0 3rem" }}>
               <h1>Why is this a scam?</h1>
               <p>{selectedEmail.description}</p>

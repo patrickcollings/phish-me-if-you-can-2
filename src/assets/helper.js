@@ -37,3 +37,23 @@ export function getHoursAndMinutes(time) {
     });
 }
 
+export const getScoreTitle = (score) => {
+  if (score < 0)
+    return 'you should be forbidden from the internet...';
+  if (score >= 0 && score < 10)
+    return 'you should be forbidden from reading your emails...';
+  if (score >= 10 && score < 30)
+    return 'you are a bit of a dinosaur...';
+  if (score >= 30 && score < 60)
+    return 'you might want to practice again next month';
+  if (score >= 60 && score < 80)
+    return 'you can do better than that';
+  if (score >= 80 && score < 90)
+    return 'you are so close yet so far';
+  if (score >= 90 && score < 100)
+    return 'not too shabby';
+  if (score >= 100)
+    return 'you are unhackable';
+
+  return 'uncharted territory';
+} 

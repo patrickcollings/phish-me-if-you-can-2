@@ -4,7 +4,7 @@ import Result from './views/result/result';
 import WelcomeDialog from './components/welcome-dialog.js/welcome-dialog';
 import { useState } from 'react';
 import mixpanel from "mixpanel-browser";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; 
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; 
 
 mixpanel.init("2e8c366f7230134973d763a5f39fcf43", { debug: true });
 
@@ -22,6 +22,7 @@ function App() {
       <div className="App" style={{ maxHeight: "100vh", height: "100vh" }}>
         <WelcomeDialog open={open} handleClose={handleClose} />
         <Routes>
+          <Route exact path="/" element={<Navigate to="/inbox" replace />} />
           {["/inbox", "/scambox"].map((path) => (
             <Route path={path} element={<Result />}>
               <Route path=":emailId" element={<Result />} />

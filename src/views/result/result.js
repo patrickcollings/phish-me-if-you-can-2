@@ -8,6 +8,7 @@ import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
 import mixpanel from "mixpanel-browser";
 import { useParams, useNavigate } from "react-router-dom";
+import ConfirmationDialog from "../../components/confirmation-dialog/confirmation-dialog";
 
 mixpanel.init("123");
 mixpanel.track("joined");
@@ -25,6 +26,8 @@ const EmailSidebarContainer = styled.div`
 `;
 
 const EmailSidebarContainerMobile = styled.div`
+  position: absolute;
+  top: 64px;
   width: 100%;
   max-width: 100%;
   height: 100%;
@@ -48,32 +51,63 @@ const Container = styled.div`
   display: flex;
 `;
 
-// Grab saved list from localstorage so user doesn't start again
-const savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
-// const savedEmailList = null;
-const savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
-const savedShowResult = JSON.parse(localStorage.getItem("phishme_showResult"));
-const savedAttempts = JSON.parse(localStorage.getItem("phishme_attempts"));
-// const savedScamList = null;
+const date = new Date(2022, 4, 10);
+const month = date.toLocaleString("default", { month: "long" });
+const year = date.getFullYear();
+
+const checkChallengeStarted = (scores, completed = false) => {
+  if (!scores) return false;
+  for (let i = 0; i < scores.length; i++) {
+    if (scores[i].month === month && scores[i].year === year) {
+      return (completed && !scores[i].result) ? false : true;
+    }
+  }
+  return false;
+};
+
+let savedScores = JSON.parse(localStorage.getItem("phishme_scores"));
+let savedEmailList, savedScamList, savedShowResult, savedAttempts;
+
+console.log(checkChallengeStarted(savedScores, false));
+
+if (savedScores && checkChallengeStarted(savedScores) ) {
+  savedShowResult = JSON.parse(localStorage.getItem("phishme_showResult"));
+  savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
+  savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
+  savedAttempts = JSON.parse(localStorage.getItem("phishme_attempts"));
+} else {
+  if (savedScores) 
+    savedScores = [...savedScores, {month, year}];
+  else 
+    savedScores = [{ month, year }];
+}
+
 orderListByTime(emails);
 
 export default function Result(props) {
+  
   let params = useParams();
   let navigate = useNavigate();
+  let emailFound;
 
-  const [selectedEmail, setSelectedEmail] = useState(
-    params.emailId && emails.find(email => email.id === parseInt(params.emailId))
-  );
   const [scamList, setScamList] = useState(savedScamList ?? []);
   const [emailList, setEmailList] = useState(
     savedEmailList ?? JSON.parse(JSON.stringify(emails))
   );
   const [isScamSelected, setIsScamSelected] = useState(false);
   const [open, setOpen] = useState(false);
+  const [finishedOpen, setFinishedOpen] = useState(false);
   const [showResult, setShowResult] = useState(savedShowResult ?? false);
   const [attempts, setAttempts] = useState(savedAttempts ?? []);
+  const [previousScores, setPreviousScores] = useState(savedScores ?? []);
   const [result, setResult] = useState(showResult ? calculateResults : {});
   const [width, setWindowWidth] = useState(0);
+  if (params.emailId) {
+    emailFound = [scamList, ...emailList].find((email) => email.id === parseInt(params.emailId));
+  }
+  const [selectedEmail, setSelectedEmail] = useState(emailFound && emailFound);
+
+
 
   const updateDimensions = () => {
     const width = window.innerWidth;
@@ -89,21 +123,25 @@ export default function Result(props) {
   }
 
   function selectScamEmail(index) {
+    scamList[index]["read"] = true;
     setIsScamSelected(true);
     setSelectedEmail(scamList[index]);
+    setScamList([...scamList]);
     navigate(`/scambox/${scamList[index].id}`);
   }
 
   function findEmailIndex(selectedEmail) {
-    return emailList.findIndex((email) => selectedEmail == email);
+    return emailList.findIndex((email) => selectedEmail.id === email.id);
   }
 
   function findScamEmailIndex(selectedEmail) {
-    return scamList.findIndex((email) => selectedEmail == email);
+    return scamList.findIndex((email) => selectedEmail.id === email.id);
   }
 
   function addToScamList() {
+    console.log('adding to scamlist', selectedEmail);
     const index = findEmailIndex(selectedEmail);
+    console.log(index);
     if (index < 0) return;
     let newScamList = [...scamList, emailList[index]];
     orderListByTime(newScamList);
@@ -160,7 +198,8 @@ export default function Result(props) {
   };
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (attempts.length >= 3) setFinishedOpen(true);
+    else setOpen(true);
   };
 
   const handleClickReset = () => {
@@ -189,6 +228,10 @@ export default function Result(props) {
       setShowResult(true);
     } 
   };
+  
+  const handleFinishedClose = () => {
+    setFinishedOpen(false);
+  }
 
   const getEmailSidebar = () => {
     return (
@@ -228,6 +271,13 @@ export default function Result(props) {
   useEffect(() => {
     if (attempts.length === 3 && showResult) {
       showResults();
+      setFinishedOpen(true);
+      if (!checkChallengeStarted(previousScores, true)) {
+        const scoreList = [...previousScores];
+        scoreList[scoreList.length - 1].result = result;
+        console.log(scoreList);
+        setPreviousScores(scoreList);
+      }
     } else {
       setShowResult(false);
     }
@@ -239,6 +289,10 @@ export default function Result(props) {
   }, [attempts]);
 
   useEffect(() => {
+    localStorage.setItem("phishme_scores", JSON.stringify(previousScores));
+  }, [previousScores]);
+
+  useEffect(() => {
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
@@ -246,13 +300,23 @@ export default function Result(props) {
 
   return (
     <>
-      <NavBar openClick={handleClickOpen} resetClick={handleClickReset} showResult={showResult} result={result} attempts={attempts} />
-      <FinishedDialog
-        open={open}
+      <NavBar
+        openClick={handleClickOpen}
+        resetClick={handleClickReset}
+        showResult={showResult}
+        result={result}
+        attempts={attempts}
+      />
+      <ConfirmationDialog
         handleClose={handleClose}
+        open={open}
+      ></ConfirmationDialog>
+      <FinishedDialog
+        open={finishedOpen}
+        handleClose={handleFinishedClose}
         result={result}
       ></FinishedDialog>
-      {width > 800 && (
+      {width > 1000 && (
         <Container>
           <EmailSidebarContainer>
             <div style={{ height: "100%" }}>{getEmailSidebar()}</div>
@@ -260,12 +324,12 @@ export default function Result(props) {
           <EmailDisplayContainer>{getEmailDisplay()}</EmailDisplayContainer>
         </Container>
       )}
-      {width < 800 && !selectedEmail && (
+      {width < 1000 && !selectedEmail && (
         <EmailSidebarContainerMobile>
           <div style={{ height: "100%" }}>{getEmailSidebar()}</div>
         </EmailSidebarContainerMobile>
       )}
-      {width < 800 && !!selectedEmail && (
+      {width < 1000 && !!selectedEmail && (
         <EmailSidebarContainerMobile>
           <div style={{ height: "100%" }}>{getEmailDisplay(true)}</div>
         </EmailSidebarContainerMobile>

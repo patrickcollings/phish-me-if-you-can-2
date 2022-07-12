@@ -1,0 +1,9 @@
+.TabWrapper {
+    width: 400px;
+}
+
+@media screen and (max-width: 1000px) {
+    .TabWrapper {
+        width: 100%;
+    }
+}

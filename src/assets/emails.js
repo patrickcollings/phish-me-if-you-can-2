@@ -8,7 +8,7 @@ const scamList = [
     to: "you",
     template: "norton-renewal",
     attachment: true,
-    attachmentExtension: "pdf",
+    attachmentExtension: "exe",
     attachmentName: "openme",
     description: "This is a scam email because:",
   },
@@ -109,14 +109,6 @@ const normalList = [
     to: "you",
     template: "barclays-important-document-added",
   },
-  {
-    subject:
-      "Important document added to your library in My Barclays documents. Account number ending ****6789",
-    name: "TEST TEST TEST",
-    email: "email.correspondence@assure4.barclays.co.uk",
-    to: "you",
-    template: "test",
-  },
 ];
 
 const addDefaults = (email, scam) => {
@@ -126,9 +118,71 @@ const addDefaults = (email, scam) => {
   return email;
 }  
 
+function cyrb128(str) {
+  let h1 = 1779033703,
+    h2 = 3144134277,
+    h3 = 1013904242,
+    h4 = 2773480762;
+  for (let i = 0, k; i < str.length; i++) {
+    k = str.charCodeAt(i);
+    h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
+    h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
+    h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
+    h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
+  }
+  h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
+  h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
+  h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
+  h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
+  return [
+    (h1 ^ h2 ^ h3 ^ h4) >>> 0,
+    (h2 ^ h1) >>> 0,
+    (h3 ^ h1) >>> 0,
+    (h4 ^ h1) >>> 0,
+  ];
+}
+
+const date = new Date();
+const month = date.toLocaleString("default", { month: "long" }).toLowerCase();
+const year = date.getFullYear();
+
+const seed = cyrb128(`${month}/${year}`)[0];
+
+Math.seed = function (s) {
+  return function () {
+    s = Math.sin(s) * 10000;
+    return s - Math.floor(s);
+  };
+};
+
+var random1 = Math.seed(seed);
+var random2 = Math.seed(random1());
+Math.random = Math.seed(random2());
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; // not inclusive of the max number
+}
+
+function getRandomIndexes(count, max) {
+  let arr = [];
+  while (arr.length < count) {
+    var r = getRandomInt(0, max);
+    if (arr.indexOf(r) === -1) arr.push(r);
+  }
+  return arr;
+}
+
+const monthlyScamEmailIndexes = getRandomIndexes(5, scamList.length);
+const monthlyNormalEmailIndexes = getRandomIndexes(5, normalList.length);
+
+const monthlyScamList = monthlyScamEmailIndexes.map((index) => scamList[index]);
+const monthlyNormalList = monthlyNormalEmailIndexes.map((index) => normalList[index]);
+
 let emails = [
-  ...scamList.map((email, index) => addDefaults(email, true)),
-  ...normalList.map((email, index) => addDefaults(email, false)),
+  ...monthlyScamList.map((email) => addDefaults(email, true)),
+  ...monthlyNormalList.map((email) => addDefaults(email, false)),
 ];
 
 emails = emails.map((email, index) => {

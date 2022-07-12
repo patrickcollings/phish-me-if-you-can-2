@@ -1,0 +1,21 @@
+.ScoreContainer {
+    width: 200px;
+}
+
+@media screen and (max-width: 600px) {
+    .ChallengeTitle {
+        display: none;
+    }
+
+    .SubmitButtonText {
+        display: none;
+    }
+
+    .ScoreContainer {
+        width: 180px;
+    }
+}
+
+.css-1yo9slo-MuiToolbar-root {
+    height: 64px !important;
+}

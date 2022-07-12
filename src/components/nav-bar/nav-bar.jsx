@@ -6,12 +6,15 @@ import logo from "../../assets/white-logo.png";
 import { Done } from "@mui/icons-material/";
 import ConfirmationDialog from "../confirmation-dialog/confirmation-dialog";
 import { useState } from "react";
+import './nav-bar.css';
+
+const date = new Date();
+const month = date.toLocaleString("default", { month: "long" });
 
 export default function NavBar({openClick, resetClick, attempts}) {
   const [open, setOpen] = useState(false);
 
-
-
+  const isFinished = attempts.length === 3;
 
   const getScore = (score, type, index) => {
     switch (type) {
@@ -67,14 +70,19 @@ export default function NavBar({openClick, resetClick, attempts}) {
             <div
               style={{
                 display: "flex",
+                flexWrap: "wrap",
                 justifyContent: "flex-start",
                 flexGrow: 1,
                 flexBasis: 0,
+                alignItems: "center",
               }}
             >
               <a href={process.env.REACT_APP_LANDING_URL}>
                 <img src={logo} style={{ height: "30px", width: "30px" }} />
               </a>
+              <p className="ChallengeTitle" style={{ margin: "0 0 0 1rem" }}>
+                {month} challenge
+              </p>
             </div>
             <div>
               <p
@@ -85,13 +93,12 @@ export default function NavBar({openClick, resetClick, attempts}) {
                   fontSize: "14px",
                 }}
               >
-                {3 - attempts.length} attempts remaining
+                {isFinished ? 'final scores' : `${3 - attempts.length} attempts remaining`}
               </p>
-              <div
+              <div className="ScoreContainer"
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  width: "200px",
                   fontSize: "25px",
                 }}
               >
@@ -111,17 +118,17 @@ export default function NavBar({openClick, resetClick, attempts}) {
                 style={{ backgroundColor: "white", color: "black" }}
                 onClick={openClick}
               >
-                Submit
-                <Done />
+                <span className="SubmitButtonText">{isFinished ? 'View Score' : 'Submit'}</span>
+                {!isFinished && <Done />}
               </Button>
-              <Button
+              {/* <Button
                 variant="contained"
                 style={{ backgroundColor: "white", color: "black" }}
                 onClick={resetClick}
               >
                 Reset
                 <Done />
-              </Button>
+              </Button> */}
               {/* <IconButton
                 aria-label="done"
                 style={{ color: "white", cursor: "pointer" }}

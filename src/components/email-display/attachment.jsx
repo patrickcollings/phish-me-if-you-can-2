@@ -1,10 +1,24 @@
 import { Card, CardContent } from "@mui/material";
-import pdf from "../../assets/logo-pdf.png";
+import pdf from "../../assets/logo-pdf.PNG";
+import exe from "../../assets/logo-exe.PNG";
+import doc from "../../assets/logo-doc.PNG";
+import jpg from "../../assets/logo-jpg.PNG";
+import zip from "../../assets/logo-zip.PNG";
 
 const getExtensionLogo = (extension) => {
     switch (extension) {
-        case 'pdf':
-            return pdf;
+      case "pdf":
+        return pdf;
+      case "exe":
+        return exe;
+      case "jpg":
+        return jpg;
+      case "zip":
+        return zip;
+      case "doc":
+        return doc;
+      default:
+        return pdf;
     }
 }
 
@@ -30,8 +44,8 @@ export default ({name, extension}) => {
           >
             <img
               src={getExtensionLogo(extension)}
-              width="30px"
-              height="30px"
+              width="auto"
+              height="35px"
               style={{ marginRight: "1rem" }}
             />
             <p>

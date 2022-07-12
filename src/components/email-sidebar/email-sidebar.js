@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import EmailListItem from "../email-list-item/email-list-item";
 import { useNavigate, useLocation, matchRoutes, Link } from "react-router-dom";
 import { useEffect } from "react";
+import './email-sidebar.css';
 
 const tabStyles = {
     '.MuiBox-root': {
@@ -18,6 +19,7 @@ function TabPanel(props) {
   return (
     <div
       role="tabpanel"
+      className="TabWrapper"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
@@ -26,7 +28,6 @@ function TabPanel(props) {
         top: '48px',
         left: 0,
         bottom: 0,
-        width: '400px',
         overflowY: 'auto',
       }}
       {...other}
