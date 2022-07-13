@@ -3,8 +3,8 @@ import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { getHoursAndMinutes } from "../../assets/helper";
-import Template from "../../assets/email-templates/template";
+import { getHoursAndMinutes } from "../../helpers/helper";
+import Template from "../EmailTemplate/EmailTemplate";
 import EmailOptionBar from "./email-option-bar";
 import Attachment from "./attachment";
 

@@ -10,7 +10,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import { TwitterIcon, TwitterShareButton, LinkedinIcon, LinkedinShareButton, FacebookShareButton, FacebookIcon, FacebookMessengerShareButton, FacebookMessengerIcon } from "react-share";
 import Snackbar from "@mui/material/Snackbar";
 import { useState } from "react";
-import { getScoreTitle } from "../../assets/helper";
+import { getScoreTitle } from "../../helpers/helper";
 import './finished-dialog.css';
 
 export default function FinishedDialog({result, open, handleClose}) {

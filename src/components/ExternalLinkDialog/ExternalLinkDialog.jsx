@@ -18,8 +18,8 @@ export default function ExternalLinkDialog(props) {
           aria-describedby="alert-dialog-description"
         >
           <DialogContent>
-            <p style={{textAlign: 'center'}}>This link would have taken you to:</p>
-            <p>{props.url}</p>
+            <p style={{textAlign: 'center', fontWeight: 'bold'}}>This link would have taken you to</p>
+            <p style={{wordBreak: 'break-all'}}>{props.url}</p>
           </DialogContent>
           <DialogActions>
             <Button

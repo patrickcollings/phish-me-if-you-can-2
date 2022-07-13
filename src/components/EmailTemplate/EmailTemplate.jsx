@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ExternalLinkDialog from "../../components/ExternalLinkDialog/ExternalLinkDialog";
+import ExternalLinkDialog from "../ExternalLinkDialog/ExternalLinkDialog";
 
 const templateUrl = 'https://phish-me-templates.s3.amazonaws.com/';
 

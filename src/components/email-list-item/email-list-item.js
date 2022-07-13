@@ -1,4 +1,4 @@
-import { getHoursAndMinutes } from "../../assets/helper";
+import { getHoursAndMinutes } from "../../helpers/helper";
 import { Cancel, CheckCircle } from "@mui/icons-material/";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 

@@ -17,31 +17,27 @@ export default function WelcomeDialog(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Phish Me If You Can"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"How to play"}</DialogTitle>
         <DialogContent>
-          <p>
-            <b>Aim of the game</b>: find and add all phishing emails to your
-            scambox
+          <p style={{ margin: 0 }}>
+            <b>
+              Phishing is a type of scam where criminals pretend to be someone
+              else in order to steal sensitive information.
+            </b>
           </p>
-          <ul>
-            <li>
-              Click the tick in the top right once you've finished
-            </li>
-            <li>
-              This is a mock mailbox using some real world examples of scam
-              emails that I have received over the last few years.
-            </li>
-            <li>
-              personally identifying links have been removed but some links will
-              still direct you to a live website
-            </li>
-            <li>
-              it's better to be safe than sorry: you will only lose half points
-              for accidentally flagging a real email.
-            </li>
-          </ul>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <ol>
+              <li>Find all the scams</li>
+              <li>Add them to your scambox</li>
+              <li>Submit each attempt</li>
+            </ol>
+          </div>
         </DialogContent>
         <DialogActions>
           <Button

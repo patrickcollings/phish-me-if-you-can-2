@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import emails from "../../assets/emails";
-import { orderListByTime } from "../../assets/helper";
+import emails from "../../helpers/emails";
+import { orderListByTime } from "../../helpers/helper";
 import EmailDisplay from "../../components/email-display/email-display";
 import EmailSidebar from "../../components/email-sidebar/email-sidebar";
 import FinishedDialog from "../../components/finished-dialog/finished-dialog";
@@ -198,8 +198,10 @@ export default function Result(props) {
   };
 
   const handleClickOpen = () => {
-    if (attempts.length >= 3) setFinishedOpen(true);
-    else setOpen(true);
+    console.log(attempts.length);
+    if (attempts.length > 2) setFinishedOpen(true);
+    if (attempts.length < 2) handleClose(true);
+    if (attempts.length === 2) setOpen(true);
   };
 
   const handleClickReset = () => {
@@ -224,7 +226,14 @@ export default function Result(props) {
     if (isFinished) {
       const results = calculateResults();
       setResult(results);
-      setAttempts([...attempts, results.score]);
+      if (results.score === 100 && attempts.length < 2) {
+        let newAttempts = [...attempts];
+        while (newAttempts.length < 3) newAttempts.push(results.score);
+        console.log(newAttempts);
+        setAttempts(newAttempts)
+      } else {
+        setAttempts([...attempts, results.score]);
+      }
       setShowResult(true);
     } 
   };
@@ -275,7 +284,6 @@ export default function Result(props) {
       if (!checkChallengeStarted(previousScores, true)) {
         const scoreList = [...previousScores];
         scoreList[scoreList.length - 1].result = result;
-        console.log(scoreList);
         setPreviousScores(scoreList);
       }
     } else {
@@ -310,6 +318,7 @@ export default function Result(props) {
       <ConfirmationDialog
         handleClose={handleClose}
         open={open}
+        title="This is your final attempt"
       ></ConfirmationDialog>
       <FinishedDialog
         open={finishedOpen}

@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@mui/material";
 import pdf from "../../assets/logo-pdf.PNG";
 import exe from "../../assets/logo-exe.PNG";
 import doc from "../../assets/logo-doc.PNG";
