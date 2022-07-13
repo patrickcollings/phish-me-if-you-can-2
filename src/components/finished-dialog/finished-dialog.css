@@ -2,13 +2,14 @@
     border-left: 1px solid black;
 }
 
-/* @media screen and (max-width: 350px) {
-    .scoreContainer {
-        flex-direction: column;
-    }
+.ScoreTitles {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #493698;
+}
 
-    .scoreContainer div:not(:first-child) {
-        border-top: 1px solid black;
-        border-left: unset;
+@media screen and (max-width: 450px) {
+    .ScoreTitles {
+        font-size: 1rem;
     }
-} */
+}

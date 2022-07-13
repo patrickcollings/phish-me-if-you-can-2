@@ -31,6 +31,7 @@ export default function Template({ template }) {
     <ExternalLinkDialog open={open} url={externalUrl} handleClose={handleClose}></ExternalLinkDialog>
     <div style={{ height: "150vh" }}>
     <iframe
+        key={template}
         src={`${templateUrl}${template}/index.html`}
         frameBorder="0"
         scrolling="no"

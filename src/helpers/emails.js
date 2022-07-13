@@ -181,8 +181,8 @@ function getRandomIndexes(count, max) {
   return arr;
 }
 
-const monthlyScamEmailIndexes = getRandomIndexes(2, scamList.length);
-const monthlyNormalEmailIndexes = getRandomIndexes(2, normalList.length);
+const monthlyScamEmailIndexes = getRandomIndexes(5, scamList.length);
+const monthlyNormalEmailIndexes = getRandomIndexes(5, normalList.length);
 
 const monthlyScamList = monthlyScamEmailIndexes.map((index) => scamList[index]);
 const monthlyNormalList = monthlyNormalEmailIndexes.map((index) => normalList[index]);

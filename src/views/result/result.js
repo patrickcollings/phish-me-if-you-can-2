@@ -7,10 +7,10 @@ import EmailSidebar from "../../components/email-sidebar/email-sidebar";
 import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
 import mixpanel from "mixpanel-browser";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import ConfirmationDialog from "../../components/confirmation-dialog/confirmation-dialog";
 
-mixpanel.init("123");
+mixpanel.init("2e8c366f7230134973d763a5f39fcf43");
 mixpanel.track("joined");
 
 const EmailSidebarContainer = styled.div`
@@ -68,8 +68,6 @@ const checkChallengeStarted = (scores, completed = false) => {
 let savedScores = JSON.parse(localStorage.getItem("phishme_scores"));
 let savedEmailList, savedScamList, savedShowResult, savedAttempts;
 
-console.log(checkChallengeStarted(savedScores, false));
-
 if (savedScores && checkChallengeStarted(savedScores) ) {
   savedShowResult = JSON.parse(localStorage.getItem("phishme_showResult"));
   savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
@@ -88,6 +86,7 @@ export default function Result(props) {
   
   let params = useParams();
   let navigate = useNavigate();
+  const location = useLocation();
   let emailFound;
 
   const [scamList, setScamList] = useState(savedScamList ?? []);
@@ -102,12 +101,7 @@ export default function Result(props) {
   const [previousScores, setPreviousScores] = useState(savedScores ?? []);
   const [result, setResult] = useState(showResult ? calculateResults : {});
   const [width, setWindowWidth] = useState(0);
-  if (params.emailId) {
-    emailFound = [scamList, ...emailList].find((email) => email.id === parseInt(params.emailId));
-  }
-  const [selectedEmail, setSelectedEmail] = useState(emailFound && emailFound);
-
-
+  const [selectedEmail, setSelectedEmail] = useState(emailFound ?? null);
 
   const updateDimensions = () => {
     const width = window.innerWidth;
@@ -119,7 +113,7 @@ export default function Result(props) {
     setIsScamSelected(false);
     setSelectedEmail(emailList[index]);
     setEmailList([...emailList]);
-    navigate(`/inbox/${emailList[index].id}`);
+    // navigate(`/inbox/${emailList[index].id}`, { replace: false });
   }
 
   function selectScamEmail(index) {
@@ -127,7 +121,7 @@ export default function Result(props) {
     setIsScamSelected(true);
     setSelectedEmail(scamList[index]);
     setScamList([...scamList]);
-    navigate(`/scambox/${scamList[index].id}`);
+    // navigate(`/scambox/${scamList[index].id}`, { replace: false });
   }
 
   function findEmailIndex(selectedEmail) {
@@ -139,17 +133,15 @@ export default function Result(props) {
   }
 
   function addToScamList() {
-    console.log('adding to scamlist', selectedEmail);
     const index = findEmailIndex(selectedEmail);
-    console.log(index);
     if (index < 0) return;
-    let newScamList = [...scamList, emailList[index]];
+    let newScamList = [...scamList, selectedEmail]; // instead of emailList[index] this can just be selectedEmail?
     orderListByTime(newScamList);
     setScamList(newScamList);
     emailList.splice(index, 1);
     orderListByTime(emailList);
     setEmailList([...emailList]);
-    setSelectedEmail(null);
+    navigate('/inbox');
   }
 
   function removeFromScamList() {
@@ -161,18 +153,19 @@ export default function Result(props) {
     scamList.splice(index, 1);
     orderListByTime(scamList);
     setScamList([...scamList]);
-    setSelectedEmail(null);
+    navigate("/scambox");
   }
 
   function handleDeselect() {
-    setSelectedEmail(null);
+    let inboxType = location.pathname.split('/')[1];
+    // setSelectedEmail(null);
+    navigate(`/${inboxType}`, {replace: false});
   }
 
   function calculateResults() {
     const scamsMissed = emailList.filter((email) => !!email.scam);
     const normalsCaught = scamList.filter((email) => !email.scam);
     const totalScamsCaught = scamList.length - normalsCaught.length;
-    mixpanel.track("finished_test", {scamsMissed, normalsCaught, score: {scamsMissed: scamsMissed.length, accidental: normalsCaught.length, caught: totalScamsCaught}});
     const penalty = (normalsCaught.length > 0) ? (normalsCaught.length / 2) : 0;
     const totalScore = totalScamsCaught - penalty;
     const score = Math.round((totalScore / (totalScamsCaught + scamsMissed.length)) * 100);
@@ -198,7 +191,6 @@ export default function Result(props) {
   };
 
   const handleClickOpen = () => {
-    console.log(attempts.length);
     if (attempts.length > 2) setFinishedOpen(true);
     if (attempts.length < 2) handleClose(true);
     if (attempts.length === 2) setOpen(true);
@@ -226,16 +218,26 @@ export default function Result(props) {
     if (isFinished) {
       const results = calculateResults();
       setResult(results);
+      mixpanel.track("finished_test", {
+        breakdown: {
+          scamsMissed: results.missed,
+          accidental: results.accidental,
+          caught: results.caught,
+        },
+        score: results.score,
+        attempt: attempts.length + 1
+      });
       if (results.score === 100 && attempts.length < 2) {
         let newAttempts = [...attempts];
         while (newAttempts.length < 3) newAttempts.push(results.score);
-        console.log(newAttempts);
         setAttempts(newAttempts)
       } else {
         setAttempts([...attempts, results.score]);
       }
       setShowResult(true);
+      
     } 
+    
   };
   
   const handleFinishedClose = () => {
@@ -268,6 +270,36 @@ export default function Result(props) {
       ></EmailDisplay>
     );
   };
+
+  useEffect(() => {
+    let emailFound, scamFound;
+    if (params.emailId) {
+      emailFound = emailList.find(
+        (email) => email.id === parseInt(params.emailId)
+      );
+      scamFound = scamList.find(
+        (email) => email.id === parseInt(params.emailId)
+      );
+    }
+    if (emailFound) {
+      setIsScamSelected(false);
+      let index = findEmailIndex(emailFound);
+      emailFound.read = true;
+      emailList[index].read = true;
+      setEmailList([...emailList]);
+      setSelectedEmail(emailFound);
+    }
+    else if (scamFound) {
+      setIsScamSelected(true);
+      let index = findScamEmailIndex(scamFound);
+      scamFound.read = true;
+      scamList[index].read = true;
+      setScamList([...scamList]);
+      setSelectedEmail(scamFound);
+    } else {
+      setSelectedEmail(null);
+    }
+  }, [params]);
 
   useEffect(() => {
     localStorage.setItem("phishme_scamList", JSON.stringify(scamList));

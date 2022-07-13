@@ -32,7 +32,6 @@ export default function FinishedDialog({result, open, handleClose}) {
 
   const copyToClipboard = () => {
     const text = `I scored ${result.score}% meaning I am: "unhackable". How scammable are you? Find out on www.phishmeifyoucan.com`;
-    console.log(text);
     navigator.clipboard.writeText(text);
     setOpenSnackBar(true);
   }
@@ -77,11 +76,7 @@ export default function FinishedDialog({result, open, handleClose}) {
                   key={key}
                 >
                   <p
-                    style={{
-                      margin: 0,
-                      fontSize: "1.5rem",
-                      color: "#493698",
-                    }}
+                    className="ScoreTitles"
                   >
                     {breakdown.title}
                   </p>

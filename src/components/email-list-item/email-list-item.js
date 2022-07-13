@@ -1,6 +1,7 @@
 import { getHoursAndMinutes } from "../../helpers/helper";
 import { Cancel, CheckCircle } from "@mui/icons-material/";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { Link } from "react-router-dom";
 
 let styles = {
   //   borderTop: "1px solid grey",
@@ -59,84 +60,87 @@ function getDarkColor() {
   return color;
 }
 
+
 export default function EmailListItem(props) {
   return (
     <>
-      <div
-        onClick={() => props.onClick(props.index)}
-        style={Object.assign(
-          {},
-          styles,
-          props.isSelected
-            ? {
-                backgroundColor: "#c9c7d3",
-              }
-            : {}
-        )}
-      >
-        <div style={circleStyle}>
-          <p>{props.email.name[0].toUpperCase()}</p>
-        </div>
-        <div style={textStyle}>
-          <span
-            style={{
-              fontWeight: props.email.read ? "" : "bold",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              fontSize: "14px",
-            }}
-          >
-            {props.email.name}
-          </span>
-          <span
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              fontSize: "13px",
-              fontWeight: props.email.read ? "" : "bold",
-              color: !props.email.read && "#493698",
-            }}
-          >
-            {props.email.subject}
-          </span>
-          {/* <span
+      <Link to={`${props.email.id}`} style={{ textDecoration: "none", color: 'unset' }}>
+        <div
+          // onClick={() => props.onClick(props.index)}
+          style={Object.assign(
+            {},
+            styles,
+            props.isSelected
+              ? {
+                  backgroundColor: "#c9c7d3",
+                }
+              : {}
+          )}
+        >
+          <div style={circleStyle}>
+            <p>{props.email.name[0].toUpperCase()}</p>
+          </div>
+          <div style={textStyle}>
+            <span
+              style={{
+                fontWeight: props.email.read ? "" : "bold",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                fontSize: "14px",
+              }}
+            >
+              {props.email.name}
+            </span>
+            <span
+              style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                fontSize: "13px",
+                fontWeight: props.email.read ? "" : "bold",
+                color: !props.email.read && "#493698",
+              }}
+            >
+              {props.email.subject}
+            </span>
+            {/* <span
             style={{
               color: "grey",
             }}
           >
             {props.email.body}
           </span> */}
-        </div>
-        <div style={timestampStyle}>
-          {!!props.showResult ? (
-            getResult(props)
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end",
-                alignItems: "flex-end",
-              }}
-            >
-              {props.email.attachment && <AttachFileIcon fontSize="1.2rem" />}
-              <span
+          </div>
+          <div style={timestampStyle}>
+            {!!props.showResult ? (
+              getResult(props)
+            ) : (
+              <div
                 style={{
-                  position: "sticky",
-                  top: "0",
-                  right: "0",
-                  fontSize: "9px",
-                  fontWeight: props.email.read ? "" : "bold",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  alignItems: "flex-end",
                 }}
               >
-                {getHoursAndMinutes(props.email.time)}
-              </span>
-            </div>
-          )}
+                {props.email.attachment && <AttachFileIcon fontSize="1.2rem" />}
+                <span
+                  style={{
+                    position: "sticky",
+                    top: "0",
+                    right: "0",
+                    fontSize: "9px",
+                    fontWeight: props.email.read ? "" : "bold",
+                  }}
+                >
+                  {getHoursAndMinutes(props.email.time)}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </Link>
     </>
   );
 }

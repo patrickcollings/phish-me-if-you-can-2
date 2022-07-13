@@ -4,6 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import logo from "../../assets/white-logo.png";
 import { Done } from "@mui/icons-material/";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import ConfirmationDialog from "../confirmation-dialog/confirmation-dialog";
 import { useState } from "react";
 import './nav-bar.css';
@@ -119,7 +120,7 @@ export default function NavBar({openClick, resetClick, attempts}) {
                 onClick={openClick}
               >
                 <span className="SubmitButtonText">{isFinished ? 'View Score' : 'Submit'}</span>
-                {!isFinished && <Done />}
+                {isFinished ? <AssessmentOutlinedIcon /> : <Done />}
               </Button>
               {/* <Button
                 variant="contained"
