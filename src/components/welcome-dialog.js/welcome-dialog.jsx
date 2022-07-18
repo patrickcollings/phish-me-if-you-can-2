@@ -6,6 +6,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import tutorialGraphic from '../../assets/tutorialGraphic.svg';
+import tutorialGraphicMobile from "../../assets/tutorialGraphicMobile.svg";
+
+import './WelcomeDialog.css';
+
 export default function WelcomeDialog(props) {
   return (
     <div>
@@ -17,45 +22,55 @@ export default function WelcomeDialog(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"How to play"}</DialogTitle>
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{ textAlign: "center", fontWeight: "bold", color: "#493698" }}
+        >
+          {"How to play"}
+        </DialogTitle>
         <DialogContent>
-          <p style={{ margin: 0 }}>
-            <b>
-              Phishing is a type of scam where criminals pretend to be someone
-              else in order to steal sensitive information.
-            </b>
-          </p>
+          <div className="LargeTutorial Tutorial">
+            <img src={tutorialGraphic} />
+          </div>
+          <div className="SmallTutorial Tutorial">
+            <img src={tutorialGraphicMobile} />
+          </div>
           <div
             style={{
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
+              marginTop: "3rem",
             }}
           >
-            <ol>
-              <li>Find all the scams</li>
-              <li>Add them to your scambox</li>
-              <li>Submit each attempt</li>
-            </ol>
+            <h3 style={{ marginBottom: 0, color: "#493698" }}>A few tips</h3>
+            <ul className="TipList">
+              <li>Always check the email address</li>
+              <li>Check the links to see where they would lead</li>
+              <li>If it seems too good to be true, then it probably is!</li>
+            </ul>
           </div>
         </DialogContent>
-        <DialogActions>
-          <Button
+        <DialogActions sx={{ justifyContent: "center" }}>
+          {/* <Button
             variant="outlined"
             onClick={() => {
               props.handleClose(true);
             }}
           >
             Don't show again
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              props.handleClose(false);
-            }}
-          >
-            Start
-          </Button>
+          </Button> */}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                props.handleClose(false);
+              }}
+              style={{ backgroundColor: "#493698" }}
+            >
+              Play
+            </Button>
+          </div>
         </DialogActions>
       </Dialog>
     </div>

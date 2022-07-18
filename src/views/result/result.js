@@ -10,7 +10,7 @@ import mixpanel from "mixpanel-browser";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import ConfirmationDialog from "../../components/confirmation-dialog/confirmation-dialog";
 
-mixpanel.init("2e8c366f7230134973d763a5f39fcf43");
+mixpanel.init("1");
 mixpanel.track("joined");
 
 const EmailSidebarContainer = styled.div`

@@ -1,0 +1,20 @@
+.Tutorial {
+    display: flex;
+    justify-content: center;
+}
+
+.TipList li {
+    margin: 12px;
+}
+
+@media screen and (max-width: 699px) {
+    .LargeTutorial {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 700px) {
+    .SmallTutorial {
+        display: none;
+    }
+}

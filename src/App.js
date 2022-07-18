@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import mixpanel from "mixpanel-browser";
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; 
 
-mixpanel.init("2e8c366f7230134973d763a5f39fcf43", { debug: true });
+mixpanel.init("1");
 
 const hideWelcomeDialog = !!localStorage.getItem('phishme_hide_welcome_dialog');
 
