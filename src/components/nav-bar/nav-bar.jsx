@@ -94,9 +94,9 @@ export default function NavBar({openClick, resetClick, attempts}) {
                   fontSize: "14px",
                 }}
               >
-                {isFinished ? 'final scores' : `${3 - attempts.length} attempts remaining`}
+                {isFinished ? 'final scores' : `${3 - attempts.length} attempt${3 - attempts.length !== 1 ? 's' : ''} remaining`}
               </p>
-              <div className="ScoreContainer"
+              {/* <div className="ScoreContainer"
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -104,7 +104,7 @@ export default function NavBar({openClick, resetClick, attempts}) {
                 }}
               >
                 {setupScores()}
-              </div>
+              </div> */}
             </div>
             <div
               style={{
