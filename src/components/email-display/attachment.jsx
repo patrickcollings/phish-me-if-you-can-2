@@ -21,37 +21,40 @@ const getExtensionLogo = (extension) => {
     }
 }
 
-export default ({name, extension}) => {
-    return (
-      <>
+const getExtension = ({ name, extension }) => {
+  return (
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+          padding: "0 1rem 1rem",
+        }}
+      >
         <div
           style={{
+            border: "1px solid #e8e8e8",
+            borderRadius: "5px",
             display: "flex",
-            justifyContent: "flex-start",
-            padding: "0 1rem 1rem",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "0 1rem",
           }}
         >
-          <div
-            style={{
-              border: "1px solid #e8e8e8",
-              borderRadius: "5px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "0 1rem",
-            }}
-          >
-            <img
-              src={getExtensionLogo(extension)}
-              width="auto"
-              height="35px"
-              style={{ marginRight: "1rem" }}
-            />
-            <p>
-              {name}.{extension}
-            </p>
-          </div>
+          <img
+            src={getExtensionLogo(extension)}
+            width="auto"
+            height="35px"
+            style={{ marginRight: "1rem" }}
+            alt="extension logo"
+          />
+          <p>
+            {name}.{extension}
+          </p>
         </div>
-      </>
-    );
-}
+      </div>
+    </>
+  );
+} 
+
+export default getExtension;

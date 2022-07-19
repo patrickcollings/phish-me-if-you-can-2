@@ -26,7 +26,7 @@ function compare(a, b) {
 
 export function orderListByTime(emailList) {
     if (!emailList) return;
-    const t = emailList.sort(compare);
+    emailList.sort(compare);
 }
 
 export function getHoursAndMinutes(time) {

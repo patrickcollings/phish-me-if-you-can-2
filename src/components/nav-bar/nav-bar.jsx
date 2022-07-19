@@ -12,9 +12,10 @@ import './nav-bar.css';
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" });
 
+
 export default function NavBar({openClick, resetClick, attempts, result}) {
   const [open, setOpen] = useState(false);
-
+  
   const isFinished = attempts.length === 3;
 
   const confirmReset = (confirm) => {

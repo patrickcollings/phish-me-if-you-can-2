@@ -5,7 +5,7 @@ import { useState } from 'react';
 import mixpanel from "mixpanel-browser";
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; 
 
-mixpanel.init("1");
+mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 
 const hideWelcomeDialog = !!localStorage.getItem('phishme_hide_welcome_dialog');
 
@@ -23,8 +23,8 @@ function App() {
         <WelcomeDialog open={open} handleClose={handleClose} />
         <Routes>
           <Route exact path="/" element={<Navigate to="/inbox" replace />} />
-          {["/inbox", "/scambox"].map((path) => (
-            <Route path={path} element={<Result />}>
+          {["/inbox", "/scambox"].map((path, index) => (
+            <Route path={path} element={<Result />} key={index}>
               <Route path=":emailId" element={<Result />} replace />
               <Route path="" element={<Result />} replace />
             </Route>

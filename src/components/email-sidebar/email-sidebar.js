@@ -7,12 +7,6 @@ import { useNavigate, useLocation, matchRoutes, Link } from "react-router-dom";
 import { useEffect } from "react";
 import './email-sidebar.css';
 
-const tabStyles = {
-    '.MuiBox-root': {
-        padding: '0px',
-    },
-}
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -76,7 +70,7 @@ export default function EmailSidebar(props) {
   useEffect(() => {
     const [{ route }] = matchRoutes(routes, location);
     setValue(route.value !== -1 ? route.value : 0);
-  }, [location, routes]);
+  }, [location]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

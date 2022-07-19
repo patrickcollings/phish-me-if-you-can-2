@@ -3,11 +3,9 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import fishing from '../../assets/fishing2.png';
 import ShareIcon from "@mui/icons-material/Share";
-import { TwitterIcon, TwitterShareButton, LinkedinIcon, LinkedinShareButton, FacebookShareButton, FacebookIcon, FacebookMessengerShareButton, FacebookMessengerIcon } from "react-share";
+import { TwitterIcon, TwitterShareButton, LinkedinIcon, LinkedinShareButton, FacebookShareButton, FacebookIcon } from "react-share";
 import Snackbar from "@mui/material/Snackbar";
 import { useState } from "react";
 import { getScoreTitle } from "../../helpers/helper";
@@ -95,6 +93,7 @@ export default function FinishedDialog({result, open, handleClose}) {
                   maxHeight: "40vh",
                   width: "auto",
                 }}
+                alt="man fishing in small boat"
               />
             </div>
             <div

@@ -54,11 +54,11 @@ const scamList = [
   {
     subject: "URGENT",
     name: "Laura Simpson",
-    email: "laura@startup.com",
+    email: "laura.simpson@gmail.com",
     to: "andrew@startup.com",
     template: "spear-phishing-1",
     description:
-      "This type of scam is called spear phishing. It is where a person is specifically targeted (most often at work) due to their role or access within a company. In this case a scammer was able to get their own email address within the company through other means (laura@startup.com). Now they have a trusted email they use the same tactic of urgency to force someone in the finance department to make a transaction on their behalf. ALWAYS double check, before sending money to anyone.",
+      "This type of scam is called spear phishing. It is where a person is specifically targeted (most often at work) due to their role or access within a company. In this case a scammer is pretending to be someone else in the company but they are using a Gmail account instead. They use urgency to force someone in the finance department to make a transaction on their behalf without checking with their boss to see if it's real first. ALWAYS double check, before sending money to anyone.",
   },
   {
     subject: "Verified Twitter has messaged you",

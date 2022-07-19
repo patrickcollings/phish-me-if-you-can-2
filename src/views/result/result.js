@@ -10,7 +10,7 @@ import mixpanel from "mixpanel-browser";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import ConfirmationDialog from "../../components/confirmation-dialog/confirmation-dialog";
 
-mixpanel.init("1");
+mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 mixpanel.track("joined");
 
 const EmailSidebarContainer = styled.div`
@@ -281,8 +281,10 @@ export default function Result(props) {
       setIsScamSelected(false);
       let index = findEmailIndex(emailFound);
       emailFound.read = true;
-      emailList[index].read = true;
-      setEmailList([...emailList]);
+      setEmailList(e => {
+        e[index].read = true;
+        return [...e]
+      });
       setSelectedEmail(emailFound);
     }
     else if (scamFound) {
