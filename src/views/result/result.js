@@ -178,15 +178,6 @@ export default function Result(props) {
     };
   }
 
-  const showResults = () => {
-    emailList.map((email) => {
-      email.correct = !email.scam;
-      return email;
-    });
-    setEmailList([...emailList]);
-    showScamListResults();
-  };
-
   const showScamListResults = () => {
     scamList.map((email) => {
       email.correct = email.scam;
@@ -316,7 +307,12 @@ export default function Result(props) {
 
   useEffect(() => {
     if (attempts.length === 3 && showResult) {
-      showResults();
+      emailList.map((email) => {
+        email.correct = !email.scam;
+        return email;
+      });
+      setEmailList([...emailList]);
+      showScamListResults();
       setFinishedOpen(true);
       if (!checkChallengeStarted(previousScores, true)) {
         const scoreList = [...previousScores];

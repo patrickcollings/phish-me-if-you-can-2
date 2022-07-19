@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import Result from './views/result/result';
 import WelcomeDialog from './components/welcome-dialog.js/welcome-dialog';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import mixpanel from "mixpanel-browser";
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; 
 

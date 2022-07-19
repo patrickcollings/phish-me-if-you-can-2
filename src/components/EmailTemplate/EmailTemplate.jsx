@@ -35,6 +35,7 @@ export default function Template({ template }) {
         src={`${templateUrl}${template}/index.html`}
         frameBorder="0"
         scrolling="no"
+        title={templateUrl}
         style={{ overflowX: "auto", width: "100%", height: "100%" }}
     />
     </div>

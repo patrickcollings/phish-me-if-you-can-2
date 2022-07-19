@@ -23,7 +23,7 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
   }
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
         <AppBar position="static" style={{ backgroundColor: "#2A1E5C" }}>
           <Toolbar sx={{ justifyContent: "space-between" }}>
             <div
@@ -37,7 +37,7 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
               }}
             >
               <a href={process.env.REACT_APP_LANDING_URL}>
-                <img src={logo} style={{ height: "30px", width: "30px" }} />
+                <img src={logo} style={{ height: "30px", width: "30px" }} alt="phish me if you can logo" />
               </a>
               <p className="ChallengeTitle" style={{ margin: "0 0 0 1rem" }}>
                 {month} challenge
@@ -108,14 +108,6 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
                 </span>
                 {isFinished ? <AssessmentOutlinedIcon /> : <Done />}
               </Button>
-
-              {/* <IconButton
-                aria-label="done"
-                style={{ color: "white", cursor: "pointer" }}
-                onClick={openClick}
-              >
-                <Done />
-              </IconButton> */}
             </div>
           </Toolbar>
         </AppBar>

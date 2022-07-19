@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import tutorialGraphic from '../../assets/tutorialGraphic.svg';
@@ -34,10 +33,10 @@ export default function WelcomeDialog(props) {
         </DialogTitle>
         <DialogContent>
           <div className="LargeTutorial Tutorial">
-            <img src={tutorialGraphic} />
+            <img src={tutorialGraphic} alt="tutorial infographic" />
           </div>
           <div className="SmallTutorial Tutorial">
-            <img src={tutorialGraphicMobile} />
+            <img src={tutorialGraphicMobile} alt="tutorial infographic" />
           </div>
           <div
             style={{
@@ -55,7 +54,9 @@ export default function WelcomeDialog(props) {
             </ul>
           </div>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "center", flexFlow: 'wrap-reverse' }}>
+        <DialogActions
+          sx={{ justifyContent: "center", flexFlow: "wrap-reverse" }}
+        >
           {/* <Button
             variant="outlined"
             onClick={() => {
@@ -65,7 +66,16 @@ export default function WelcomeDialog(props) {
             Don't show again
           </Button> */}
           <FormGroup style={{ marginRight: "1rem" }}>
-            <FormControlLabel control={<Checkbox value={checkboxValue} onChange={(event) => setCheckboxValue(event.target.checked)} />} label="Don't show again" style={{color: 'grey'}}/>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value={checkboxValue}
+                  onChange={(event) => setCheckboxValue(event.target.checked)}
+                />
+              }
+              label="Don't show again"
+              style={{ color: "grey" }}
+            />
           </FormGroup>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Button
