@@ -147,7 +147,8 @@ export default function Result(props) {
   function removeFromScamList() {
     const index = findScamEmailIndex(selectedEmail);
     if (index < 0) return;
-    let newEmailList = [...emailList, scamList[index]];
+    delete selectedEmail.correct;
+    let newEmailList = [...emailList, selectedEmail];
     orderListByTime(newEmailList);
     setEmailList(newEmailList);
     scamList.splice(index, 1);
@@ -183,12 +184,16 @@ export default function Result(props) {
       return email;
     });
     setEmailList([...emailList]);
+    showScamListResults();
+  };
+
+  const showScamListResults = () => {
     scamList.map((email) => {
       email.correct = email.scam;
       return email;
     });
     setScamList([...scamList]);
-  };
+  }
 
   const handleClickOpen = () => {
     if (attempts.length > 2) setFinishedOpen(true);
@@ -218,6 +223,7 @@ export default function Result(props) {
     if (isFinished) {
       const results = calculateResults();
       setResult(results);
+
       mixpanel.track("finished_test", {
         breakdown: {
           scamsMissed: results.missed,
@@ -229,15 +235,13 @@ export default function Result(props) {
       });
       if (results.score === 100 && attempts.length < 2) {
         let newAttempts = [...attempts];
-        while (newAttempts.length < 3) newAttempts.push(results.score);
+        while (newAttempts.length < 3) newAttempts.push(results.caught);
         setAttempts(newAttempts)
       } else {
-        setAttempts([...attempts, results.score]);
+        setAttempts([...attempts, results.caught]);
       }
       setShowResult(true);
-      
     } 
-    
   };
   
   const handleFinishedClose = () => {
@@ -267,6 +271,7 @@ export default function Result(props) {
         remove={removeFromScamList}
         isMobile={isMobile}
         handleDeselect={handleDeselect}
+        showResult={showResult}
       ></EmailDisplay>
     );
   };

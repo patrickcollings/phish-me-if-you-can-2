@@ -15,13 +15,14 @@ export default function EmailDisplay({
   remove,
   add,
   isMobile,
+  showResult,
 }) {
   if (selectedEmail) {
     return (
       <>
         <EmailOptionBar
           isScamEmail={isScamEmail}
-          isComplete={"correct" in selectedEmail}
+          isComplete={showResult}
           handleDeselect={handleDeselect}
           remove={remove}
           add={add}
@@ -42,6 +43,12 @@ export default function EmailDisplay({
             <div style={{ padding: "0 3rem" }}>
               <h1>Why is this a scam?</h1>
               <p>{selectedEmail.description}</p>
+            </div>
+          )}
+
+          {"correct" in selectedEmail && !selectedEmail.scam && (
+            <div style={{ padding: "0 3rem" }}>
+              <h1>This is not a scam email</h1>
             </div>
           )}
 

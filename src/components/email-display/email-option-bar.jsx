@@ -33,7 +33,6 @@ export default function EmailOptionBar({
               aria-label="done"
               fontSize="large"
               style={{ color: "black" }}
-              onClick={remove}
             >
               <ArrowBack fontSize="large" />
             </Icon>

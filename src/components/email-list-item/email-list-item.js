@@ -113,7 +113,7 @@ export default function EmailListItem(props) {
           </span> */}
           </div>
           <div style={timestampStyle}>
-            {!!props.showResult ? (
+            {'correct' in props.email ? (
               getResult(props)
             ) : (
               <div

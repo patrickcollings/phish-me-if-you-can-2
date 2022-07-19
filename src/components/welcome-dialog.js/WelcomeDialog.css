@@ -7,6 +7,10 @@
     margin: 12px;
 }
 
+.SmallTutorial .Tutorial {
+    width: 100%;
+}
+
 @media screen and (max-width: 699px) {
     .LargeTutorial {
         display: none;

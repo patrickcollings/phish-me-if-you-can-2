@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import logo from "../../assets/white-logo.png";
-import { Done } from "@mui/icons-material/";
+import { Done, RestartAlt } from "@mui/icons-material/";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import ConfirmationDialog from "../confirmation-dialog/confirmation-dialog";
 import { useState } from "react";
@@ -12,52 +12,10 @@ import './nav-bar.css';
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" });
 
-export default function NavBar({openClick, resetClick, attempts}) {
+export default function NavBar({openClick, resetClick, attempts, result}) {
   const [open, setOpen] = useState(false);
 
   const isFinished = attempts.length === 3;
-
-  const getScore = (score, type, index) => {
-    switch (type) {
-      case "previous":
-        return <span style={{ color: "#A3A3A3" }} key={index}>{score}%</span>;
-      case "current":
-        return (
-          <span style={{ WebkitTextStroke: "1px red" }} key={index}>
-            ?
-          </span>
-        );
-      case "future":
-        return (
-          <span style={{ color: "#A3A3A3" }} key={index}>
-            ?
-          </span>
-        );
-      case "complete":
-        return (
-          <span style={{ color: "white" }} key={index}>
-            {score}%
-          </span>
-        );
-    }  
-  }
-
-  const setupScores = () => {
-    const attemptNumber = attempts.length; 
-    const attemptCopy = [...attempts];
-
-    while (attemptCopy.length < 3) {
-      attemptCopy.push(false);
-    }
-
-    return attemptCopy.map((attempt, index) => 
-    {
-      if (attemptNumber === 3) return getScore(attempt, 'complete', index);
-      if (index === attemptNumber) return getScore(attempt, 'current', index);
-      if (typeof attempt === 'boolean') return getScore(attempt, "future", index); 
-      return (getScore(attempt, 'previous'));
-    })
-  }
 
   const confirmReset = (confirm) => {
     if (confirm) resetClick();
@@ -92,19 +50,32 @@ export default function NavBar({openClick, resetClick, attempts}) {
                   width: "100%",
                   margin: "0",
                   fontSize: "14px",
+                  color: "#e6e0ff",
                 }}
               >
-                {isFinished ? 'final scores' : `${3 - attempts.length} attempt${3 - attempts.length !== 1 ? 's' : ''} remaining`}
+                {isFinished
+                  ? "final score"
+                  : `${3 - attempts.length} attempt${
+                      3 - attempts.length !== 1 ? "s" : ""
+                    } remaining`}
               </p>
-              {/* <div className="ScoreContainer"
+              <div
+                className="ScoreContainer"
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                   fontSize: "25px",
                 }}
               >
-                {setupScores()}
-              </div> */}
+                {isFinished ? (
+                  <span>{result.score}%</span>
+                ) : (
+                  <span>
+                    {attempts.length > 0 ? attempts[attempts.length - 1] : 0}/5
+                    scams caught
+                  </span>
+                )}
+              </div>
             </div>
             <div
               style={{
@@ -114,22 +85,30 @@ export default function NavBar({openClick, resetClick, attempts}) {
                 flexBasis: 0,
               }}
             >
+              {isFinished && (
+                <Button
+                  variant="contained"
+                  style={{ backgroundColor: "white", color: "black", marginRight: '1rem' }}
+                  onClick={() => setOpen(true)}
+                >
+                  <span className="SubmitButtonText">Restart</span>
+                  <RestartAlt />
+                </Button>
+              )}
               <Button
                 variant="contained"
-                style={{ backgroundColor: "white", color: "black" }}
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                }}
                 onClick={openClick}
               >
-                <span className="SubmitButtonText">{isFinished ? 'View Score' : 'Submit'}</span>
+                <span className="SubmitButtonText">
+                  {isFinished ? "View Score" : "Submit"}
+                </span>
                 {isFinished ? <AssessmentOutlinedIcon /> : <Done />}
               </Button>
-              {/* <Button
-                variant="contained"
-                style={{ backgroundColor: "white", color: "black" }}
-                onClick={resetClick}
-              >
-                Reset
-                <Done />
-              </Button> */}
+
               {/* <IconButton
                 aria-label="done"
                 style={{ color: "white", cursor: "pointer" }}
@@ -144,7 +123,7 @@ export default function NavBar({openClick, resetClick, attempts}) {
       <ConfirmationDialog
         handleClose={confirmReset}
         open={open}
-        title={"This wil reset the entire game"}
+        title={"This will restart the entire game"}
       ></ConfirmationDialog>
     </>
   );

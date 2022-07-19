@@ -10,14 +10,18 @@ import tutorialGraphic from '../../assets/tutorialGraphic.svg';
 import tutorialGraphicMobile from "../../assets/tutorialGraphicMobile.svg";
 
 import './WelcomeDialog.css';
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { useState } from "react";
 
 export default function WelcomeDialog(props) {
+  const [checkboxValue, setCheckboxValue] = useState(false);
+
   return (
     <div>
       <Dialog
         open={props.open}
         onClose={() => {
-          props.handleClose(false);
+          props.handleClose(checkboxValue);
         }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -51,7 +55,7 @@ export default function WelcomeDialog(props) {
             </ul>
           </div>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "center" }}>
+        <DialogActions sx={{ justifyContent: "center", flexFlow: 'wrap-reverse' }}>
           {/* <Button
             variant="outlined"
             onClick={() => {
@@ -60,13 +64,16 @@ export default function WelcomeDialog(props) {
           >
             Don't show again
           </Button> */}
+          <FormGroup style={{ marginRight: "1rem" }}>
+            <FormControlLabel control={<Checkbox value={checkboxValue} onChange={(event) => setCheckboxValue(event.target.checked)} />} label="Don't show again" style={{color: 'grey'}}/>
+          </FormGroup>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Button
               variant="contained"
               onClick={() => {
-                props.handleClose(false);
+                props.handleClose(checkboxValue);
               }}
-              style={{ backgroundColor: "#493698" }}
+              style={{ backgroundColor: "#493698", width: "150px" }}
             >
               Play
             </Button>
