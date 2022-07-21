@@ -28,17 +28,22 @@ export default function Template({ template }) {
 
   return (
     <>
-    <ExternalLinkDialog open={open} url={externalUrl} handleClose={handleClose}></ExternalLinkDialog>
-    <div style={{ height: "150vh" }}>
-    <iframe
-        key={template}
-        src={`${templateUrl}${template}/index.html`}
-        frameBorder="0"
-        scrolling="no"
-        title={templateUrl}
-        style={{ overflowX: "auto", width: "100%", height: "100%" }}
-    />
-    </div>
+      <ExternalLinkDialog
+        open={open}
+        url={externalUrl}
+        handleClose={handleClose}
+      ></ExternalLinkDialog>
+      <div
+        style={{ height: `150vh`, overflowX: "auto", overflowY: "hidden" }}
+      >
+        <iframe
+          key={template}
+          src={`${templateUrl}${template}/index.html`}
+          frameBorder="0"
+          title={templateUrl}
+          style={{ width: "100%", height: "100%" }}
+        />
+      </div>
     </>
   );
 }
