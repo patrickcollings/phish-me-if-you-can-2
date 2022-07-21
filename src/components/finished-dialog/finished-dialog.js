@@ -10,6 +10,10 @@ import Snackbar from "@mui/material/Snackbar";
 import { useState } from "react";
 import { getScoreTitle } from "../../helpers/helper";
 import './finished-dialog.css';
+import Subscribe from "../Subscribe/Subscribe";
+import mixpanel from "mixpanel-browser";
+
+mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 
 export default function FinishedDialog({result, open, handleClose}) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -32,10 +36,15 @@ export default function FinishedDialog({result, open, handleClose}) {
     const text = `I scored ${result.score}% meaning I am: "unhackable". How scammable are you? Find out on www.phishmeifyoucan.com`;
     navigator.clipboard.writeText(text);
     setOpenSnackBar(true);
+    shareClicked('clipboard');
   }
 
   const handleSnackbarClose = () => {
     setOpenSnackBar(false);
+  }
+
+  const shareClicked = (type) => {
+    mixpanel.track("share", type);
   }
 
   return (
@@ -73,11 +82,7 @@ export default function FinishedDialog({result, open, handleClose}) {
                   }}
                   key={key}
                 >
-                  <p
-                    className="ScoreTitles"
-                  >
-                    {breakdown.title}
-                  </p>
+                  <p className="ScoreTitles">{breakdown.title}</p>
                   <p
                     style={{ margin: 0, fontSize: "3rem", fontWeight: "bold" }}
                   >
@@ -90,7 +95,7 @@ export default function FinishedDialog({result, open, handleClose}) {
               <img
                 src={fishing}
                 style={{
-                  maxHeight: "40vh",
+                  maxHeight: "35vh",
                   width: "auto",
                 }}
                 alt="man fishing in small boat"
@@ -120,6 +125,7 @@ export default function FinishedDialog({result, open, handleClose}) {
                 title={`I scored ${result.score}% meaning I am: "unhackable". How scammable are you?`}
                 hashtags={["phishmeifyoucan"]}
                 url="https://play.phishmeifyoucan.com"
+                onclick={() => shareClicked("twitter")}
               >
                 <TwitterIcon size={32} round={true}></TwitterIcon>
               </TwitterShareButton>
@@ -128,12 +134,14 @@ export default function FinishedDialog({result, open, handleClose}) {
                 summary="i am summary"
                 source="Phish Me If You Can"
                 url="https://play.phishmeifyoucan.com"
+                onclick={() => shareClicked("linkedin")}
               >
                 <LinkedinIcon size={32} round={true}></LinkedinIcon>
               </LinkedinShareButton>
               <FacebookShareButton
                 url="https://play.phishmeifyoucan.com"
                 quote={`I scored ${result.score}% meaning I am: "unhackable". How scammable are you?`}
+                onclick={() => shareClicked("facebook")}
               >
                 <FacebookIcon size={32} round={true}></FacebookIcon>
               </FacebookShareButton>
@@ -154,6 +162,20 @@ export default function FinishedDialog({result, open, handleClose}) {
               >
                 <ShareIcon />
               </div>
+            </div>
+            <div
+              style={{
+                marginTop: "3rem",
+                textAlign: "center",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <span style={{ paddingBottom: "10px" }}>
+                Subscribe for free to be reminded about each monthly challenge
+                and get up to date with the latest scams.
+              </span>
+              <Subscribe />
             </div>
           </div>
         </DialogContent>

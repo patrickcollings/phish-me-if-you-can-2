@@ -15,16 +15,17 @@ const month = date.toLocaleString("default", { month: "long" });
 
 export default function NavBar({openClick, resetClick, attempts, result}) {
   const [open, setOpen] = useState(false);
-  
+
   const isFinished = attempts.length === 3;
 
   const confirmReset = (confirm) => {
     if (confirm) resetClick();
     setOpen(false);
   }
+
   return (
     <>
-      <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
+      <Box sx={{ flexGrow: 1, overflow: "hidden" }}>
         <AppBar position="static" style={{ backgroundColor: "#2A1E5C" }}>
           <Toolbar sx={{ justifyContent: "space-between" }}>
             <div
@@ -38,7 +39,11 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
               }}
             >
               <a href={process.env.REACT_APP_LANDING_URL}>
-                <img src={logo} style={{ height: "30px", width: "30px" }} alt="phish me if you can logo" />
+                <img
+                  src={logo}
+                  style={{ height: "30px", width: "30px" }}
+                  alt="phish me if you can logo"
+                />
               </a>
               <p className="ChallengeTitle" style={{ margin: "0 0 0 1rem" }}>
                 {month} challenge
@@ -89,7 +94,11 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
               {isFinished && (
                 <Button
                   variant="contained"
-                  style={{ backgroundColor: "white", color: "black", marginRight: '1rem' }}
+                  style={{
+                    backgroundColor: "white",
+                    color: "black",
+                    marginRight: "1rem",
+                  }}
                   onClick={() => setOpen(true)}
                 >
                   <span className="SubmitButtonText">Restart</span>
