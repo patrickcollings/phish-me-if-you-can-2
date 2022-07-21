@@ -14,7 +14,7 @@ export default function Subscribe(props) {
         action="https://phishmeifyoucan.us7.list-manage.com/subscribe/post"
         method="POST"
         noValidate
-        style={{ display: "flex", justifyContent: "center", flexWrap: 'wrap' }}
+        style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}
       >
         <input type="hidden" name="u" value="66b58fda85306ad2562755ec1" />
         <input type="hidden" name="id" value="88a5b5590b" />
@@ -27,7 +27,7 @@ export default function Subscribe(props) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <Button 
+        <Button
           type="submit"
           variant="contained"
           value="Subscribe"
@@ -42,9 +42,7 @@ export default function Subscribe(props) {
           Subscribe
         </Button>
 
-        <div
-          style={{ position: "absolute", left: "-5000px" }}
-        >
+        <div style={{ position: "absolute", left: "-5000px" }}>
           <label htmlFor="b_name">Name: </label>
           <input
             type="text"
@@ -53,6 +51,7 @@ export default function Subscribe(props) {
             value=""
             placeholder="Freddie"
             id="b_name"
+            onChange={() => {}}
           />
 
           <label htmlFor="b_email">Email: </label>
@@ -63,6 +62,7 @@ export default function Subscribe(props) {
             value=""
             placeholder="youremail@gmail.com"
             id="b_email"
+            onChange={() => {}}
           />
 
           <label htmlFor="b_comment">Comment: </label>
@@ -71,6 +71,7 @@ export default function Subscribe(props) {
             tabIndex="-1"
             placeholder="Please comment"
             id="b_comment"
+            onChange={() => {}}
           ></textarea>
         </div>
       </form>

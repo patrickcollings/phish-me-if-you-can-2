@@ -125,7 +125,7 @@ export default function FinishedDialog({result, open, handleClose}) {
                 title={`I scored ${result.score}% meaning I am: "unhackable". How scammable are you?`}
                 hashtags={["phishmeifyoucan"]}
                 url="https://play.phishmeifyoucan.com"
-                onclick={() => shareClicked("twitter")}
+                onClick={() => shareClicked("twitter")}
               >
                 <TwitterIcon size={32} round={true}></TwitterIcon>
               </TwitterShareButton>
@@ -134,14 +134,14 @@ export default function FinishedDialog({result, open, handleClose}) {
                 summary="i am summary"
                 source="Phish Me If You Can"
                 url="https://play.phishmeifyoucan.com"
-                onclick={() => shareClicked("linkedin")}
+                onClick={() => shareClicked("linkedin")}
               >
                 <LinkedinIcon size={32} round={true}></LinkedinIcon>
               </LinkedinShareButton>
               <FacebookShareButton
                 url="https://play.phishmeifyoucan.com"
                 quote={`I scored ${result.score}% meaning I am: "unhackable". How scammable are you?`}
-                onclick={() => shareClicked("facebook")}
+                onClick={() => shareClicked("facebook")}
               >
                 <FacebookIcon size={32} round={true}></FacebookIcon>
               </FacebookShareButton>
