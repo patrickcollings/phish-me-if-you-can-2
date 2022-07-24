@@ -18,9 +18,9 @@ phases:
   post_build:
     commands:
       # delete previous release
-      - aws s3 rm s3://phish-me-deployment-test/ --recursive
+      - aws s3 rm s3://play.phishmeifyoucan.com/ --recursive
       # copy the contents of /build to S3
-      - aws s3 cp --recursive --acl public-read ./build s3://phish-me-deployment-test/ 
+      - aws s3 cp --recursive --acl public-read ./build s3://play.phishmeifyoucan.com/ 
       # set the cache-control headers for service-worker.js to prevent
       # browser caching
       # - >
