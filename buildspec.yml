@@ -7,15 +7,13 @@ phases:
 
     commands:
       # install yarn
-      - npm install yarn
+      - npm install
       # install dependencies
-      - yarn
-      # so that build commands work
 
   build:
     commands:
       # run build script
-      - yarn build
+      - npm run build
 
 artifacts:
   # include all files required to run application
