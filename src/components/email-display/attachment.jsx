@@ -1,8 +1,8 @@
-import pdf from "../../assets/logo-pdf.PNG";
-import exe from "../../assets/logo-exe.PNG";
-import doc from "../../assets/logo-doc.PNG";
-import jpg from "../../assets/logo-jpg.PNG";
-import zip from "../../assets/logo-zip.PNG";
+import pdf from "../../assets/logo-pdf.png";
+import exe from "../../assets/logo-exe.png";
+import doc from "../../assets/logo-doc.png";
+import jpg from "../../assets/logo-jpg.png";
+import zip from "../../assets/logo-zip.png";
 
 const getExtensionLogo = (extension) => {
     switch (extension) {
