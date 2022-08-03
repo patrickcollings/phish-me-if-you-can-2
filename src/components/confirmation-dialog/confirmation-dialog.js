@@ -16,9 +16,9 @@ export default function ConfirmationDialog(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{props.title ? props.title : "Are you sure?"}</DialogTitle>
         <DialogContent>
-            {props.title && <p>{props.title}</p>}
+            {props.description && <p>{props.description}</p>}
         </DialogContent>
         <DialogActions>
           <Button

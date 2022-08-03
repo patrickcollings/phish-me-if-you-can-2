@@ -353,7 +353,7 @@ export default function Result(props) {
       <ConfirmationDialog
         handleClose={handleClose}
         open={open}
-        title="This is your final attempt"
+        title="View your final score?"
       ></ConfirmationDialog>
       <FinishedDialog
         open={finishedOpen}

@@ -75,9 +75,9 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
               >
                 {isFinished ? (
                   <span>{result.score}%</span>
-                ) : (
+                ) : attempts.length > 0 && (
                   <span>
-                    {attempts.length > 0 ? attempts[attempts.length - 1] : 0}/5
+                    {attempts[attempts.length - 1]}/5
                     scams caught
                   </span>
                 )}
@@ -125,7 +125,7 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
       <ConfirmationDialog
         handleClose={confirmReset}
         open={open}
-        title={"This will restart the entire game"}
+        description={"This will restart the entire game"}
       ></ConfirmationDialog>
     </>
   );
