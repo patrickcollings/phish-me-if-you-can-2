@@ -69,6 +69,48 @@ const scamList = [
     description:
       "The sender is verified@twittersupport.co.uk which is not the real twitter domain. This is a simple scam forcing you to take action in order to not lose your account. It will often lead to a website which looks completely identical to Twitter but is owned by the scammers.",
   },
+  {
+    subject: "HMRC Tax Refund | Claim Your Tax Refund | P800 application",
+    name: "no-reply@hmrc.gov.uk",
+    email: "service@online.com",
+    to: "you",
+    template: "changes-to-your-health-benefits",
+    description:
+      "This scam is still very common as of 2022. The link does not take you to an official gov.uk website. Also, while the name of the email sender is a real one the email address is different. Anyone can give themselves an official looking name but the real from address is a give away here.",
+  },
+  {
+    subject: "Quotation required now",
+    name: "mike",
+    email: "mike@fastwindows.co.uk",
+    to: "you",
+    template: "quotation-required",
+    attachment: true,
+    attachmentExtension: "pdf",
+    attachmentName: "quote",
+    description:
+      "This scam works by getting you to open the PDF. From within the PDF the scammer can lead you with links to a fake website where they will try to steal your password.",
+  },
+  {
+    subject: "Please fix delivery address",
+    name: "no-reply",
+    email: "no-reply@deliveryone.com",
+    to: "you",
+    template: "wrong-delivery-address",
+    attachment: true,
+    attachmentExtension: "iso",
+    attachmentName: "IMG_123QW990LLC5K",
+    description:
+      "Be very careful of these scams. The attached file is actually an .iso file and not an image as you'd be led to believe. The blurry image within the email makes you think that the attachment is the same image but not blurry. ISO files allow scammers to install malicious software on your computer, compromising all of your private information.",
+  },
+  {
+    subject: "My Company",
+    name: "Danny Cummings",
+    email: "danmingsesq@gmail.com",
+    to: "you",
+    template: "looking-for-local-supplier",
+    description:
+      "This scam first waits for you to reply to an email asking if you are available. It is very well worded and someone has clearly put a lot of effort in to it but there is a few giveaways: mentioning that 'this isn't illegal', talking about all the money we can make and using industry jargon (such as the chemical compound: Gedoroxin Herbal Extract G 55) to make themselves seem official and trustworthy. This is one of those scams that is just too good to be true therefore somethings not right. You have to ask yourself why would this person email a random stranger from the internet asking them to do this.",
+  },
 ];
 
 const normalList = [
