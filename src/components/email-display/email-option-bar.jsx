@@ -29,39 +29,36 @@ export default function EmailOptionBar({
             }}
             onClick={handleDeselect}
           >
+            <Icon aria-label="done" fontSize="large" style={{ color: "black" }}>
+              <ArrowBack fontSize="large" />
+            </Icon>
+            <p style={{ textDecoration: "underline", margin: 0 }}>go back</p>
+          </div>
+        )}
+        {!isComplete && (
+          <div
+            data-tour="add-to-scambox"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "5px",
+              cursor: "pointer",
+            }}
+            onClick={isScamEmail ? remove : add}
+          >
             <Icon
               aria-label="done"
               fontSize="large"
-              style={{ color: "black" }}
+              style={{ color: "red" }}
+              onClick={remove}
             >
-              <ArrowBack fontSize="large" />
+              <ReportGmailerrorredIcon fontSize="large" />
             </Icon>
             <p style={{ textDecoration: "underline", margin: 0 }}>
-              go back
+              {isScamEmail ? "Remove from scambox" : "Add to scambox"}
             </p>
           </div>
         )}
-        {!isComplete && <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            padding: "5px 0",
-            cursor: "pointer",
-          }}
-          onClick={isScamEmail ? remove : add}
-        >
-          <Icon
-            aria-label="done"
-            fontSize="large"
-            style={{ color: "red" }}
-            onClick={remove}
-          >
-            <ReportGmailerrorredIcon fontSize="large" />
-          </Icon>
-          <p style={{ textDecoration: "underline", margin: 0 }}>
-            {isScamEmail ? "Remove from scambox" : "Add to scambox"}
-          </p>
-        </div>}
       </div>
     </>
   );

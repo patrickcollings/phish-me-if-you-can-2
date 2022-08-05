@@ -4,11 +4,12 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
-    "@emotion/react": "^11.9.0",
+    "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.8.2",
     "@mui/material": "^5.8.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
+    "@reactour/tour": "^2.13.0",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",

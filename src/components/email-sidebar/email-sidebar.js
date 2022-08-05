@@ -100,7 +100,7 @@ export default function EmailSidebar(props) {
           />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0} data-tour="sidebar-box">
         {getEmailList(
           props.emailList,
           props.selectEmail,

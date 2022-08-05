@@ -6,19 +6,26 @@ import { DialogContent } from "@mui/material";
 
 export default function ExternalLinkDialog(props) {
     return (
-      <div>
-        <Dialog
-          open={props.open}
-          onClose={() => {
-            props.handleClose();
-          }}
-          maxWidth='lg'
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogContent>
-            <p style={{textAlign: 'center', fontWeight: 'bold'}}>This link would have taken you to</p>
-            <p style={{wordBreak: 'break-all'}}>{props.url}</p>
+      <Dialog
+        open={props.open}
+        className="shown"
+        onClose={() => {
+          props.handleClose();
+        }}
+        maxWidth="lg"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        {/* Span is required to trigger a redraw of the reactour */}
+        {props.open && <span className="shown" />} 
+        <div data-tour="external-link">
+          <DialogContent >
+            <p
+              style={{ textAlign: "center", fontWeight: "bold" }}
+            >
+              This link would have taken you to
+            </p>
+            <p style={{ wordBreak: "break-all" }}>{props.url}</p>
           </DialogContent>
           <DialogActions>
             <Button
@@ -30,7 +37,7 @@ export default function ExternalLinkDialog(props) {
               Ok
             </Button>
           </DialogActions>
-        </Dialog>
-      </div>
+        </div>
+      </Dialog>
     );
 }

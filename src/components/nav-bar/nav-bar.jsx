@@ -1,12 +1,13 @@
+import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import logo from "../../assets/white-logo.png";
-import { Done, RestartAlt } from "@mui/icons-material/";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+import { Done, RestartAlt } from "@mui/icons-material/";
+import Button from "@mui/material/Button";
+
+import logo from "../../assets/white-logo.png";
 import ConfirmationDialog from "../confirmation-dialog/confirmation-dialog";
-import { useState } from "react";
 import './nav-bar.css';
 
 const date = new Date();
@@ -106,6 +107,7 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
                 </Button>
               )}
               <Button
+                data-tour="submit-attempt"
                 variant="contained"
                 style={{
                   backgroundColor: "white",

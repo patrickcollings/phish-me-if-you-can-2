@@ -11,16 +11,23 @@ import tutorialGraphicMobile from "../../assets/tutorialGraphicMobile.svg";
 import './WelcomeDialog.css';
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { useState } from "react";
+import { useTour } from '@reactour/tour';
 
 export default function WelcomeDialog(props) {
   const [checkboxValue, setCheckboxValue] = useState(false);
+  const { setIsOpen } = useTour();
+
+  const handleClose = (value) => {
+    props.handleClose(value);
+    setIsOpen(true);
+  } 
 
   return (
     <div>
       <Dialog
         open={props.open}
         onClose={() => {
-          props.handleClose(checkboxValue);
+          handleClose(checkboxValue);
         }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -81,7 +88,7 @@ export default function WelcomeDialog(props) {
             <Button
               variant="contained"
               onClick={() => {
-                props.handleClose(checkboxValue);
+                handleClose(checkboxValue);
               }}
               style={{ backgroundColor: "#493698", width: "150px" }}
             >

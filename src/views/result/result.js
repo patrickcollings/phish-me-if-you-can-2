@@ -1,14 +1,17 @@
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTour } from '@reactour/tour';
+import mixpanel from "mixpanel-browser";
 import styled from "styled-components";
+
 import emails from "../../helpers/emails";
 import { orderListByTime } from "../../helpers/helper";
 import EmailDisplay from "../../components/email-display/email-display";
 import EmailSidebar from "../../components/email-sidebar/email-sidebar";
 import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
-import mixpanel from "mixpanel-browser";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
 import ConfirmationDialog from "../../components/confirmation-dialog/confirmation-dialog";
+
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 mixpanel.track("joined");
@@ -30,7 +33,7 @@ const EmailSidebarContainerMobile = styled.div`
   top: 64px;
   width: 100%;
   max-width: 100%;
-  height: 100%;
+  bottom: 0;
   padding: 0;
   margin: 0;
 `;
@@ -87,7 +90,6 @@ export default function Result(props) {
   let params = useParams();
   let navigate = useNavigate();
   const location = useLocation();
-  let emailFound;
 
   const [scamList, setScamList] = useState(savedScamList ?? []);
   const [emailList, setEmailList] = useState(
@@ -101,7 +103,8 @@ export default function Result(props) {
   const [previousScores, setPreviousScores] = useState(savedScores ?? []);
   const [result, setResult] = useState(showResult ? calculateResults : {});
   const [width, setWindowWidth] = useState(0);
-  const [selectedEmail, setSelectedEmail] = useState(emailFound ?? null);
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const { isOpen, currentStep, setCurrentStep } = useTour();
 
   const updateDimensions = () => {
     const width = window.innerWidth;
@@ -113,7 +116,6 @@ export default function Result(props) {
     setIsScamSelected(false);
     setSelectedEmail(emailList[index]);
     setEmailList([...emailList]);
-    // navigate(`/inbox/${emailList[index].id}`, { replace: false });
   }
 
   function selectScamEmail(index) {
@@ -121,7 +123,6 @@ export default function Result(props) {
     setIsScamSelected(true);
     setSelectedEmail(scamList[index]);
     setScamList([...scamList]);
-    // navigate(`/scambox/${scamList[index].id}`, { replace: false });
   }
 
   function findEmailIndex(selectedEmail) {
@@ -135,7 +136,7 @@ export default function Result(props) {
   function addToScamList() {
     const index = findEmailIndex(selectedEmail);
     if (index < 0) return;
-    let newScamList = [...scamList, selectedEmail]; // instead of emailList[index] this can just be selectedEmail?
+    let newScamList = [...scamList, selectedEmail];
     orderListByTime(newScamList);
     setScamList(newScamList);
     emailList.splice(index, 1);
@@ -159,7 +160,6 @@ export default function Result(props) {
 
   function handleDeselect() {
     let inboxType = location.pathname.split('/')[1];
-    // setSelectedEmail(null);
     navigate(`/${inboxType}`, {replace: false});
   }
 
@@ -286,6 +286,7 @@ export default function Result(props) {
         return [...e]
       });
       setSelectedEmail(emailFound);
+      if (currentStep === 0 && isOpen) setCurrentStep(1);
     }
     else if (scamFound) {
       setIsScamSelected(true);

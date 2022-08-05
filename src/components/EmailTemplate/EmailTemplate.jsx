@@ -34,7 +34,7 @@ export default function Template({ template }) {
         handleClose={handleClose}
       ></ExternalLinkDialog>
       <div
-        style={{ height: `150vh`, overflowX: "auto", overflowY: "hidden" }}
+        style={{ height: `200vh`, overflowX: "auto", overflowY: "hidden" }}
       >
         <iframe
           key={template}

@@ -30,15 +30,16 @@ export default function EmailDisplay({
         />
 
         <div
+          data-tour="email-display"
           style={{
-            position: isMobile ? 'unset' : "absolute",
+            position: "absolute",
             right: 0,
             left: 0,
             bottom: 0,
-            top: (isMobile || !showResult) ? "46px" : "0px",
+            top: isMobile || !showResult ? "46px" : "0px",
             overflowY: "auto",
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           {"correct" in selectedEmail && selectedEmail.scam && (
@@ -54,7 +55,14 @@ export default function EmailDisplay({
             </div>
           )}
 
-          <div style={{ opacity: "correct" in selectedEmail ? "0.8" : "1", flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{
+              opacity: "correct" in selectedEmail ? "0.8" : "1",
+              flexGrow: 1,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <div
               style={{
                 display: "flex",

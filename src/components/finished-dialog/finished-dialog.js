@@ -51,6 +51,9 @@ export default function FinishedDialog({result, open, handleClose}) {
     <div>
       <Dialog
         open={open}
+        onClose={() => {
+          handleClose();
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         sx={{
@@ -186,7 +189,7 @@ export default function FinishedDialog({result, open, handleClose}) {
               handleClose();
             }}
           >
-            Close
+            See the results!
           </Button>
         </DialogActions>
       </Dialog>
