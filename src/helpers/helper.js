@@ -39,21 +39,21 @@ export function getHoursAndMinutes(time) {
 
 export const getScoreTitle = (score) => {
   if (score < 0)
-    return 'you should be forbidden from the internet...';
+    return 'time to get off the internet...';
   if (score >= 0 && score < 10)
-    return 'you should be forbidden from reading your emails...';
+    return 'ouch...';
   if (score >= 10 && score < 30)
-    return 'you are a bit of a dinosaur...';
+    return 'really?';
   if (score >= 30 && score < 60)
-    return 'you might want to practice again next month';
+    return "please be careful...";
   if (score >= 60 && score < 80)
-    return 'you can do better than that';
+    return 'keep trying...';
   if (score >= 80 && score < 90)
-    return 'you are so close yet so far';
+    return 'not bad...';
   if (score >= 90 && score < 100)
-    return 'not too shabby';
+    return 'so close...';
   if (score >= 100)
-    return 'you are unhackable';
+    return 'congratulations. You are ready for the internet!';
 
   return 'uncharted territory';
 } 

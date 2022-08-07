@@ -14,11 +14,12 @@ export default function Subscribe(props) {
         action="https://phishmeifyoucan.us7.list-manage.com/subscribe/post"
         method="POST"
         noValidate
-        style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}
+        style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: '10px' }}
       >
         <input type="hidden" name="u" value="66b58fda85306ad2562755ec1" />
         <input type="hidden" name="id" value="88a5b5590b" />
         <TextField
+          style={{ flexGrow: "1" }}
           label="Your Email"
           variant="outlined"
           type="email"
@@ -37,6 +38,7 @@ export default function Subscribe(props) {
             lineHeight: "1.4375em",
             padding: "16.5px 14px",
             backgroundColor: "#2a1e5c",
+            flexGrow: "1",
           }}
         >
           Subscribe

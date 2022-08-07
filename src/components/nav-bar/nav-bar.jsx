@@ -3,12 +3,13 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
-import { Done, RestartAlt } from "@mui/icons-material/";
+import { Done, RestartAlt, Menu } from "@mui/icons-material/";
 import Button from "@mui/material/Button";
 
+import './nav-bar.css';
 import logo from "../../assets/white-logo.png";
 import ConfirmationDialog from "../confirmation-dialog/confirmation-dialog";
-import './nav-bar.css';
+import SideDrawer from "../SideDrawer/SideDrawer";
 
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" });
@@ -39,13 +40,10 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
                 alignItems: "center",
               }}
             >
-              <a href={process.env.REACT_APP_LANDING_URL}>
-                <img
-                  src={logo}
-                  style={{ height: "30px", width: "30px" }}
-                  alt="phish me if you can logo"
-                />
-              </a>
+              <SideDrawer
+                openResetConfirmation={setOpen}
+                showReset={isFinished}
+              />
               <p className="ChallengeTitle" style={{ margin: "0 0 0 1rem" }}>
                 {month} challenge
               </p>
@@ -76,11 +74,10 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
               >
                 {isFinished ? (
                   <span>{result.score}%</span>
-                ) : attempts.length > 0 && (
-                  <span>
-                    {attempts[attempts.length - 1]}/5
-                    scams caught
-                  </span>
+                ) : (
+                  attempts.length > 0 && (
+                    <span>{attempts[attempts.length - 1]}/5 scams caught</span>
+                  )
                 )}
               </div>
             </div>
@@ -92,20 +89,6 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
                 flexBasis: 0,
               }}
             >
-              {isFinished && (
-                <Button
-                  variant="contained"
-                  style={{
-                    backgroundColor: "white",
-                    color: "black",
-                    marginRight: "1rem",
-                  }}
-                  onClick={() => setOpen(true)}
-                >
-                  <span className="SubmitButtonText">Restart</span>
-                  <RestartAlt />
-                </Button>
-              )}
               <Button
                 data-tour="submit-attempt"
                 variant="contained"

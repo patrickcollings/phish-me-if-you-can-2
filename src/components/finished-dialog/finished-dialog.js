@@ -111,7 +111,7 @@ export default function FinishedDialog({result, open, handleClose}) {
                 flexDirection: "column",
               }}
             >
-              <p style={{ margin: 0 }}>You scored:</p>
+              <p style={{ margin: 0 }}>Score</p>
               <h1 style={{ margin: 0 }}>{result.score}%</h1>
               <h2 style={{ margin: 0, textAlign: "center" }}>
                 "{getScoreTitle(result.score)}"
@@ -189,7 +189,7 @@ export default function FinishedDialog({result, open, handleClose}) {
               handleClose();
             }}
           >
-            See the results!
+            See your results!
           </Button>
         </DialogActions>
       </Dialog>
