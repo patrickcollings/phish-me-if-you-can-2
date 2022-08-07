@@ -129,7 +129,7 @@ const normalList = [
     template: "paypal-unable-to-update-bank-details",
   },
   {
-    subject: "need urgent help!",
+    subject: "are you free?",
     name: "Sally Thompson",
     email: "sally.t.55@gmail.com",
     to: "you",
