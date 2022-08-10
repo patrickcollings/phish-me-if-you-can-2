@@ -7,6 +7,7 @@ import { getHoursAndMinutes } from "../../helpers/helper";
 import Template from "../EmailTemplate/EmailTemplate";
 import EmailOptionBar from "./email-option-bar";
 import Attachment from "./attachment";
+import logo from "../../assets/black-logo.png";
 
 export default function EmailDisplay({
   selectedEmail,
@@ -117,21 +118,20 @@ export default function EmailDisplay({
     );
   } else {
     return (
-      <Card
-        sx={{
-          minWidth: 275,
-          minHeight: "50vh",
+      <div
+        style={{
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
           justifyContent: "center",
+          paddingTop: "5rem",
+          alignItems: "center",
+          fontSize: '30px',
+          color: 'grey',
         }}
       >
-        <CardContent>
-          <Typography sx={{ fontSize: 30 }} color="text.secondary" gutterBottom>
-            Nothing is selected
-          </Typography>
-        </CardContent>
-      </Card>
+        <img src={logo} style={{ width: "70px", marginBottom: "2rem", opacity: '0.6' }}></img>
+        <span>Select an email to read</span>
+      </div>
     );
   }
 }

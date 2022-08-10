@@ -5,8 +5,10 @@ import Toolbar from "@mui/material/Toolbar";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import { Done, RestartAlt, Menu } from "@mui/icons-material/";
 import Button from "@mui/material/Button";
+import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
+import EmailIcon from "@mui/icons-material/Email";
 
-import './nav-bar.css';
+import "./nav-bar.css";
 import logo from "../../assets/white-logo.png";
 import ConfirmationDialog from "../confirmation-dialog/confirmation-dialog";
 import SideDrawer from "../SideDrawer/SideDrawer";
@@ -14,8 +16,7 @@ import SideDrawer from "../SideDrawer/SideDrawer";
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" });
 
-
-export default function NavBar({openClick, resetClick, attempts, result}) {
+export default function NavBar({ openClick, resetClick, attempts, result }) {
   const [open, setOpen] = useState(false);
 
   const isFinished = attempts.length === 3;
@@ -23,7 +24,7 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
   const confirmReset = (confirm) => {
     if (confirm) resetClick();
     setOpen(false);
-  }
+  };
 
   return (
     <>
@@ -49,21 +50,19 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
               </p>
             </div>
             <div>
-              <p
-                style={{
-                  textAlign: "center",
-                  width: "100%",
-                  margin: "0",
-                  fontSize: "13px",
-                  color: "#e6e0ff",
-                }}
-              >
-                {isFinished
-                  ? "final score"
-                  : `${3 - attempts.length} attempt${
-                      3 - attempts.length !== 1 ? "s" : ""
-                    } remaining`}
-              </p>
+              {isFinished && (
+                <p
+                  style={{
+                    textAlign: "center",
+                    width: "100%",
+                    margin: "0",
+                    fontSize: "13px",
+                    color: "#e6e0ff",
+                  }}
+                >
+                  Score
+                </p>
+              )}
               <div
                 className="ScoreContainer"
                 style={{
@@ -76,7 +75,30 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
                   <span>{result.score}%</span>
                 ) : (
                   attempts.length > 0 && (
-                    <span>{attempts[attempts.length - 1]}/5 scams caught</span>
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      {[...Array(attempts[attempts.length - 1])].map(
+                        (attempt, i) => {
+                          return (
+                            <MarkEmailReadIcon
+                              key={i}
+                              style={{ marginLeft: "0.5rem" }}
+                            />
+                          );
+                        }
+                      )}
+                      {[...Array(5 - attempts[attempts.length - 1])].map(
+                        (attempt, i) => {
+                          return (
+                            <EmailIcon key={i} style={{ marginLeft: "0.5rem", opacity: 0.2 }} />
+                          );
+                        }
+                      )}
+                    </span>
                   )
                 )}
               </div>
@@ -90,18 +112,19 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
               }}
             >
               <Button
+                className="submit-button"
                 data-tour="submit-attempt"
-                variant="contained"
+                variant={isFinished ? 'text': 'outlined'}
                 style={{
-                  backgroundColor: "white",
-                  color: "black",
+                  backgroundColor: isFinished ? "" : "white",
+                  color: isFinished ? "white" : "black",
                 }}
                 onClick={openClick}
               >
                 <span className="SubmitButtonText">
-                  {isFinished ? "View Score" : "Finish Attempt"}
+                  {isFinished && "View Score"}
                 </span>
-                {isFinished ? <AssessmentOutlinedIcon /> : <Done />}
+                {isFinished ? <AssessmentOutlinedIcon /> : <span>Submit</span>}
               </Button>
             </div>
           </Toolbar>

@@ -15,8 +15,9 @@ export default function EmailOptionBar({
       <div
         style={{
           display: "flex",
-          justifyContent: "space-around",
+          justifyContent: isMobile ? "space-between" : "right",
           backgroundColor: "#D9D9D9",
+          padding: "0 1rem",
         }}
       >
         {isMobile && (
@@ -32,7 +33,6 @@ export default function EmailOptionBar({
             <Icon aria-label="done" fontSize="large" style={{ color: "black" }}>
               <ArrowBack fontSize="large" />
             </Icon>
-            <p style={{ textDecoration: "underline", margin: 0 }}>go back</p>
           </div>
         )}
         {!isComplete && (
@@ -46,6 +46,9 @@ export default function EmailOptionBar({
             }}
             onClick={isScamEmail ? remove : add}
           >
+            <p style={{ margin: '0px 5px' }}>
+              {isScamEmail ? "remove from scambox" : "add to scambox"}
+            </p>
             <Icon
               aria-label="done"
               fontSize="large"
@@ -54,9 +57,6 @@ export default function EmailOptionBar({
             >
               <ReportGmailerrorredIcon fontSize="large" />
             </Icon>
-            <p style={{ textDecoration: "underline", margin: 0 }}>
-              {isScamEmail ? "Remove from scambox" : "Add to scambox"}
-            </p>
           </div>
         )}
       </div>

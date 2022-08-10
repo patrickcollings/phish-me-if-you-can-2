@@ -6,7 +6,7 @@ import { DialogContent, DialogTitle } from "@mui/material";
 
 import './TipDialog.css';
 
-export default function TipDialog({open, handleClose, score}) {
+export default function TipDialog({ open, handleClose, score, attempts }) {
   return (
     <Dialog
       open={open}
@@ -24,9 +24,14 @@ export default function TipDialog({open, handleClose, score}) {
         {"Here's some tips"}
       </DialogTitle>
       <DialogContent>
-        {(score > -1) && (
-          <p style={{textAlign: 'center', marginBottom: '50px'}}>
-            You've caught <b>{score}/5</b> of the scam emails.
+        {score.length > 0 && (
+          <p style={{ textAlign: "center", marginBottom: "50px" }}>
+            You've caught <b>{score[score.length - 1]}/5</b> of the scam emails.
+          </p>
+        )}
+        {attempts && (
+          <p style={{ textAlign: "center", marginBottom: "50px" }}>
+            <b>{3 - attempts}</b> attempt{3 - attempts > 1 && 's'} remaining.
           </p>
         )}
         <ul className="TipList">

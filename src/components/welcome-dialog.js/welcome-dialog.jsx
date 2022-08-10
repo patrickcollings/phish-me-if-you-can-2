@@ -18,7 +18,7 @@ export default function WelcomeDialog(props) {
   const { setIsOpen } = useTour();
 
   const handleClose = (value) => {
-    props.handleClose(value);
+    props.handleClose(true); // default set to true until checkbox needed again
     setIsOpen(true);
   } 
 
@@ -57,7 +57,7 @@ export default function WelcomeDialog(props) {
           >
             Don't show again
           </Button> */}
-          <FormGroup style={{ marginRight: "1rem" }}>
+          {/* <FormGroup style={{ marginRight: "1rem" }}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -68,7 +68,7 @@ export default function WelcomeDialog(props) {
               label="Don't show again"
               style={{ color: "grey" }}
             />
-          </FormGroup>
+          </FormGroup> */}
           <div style={{ display: "flex", alignItems: "center" }}>
             <Button
               variant="contained"

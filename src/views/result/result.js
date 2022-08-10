@@ -13,6 +13,7 @@ import NavBar from "../../components/nav-bar/nav-bar";
 import ConfirmationDialog from "../../components/confirmation-dialog/confirmation-dialog";
 import TipDialog from "../../components/TipDialog/TipDialog";
 import { SettingsInputComponent } from "@mui/icons-material";
+import { Alert, Snackbar } from "@mui/material";
 
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
@@ -107,6 +108,7 @@ export default function Result(props) {
   const [result, setResult] = useState(showResult ? calculateResults : {});
   const [width, setWindowWidth] = useState(0);
   const [selectedEmail, setSelectedEmail] = useState(null);
+  const [openScamboxFullSnackBar, setScamboxFullSnackBar] = useState(false);
   const { isOpen, currentStep, setCurrentStep } = useTour();
 
   const updateDimensions = () => {
@@ -139,6 +141,10 @@ export default function Result(props) {
   function addToScamList() {
     const index = findEmailIndex(selectedEmail);
     if (index < 0) return;
+    if (scamList.length > 4) {
+      setScamboxFullSnackBar(true);
+      return;
+    }
     let newScamList = [...scamList, selectedEmail];
     orderListByTime(newScamList);
     setScamList(newScamList);
@@ -329,7 +335,7 @@ export default function Result(props) {
 
   useEffect(() => {
     localStorage.setItem("phishme_attempts", JSON.stringify(attempts));
-    if (attempts.length === 1 && attempts[0] < 100) {
+    if ((attempts.length === 1 || attempts.length === 2) && (attempts[0] < 100 || attempts[1] < 100)) {
       setTipOpen(true);
     }
   }, [attempts]);
@@ -363,11 +369,26 @@ export default function Result(props) {
         handleClose={() => setFinishedOpen(false)}
         result={result}
       />
-      <TipDialog 
+      <TipDialog
         open={tipOpen}
-        score={attempts[0]}
+        score={attempts}
+        attempts={attempts.length}
         handleClose={() => setTipOpen(false)}
       />
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openScamboxFullSnackBar}
+        autoHideDuration={10000}
+        onClose={() => setScamboxFullSnackBar(false)}
+      >
+        <Alert
+          onClose={() => setScamboxFullSnackBar(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          <b>Scambox full!</b> There is only 5 scams to find.
+        </Alert>
+      </Snackbar>
 
       {width > 1000 && (
         <Container>
