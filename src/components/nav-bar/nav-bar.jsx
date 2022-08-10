@@ -54,7 +54,7 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
                   textAlign: "center",
                   width: "100%",
                   margin: "0",
-                  fontSize: "14px",
+                  fontSize: "12px",
                   color: "#e6e0ff",
                 }}
               >
@@ -69,7 +69,7 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  fontSize: "25px",
+                  fontSize: "20px",
                 }}
               >
                 {isFinished ? (
@@ -99,7 +99,7 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
                 onClick={openClick}
               >
                 <span className="SubmitButtonText">
-                  {isFinished ? "View Score" : "Submit"}
+                  {isFinished ? "View Score" : "Finish Attempt"}
                 </span>
                 {isFinished ? <AssessmentOutlinedIcon /> : <Done />}
               </Button>

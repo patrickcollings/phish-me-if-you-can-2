@@ -45,21 +45,6 @@ export default function WelcomeDialog(props) {
           <div className="SmallTutorial Tutorial">
             <img src={tutorialGraphicMobile} alt="tutorial infographic" />
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column",
-              marginTop: "3rem",
-            }}
-          >
-            <h3 style={{ marginBottom: 0, color: "#493698" }}>A few tips</h3>
-            <ul className="TipList">
-              <li>Always check the email address</li>
-              <li>Check the links to see where they would lead</li>
-              <li>If it seems too good to be true, then it probably is!</li>
-            </ul>
-          </div>
         </DialogContent>
         <DialogActions
           sx={{ justifyContent: "center", flexFlow: "wrap-reverse" }}

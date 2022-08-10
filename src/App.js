@@ -7,6 +7,7 @@ import './App.css';
 import ExternalLinkDialog from './components/ExternalLinkDialog/ExternalLinkDialog';
 import Result from './views/result/result';
 import WelcomeDialog from './components/welcome-dialog.js/welcome-dialog';
+import { Button } from '@mui/material';
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 
@@ -19,18 +20,43 @@ function App() {
   const { setIsOpen } = useTour();
   const navigate = useNavigate();
 
+  function Close({ onClick }) {
+    return (
+      <button
+        onClick={onClick}
+        style={{ position: "absolute", right: 0, top: 0, color: 'red' }}
+      >
+        x
+      </button>
+    );
+  }
+
   const steps = [
     {
+      position: "center",
+      content: ({setIsOpen, setCurrentStep}) => (
+        <div>
+          <h1>Do you want to see how the game works?</h1>
+          <p>We'll give you a quick run-down of how to play.</p>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}>
+            <Button variant="text" onClick={() => setIsOpen(false)}>No thanks</Button>
+            <Button variant="contained" onClick={() => setCurrentStep(1)}>Start</Button>
+          </div>
+        </div>
+      ),
+    },
+    {
       selector: "[data-tour='sidebar-box']",
-      position: "top",
+      position: "bottom",
       disableActions: true,
       stepInteraction: true,
       content: () => (
         <div>
           <h1>Select an email</h1>
-          <p>
-            Begin by clicking any of the emails
-          </p>
+          <p>Begin by clicking any of the emails</p>
         </div>
       ),
     },
@@ -41,7 +67,7 @@ function App() {
       content: () => (
         <div>
           <h1>Read your email</h1>
-          <p>This when you decide whether it is a scam or not.</p>
+          <p>This is how you decide whether it is a scam or not.</p>
         </div>
       ),
     },
@@ -60,19 +86,20 @@ function App() {
         <div>
           <h1>Check links</h1>
           <p>
-            Click on any link in an email and this popup will show you where it{" "}
-            <b>would have</b> taken you.
+            Click on any link in an email and a popup will show you where it <b>would have</b> taken you.
           </p>
-          <p>But don't worry, you'll stay safely on this website.</p>
+          <p>(If you're on a computer you can also hover over a link with your mouse)</p>
+          <p>Don't worry, you'll stay safely on this website.</p>
         </div>
       ),
     },
     {
       selector: "[data-tour='add-to-scambox']",
+      position: 'bottom',
       content: () => (
         <div>
           <h1>Flag a scam</h1>
-          <p>If you think an email is scam, add it to your scambox.</p>
+          <p>If you think an email is a scam, add it to your scambox.</p>
         </div>
       ),
     },
@@ -80,11 +107,11 @@ function App() {
       selector: "[data-tour='submit-attempt']",
       content: () => (
         <div>
-          <h1>Submit your attempt</h1>
+          <h1>Finish your attempt</h1>
           <p>
-            Once you think you've caught all 5 scam emails. Submit your attempt.
+            Once you think you've caught all 5 scam emails. Submit your attempt to see how close you are.
           </p>
-          <p>Good luck!</p>
+          <p style={{textAlign: 'center'}}>Good luck!</p>
         </div>
       ),
     },

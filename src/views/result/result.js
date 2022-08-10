@@ -11,6 +11,8 @@ import EmailSidebar from "../../components/email-sidebar/email-sidebar";
 import FinishedDialog from "../../components/finished-dialog/finished-dialog";
 import NavBar from "../../components/nav-bar/nav-bar";
 import ConfirmationDialog from "../../components/confirmation-dialog/confirmation-dialog";
+import TipDialog from "../../components/TipDialog/TipDialog";
+import { SettingsInputComponent } from "@mui/icons-material";
 
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
@@ -97,6 +99,7 @@ export default function Result(props) {
   );
   const [isScamSelected, setIsScamSelected] = useState(false);
   const [open, setOpen] = useState(false);
+  const [tipOpen, setTipOpen] = useState(false);
   const [finishedOpen, setFinishedOpen] = useState(false);
   const [showResult, setShowResult] = useState(savedShowResult ?? false);
   const [attempts, setAttempts] = useState(savedAttempts ?? []);
@@ -235,10 +238,6 @@ export default function Result(props) {
     } 
   };
   
-  const handleFinishedClose = () => {
-    setFinishedOpen(false);
-  }
-
   const getEmailSidebar = () => {
     return (
 
@@ -286,7 +285,7 @@ export default function Result(props) {
         return [...e]
       });
       setSelectedEmail(emailFound);
-      if (currentStep === 0 && isOpen) setCurrentStep(1);
+      if (currentStep === 1 && isOpen) setCurrentStep(2);
     }
     else if (scamFound) {
       setIsScamSelected(true);
@@ -330,6 +329,9 @@ export default function Result(props) {
 
   useEffect(() => {
     localStorage.setItem("phishme_attempts", JSON.stringify(attempts));
+    if (attempts.length === 1 && attempts[0] < 100) {
+      setTipOpen(true);
+    }
   }, [attempts]);
 
   useEffect(() => {
@@ -355,12 +357,18 @@ export default function Result(props) {
         handleClose={handleClose}
         open={open}
         title="View your final score?"
-      ></ConfirmationDialog>
+      />
       <FinishedDialog
         open={finishedOpen}
-        handleClose={handleFinishedClose}
+        handleClose={() => setFinishedOpen(false)}
         result={result}
-      ></FinishedDialog>
+      />
+      <TipDialog 
+        open={tipOpen}
+        score={attempts[0]}
+        handleClose={() => setTipOpen(false)}
+      />
+
       {width > 1000 && (
         <Container>
           <EmailSidebarContainer>

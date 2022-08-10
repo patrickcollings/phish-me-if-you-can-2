@@ -53,7 +53,7 @@ export const getScoreTitle = (score) => {
   if (score >= 90 && score < 100)
     return 'so close...';
   if (score >= 100)
-    return 'congratulations. You are ready for the internet!';
+    return 'Congratulations. You are ready for the internet!';
 
   return 'uncharted territory';
 } 
