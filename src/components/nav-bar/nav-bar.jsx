@@ -54,7 +54,7 @@ export default function NavBar({openClick, resetClick, attempts, result}) {
                   textAlign: "center",
                   width: "100%",
                   margin: "0",
-                  fontSize: "12px",
+                  fontSize: "13px",
                   color: "#e6e0ff",
                 }}
               >

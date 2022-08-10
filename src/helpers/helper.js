@@ -57,3 +57,20 @@ export const getScoreTitle = (score) => {
 
   return 'uncharted territory';
 } 
+
+const emailColors = [
+  "#6ddc6e",
+  "#5b82d2",
+  "#f7d9a3",
+  "#01c1ae",
+  "#ed5c9f",
+  "#0d5850",
+  "#730b0b",
+  "#625c5b",
+  "#46416a",
+  "#5d5909",
+];
+
+export const getColor = (index) => {
+  return emailColors[index];
+}

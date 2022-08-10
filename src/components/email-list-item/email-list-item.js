@@ -2,13 +2,14 @@ import { getHoursAndMinutes } from "../../helpers/helper";
 import { Cancel, CheckCircle } from "@mui/icons-material/";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Link } from "react-router-dom";
+import { getColor } from '../../helpers/helper';
 
 let styles = {
   //   borderTop: "1px solid grey",
   borderBottom: "1px solid lightgrey",
   display: "flex",
   alignItems: "center",
-  padding: "0.75rem 0.5rem",
+  padding: "1.1rem 0.5rem",
   justifyContent: "space-between",
   cursor: "pointer",
 };
@@ -23,8 +24,7 @@ let textStyle = {
 };
 
 let circleStyle = {
-  backgroundColor: '#1976d2',
-  borderRadius: "50%",
+  borderRadius: "30%",
   width: "30px",
   height: "30px",
   textAlign: "center",
@@ -53,23 +53,29 @@ const getResult = (props) => {
 };
 
 export default function EmailListItem(props) {
+  const names = props.email.name.split(' ');
+  const initials = names.length === 1 ? names[0][0] : names[0][0] + names[names.length - 1][0];
   return (
     <>
-      <Link to={`${props.email.id}`} style={{ textDecoration: "none", color: 'unset' }}>
+      <Link
+        to={`${props.email.id}`}
+        style={{ textDecoration: "none", color: "unset" }}
+      >
         <div
-          // onClick={() => props.onClick(props.index)}
           style={Object.assign(
             {},
             styles,
-            props.isSelected
-              ? {
-                  backgroundColor: "#c9c7d3",
-                }
-              : {}
+            props.email.read && { backgroundColor: "#f1f1f1" },
+            props.isSelected && { backgroundColor: "#c9c7d3" },
           )}
         >
-          <div style={circleStyle}>
-            <p>{props.email.name[0].toUpperCase()}</p>
+          <div
+            style={{
+              ...circleStyle,
+              backgroundColor: getColor(props.email.id),
+            }}
+          >
+            <p>{initials}</p>
           </div>
           <div style={textStyle}>
             <span
@@ -78,7 +84,7 @@ export default function EmailListItem(props) {
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                fontSize: "14px",
+                fontSize: "16px",
               }}
             >
               {props.email.name}
@@ -88,7 +94,7 @@ export default function EmailListItem(props) {
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                fontSize: "13px",
+                fontSize: "15px",
                 fontWeight: props.email.read ? "" : "bold",
                 color: !props.email.read && "#493698",
               }}
@@ -104,7 +110,7 @@ export default function EmailListItem(props) {
           </span> */}
           </div>
           <div style={timestampStyle}>
-            {'correct' in props.email ? (
+            {"correct" in props.email ? (
               getResult(props)
             ) : (
               <div
@@ -121,7 +127,7 @@ export default function EmailListItem(props) {
                     position: "sticky",
                     top: "0",
                     right: "0",
-                    fontSize: "9px",
+                    fontSize: "11px",
                     fontWeight: props.email.read ? "" : "bold",
                   }}
                 >
