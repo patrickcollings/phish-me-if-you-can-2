@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import ExternalLinkDialog from "../ExternalLinkDialog/ExternalLinkDialog";
 
-const templateUrl = 'https://phish-me-templates.s3.amazonaws.com/';
+const templateUrl = process.env.REACT_APP_EMAIL_TEMPLATES_S3;
 
 export default function Template({ template }) {
-  const [open, setOpen] = useState(false);
   const [externalUrl, setExternalUrl] = useState('');
+  const [open, setOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(false);

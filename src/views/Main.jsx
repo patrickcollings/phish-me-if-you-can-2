@@ -4,17 +4,16 @@ import { useTour } from '@reactour/tour';
 import mixpanel from "mixpanel-browser";
 import styled from "styled-components";
 
-import emails from "../../helpers/emails";
-import { orderListByTime } from "../../helpers/helper";
-import EmailDisplay from "../../components/email-display/email-display";
-import EmailSidebar from "../../components/email-sidebar/email-sidebar";
-import FinishedDialog from "../../components/finished-dialog/finished-dialog";
-import NavBar from "../../components/nav-bar/nav-bar";
-import ConfirmationDialog from "../../components/confirmation-dialog/confirmation-dialog";
-import TipDialog from "../../components/TipDialog/TipDialog";
-import { SettingsInputComponent } from "@mui/icons-material";
+import emails from "../helpers/emails";
+import { checkChallengeStarted, orderListByTime } from "../helpers/helper";
+import EmailDisplay from "../components/EmailDisplay/EmailDisplay";
+import EmailSidebar from "../components/EmailSidebar/EmailSidebar";
+import FinishedDialog from "../components/FinishedDialog/FinishedDialog";
+import NavBar from "../components/NavBar/NavBar";
+import ConfirmationDialog from "../components/ConfirmationDialog/ConfirmationDialog";
+import TipDialog from "../components/TipDialog/TipDialog";
 import { Alert, Snackbar } from "@mui/material";
-
+import { getItem, getPreviousResults, setItem } from "../helpers/local-storage";
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 mixpanel.track("joined");
@@ -57,39 +56,10 @@ const Container = styled.div`
   display: flex;
 `;
 
-const date = new Date(2022, 4, 10);
-const month = date.toLocaleString("default", { month: "long" });
-const year = date.getFullYear();
-
-const checkChallengeStarted = (scores, completed = false) => {
-  if (!scores) return false;
-  for (let i = 0; i < scores.length; i++) {
-    if (scores[i].month === month && scores[i].year === year) {
-      return (completed && !scores[i].result) ? false : true;
-    }
-  }
-  return false;
-};
-
-let savedScores = JSON.parse(localStorage.getItem("phishme_scores"));
-let savedEmailList, savedScamList, savedShowResult, savedAttempts;
-
-if (savedScores && checkChallengeStarted(savedScores) ) {
-  savedShowResult = JSON.parse(localStorage.getItem("phishme_showResult"));
-  savedEmailList = JSON.parse(localStorage.getItem("phishme_emailList"));
-  savedScamList = JSON.parse(localStorage.getItem("phishme_scamList"));
-  savedAttempts = JSON.parse(localStorage.getItem("phishme_attempts"));
-} else {
-  if (savedScores) 
-    savedScores = [...savedScores, {month, year}];
-  else 
-    savedScores = [{ month, year }];
-}
-
+let { savedScores, savedEmailList, savedScamList, savedShowResult, savedAttempts } = getPreviousResults();
 orderListByTime(emails);
 
-export default function Result(props) {
-  
+export default function Main() {
   let params = useParams();
   let navigate = useNavigate();
   const location = useLocation();
@@ -306,11 +276,11 @@ export default function Result(props) {
   }, [params]);
 
   useEffect(() => {
-    localStorage.setItem("phishme_scamList", JSON.stringify(scamList));
+    setItem("phishme_scamList", JSON.stringify(scamList));
   }, [scamList]);
 
   useEffect(() => {
-    localStorage.setItem("phishme_emailList", JSON.stringify(emailList));
+    setItem("phishme_emailList", JSON.stringify(emailList));
   }, [emailList]);
 
   useEffect(() => {
@@ -330,18 +300,18 @@ export default function Result(props) {
     } else {
       setShowResult(false);
     }
-    localStorage.setItem("phishme_showResult", showResult);
+    setItem("phishme_showResult", showResult);
   }, [showResult]);
 
   useEffect(() => {
-    localStorage.setItem("phishme_attempts", JSON.stringify(attempts));
+    setItem("phishme_attempts", JSON.stringify(attempts));
     if ((attempts.length === 1 || attempts.length === 2) && (attempts[0] < 100 || attempts[1] < 100)) {
       setTipOpen(true);
     }
   }, [attempts]);
 
   useEffect(() => {
-    localStorage.setItem("phishme_scores", JSON.stringify(previousScores));
+    setItem("phishme_scores", JSON.stringify(previousScores));
   }, [previousScores]);
 
   useEffect(() => {

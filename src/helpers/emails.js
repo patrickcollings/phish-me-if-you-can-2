@@ -1,4 +1,4 @@
-import { getRandomTime } from "./helper";
+import { cyrb128, getRandomTime } from "./helper";
 
 const scamList = [
   {
@@ -7,9 +7,6 @@ const scamList = [
     email: "norton.support@gmail.com",
     to: "you",
     template: "norton-renewal",
-    // attachment: true,
-    // attachmentExtension: "exe",
-    // attachmentName: "openme",
     description:
       "The sender of this email is norton.support@gmail.com which is not an official email. Anyone can setup a Gmail account without having to verify who they are. These sort of scams are trying to get you to pay money for a service that you may actually have by scaring you into action. In this case by saying that you have already paid a lot of money for a renewal. They will then get you on the phone to extract money from you.",
   },
@@ -167,34 +164,9 @@ const addDefaults = (email, scam) => {
   return email;
 }  
 
-function cyrb128(str) {
-  let h1 = 1779033703,
-    h2 = 3144134277,
-    h3 = 1013904242,
-    h4 = 2773480762;
-  for (let i = 0, k; i < str.length; i++) {
-    k = str.charCodeAt(i);
-    h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
-    h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
-    h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
-    h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
-  }
-  h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
-  h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
-  h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
-  h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
-  return [
-    (h1 ^ h2 ^ h3 ^ h4) >>> 0,
-    (h2 ^ h1) >>> 0,
-    (h3 ^ h1) >>> 0,
-    (h4 ^ h1) >>> 0,
-  ];
-}
-
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" }).toLowerCase();
 const year = date.getFullYear();
-
 const seed = cyrb128(`${month}/${year}`)[0];
 
 Math.seed = function (s) {

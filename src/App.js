@@ -5,8 +5,8 @@ import mixpanel from "mixpanel-browser";
 
 import './App.css';
 import ExternalLinkDialog from './components/ExternalLinkDialog/ExternalLinkDialog';
-import Result from './views/result/result';
-import WelcomeDialog from './components/welcome-dialog.js/welcome-dialog';
+import Main from './views/Main';
+import WelcomeDialog from './components/WelcomeDialog.js/WelcomeDialog';
 import { Button } from '@mui/material';
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
@@ -175,9 +175,9 @@ function App() {
               element={<Navigate to={`/inbox/`} replace />}
             />
             {["/inbox", "/scambox"].map((path, index) => (
-              <Route path={path} element={<Result />} key={index}>
-                <Route path=":emailId" element={<Result />} replace />
-                <Route path="" element={<Result />} replace />
+              <Route path={path} element={<Main />} key={index}>
+                <Route path=":emailId" element={<Main />} replace />
+                <Route path="" element={<Main />} replace />
               </Route>
             ))}
           </Routes>

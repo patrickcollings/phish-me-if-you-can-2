@@ -9,7 +9,7 @@ import { TwitterIcon, TwitterShareButton, LinkedinIcon, LinkedinShareButton, Fac
 import Snackbar from "@mui/material/Snackbar";
 import { useState } from "react";
 import { getScoreTitle } from "../../helpers/helper";
-import './finished-dialog.css';
+import './FinishedDialog.css';
 import Subscribe from "../Subscribe/Subscribe";
 import mixpanel from "mixpanel-browser";
 

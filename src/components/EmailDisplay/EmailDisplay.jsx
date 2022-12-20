@@ -1,12 +1,10 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { getHoursAndMinutes } from "../../helpers/helper";
 import Template from "../EmailTemplate/EmailTemplate";
-import EmailOptionBar from "./email-option-bar";
-import Attachment from "./attachment";
+import EmailOptionBar from "./EmailOptionBar";
+import Attachment from "./Attachment";
 import logo from "../../assets/black-logo.png";
 
 export default function EmailDisplay({

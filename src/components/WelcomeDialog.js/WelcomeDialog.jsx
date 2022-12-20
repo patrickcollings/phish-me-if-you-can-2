@@ -9,7 +9,6 @@ import tutorialGraphic from '../../assets/tutorialGraphic.svg';
 import tutorialGraphicMobile from "../../assets/tutorialGraphicMobile.svg";
 
 import './WelcomeDialog.css';
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { useState } from "react";
 import { useTour } from '@reactour/tour';
 

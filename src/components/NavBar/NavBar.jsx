@@ -3,14 +3,12 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
-import { Done, RestartAlt, Menu } from "@mui/icons-material/";
 import Button from "@mui/material/Button";
 import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import EmailIcon from "@mui/icons-material/Email";
 
-import "./nav-bar.css";
-import logo from "../../assets/white-logo.png";
-import ConfirmationDialog from "../confirmation-dialog/confirmation-dialog";
+import "./NavBar.css";
+import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
 import SideDrawer from "../SideDrawer/SideDrawer";
 
 const date = new Date();

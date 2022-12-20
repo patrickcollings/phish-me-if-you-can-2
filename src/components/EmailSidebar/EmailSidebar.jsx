@@ -2,10 +2,10 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import EmailListItem from "../email-list-item/email-list-item";
+import EmailListItem from "../EmailListItem/EmailLIstItem";
 import { useNavigate, useLocation, matchRoutes, Link } from "react-router-dom";
 import { useEffect } from "react";
-import './email-sidebar.css';
+import './EmailSidebar.css';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
