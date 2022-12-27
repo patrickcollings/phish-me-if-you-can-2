@@ -13,7 +13,12 @@ import NavBar from "../components/NavBar/NavBar";
 import ConfirmationDialog from "../components/ConfirmationDialog/ConfirmationDialog";
 import TipDialog from "../components/TipDialog/TipDialog";
 import { Alert, Snackbar } from "@mui/material";
-import { getItem, getPreviousResults, setItem } from "../helpers/local-storage";
+import { getPreviousResults, setItem } from "../helpers/local-storage";
+import { useContext } from "react";
+import { WindowWidthContext } from "../context/WindowWidthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { deselect, select } from '../redux/selectedEmail';
+import { show, hide } from "../redux/showResult";
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 mixpanel.track("joined");
@@ -63,6 +68,7 @@ export default function Main() {
   let params = useParams();
   let navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const [scamList, setScamList] = useState(savedScamList ?? []);
   const [emailList, setEmailList] = useState(
@@ -72,33 +78,17 @@ export default function Main() {
   const [open, setOpen] = useState(false);
   const [tipOpen, setTipOpen] = useState(false);
   const [finishedOpen, setFinishedOpen] = useState(false);
-  const [showResult, setShowResult] = useState(savedShowResult ?? false);
+  // const [showResult, setShowResult] = useState(savedShowResult ?? false);
+  const showResult = useSelector((state) => state.showResult.value);
   const [attempts, setAttempts] = useState(savedAttempts ?? []);
   const [previousScores, setPreviousScores] = useState(savedScores ?? []);
   const [result, setResult] = useState(showResult ? calculateResults : {});
-  const [width, setWindowWidth] = useState(0);
-  const [selectedEmail, setSelectedEmail] = useState(null);
   const [openScamboxFullSnackBar, setScamboxFullSnackBar] = useState(false);
   const { isOpen, currentStep, setCurrentStep } = useTour();
 
-  const updateDimensions = () => {
-    const width = window.innerWidth;
-    setWindowWidth(width);
-  };
+  const selectedEmail = useSelector((state) => state.selectedEmail.value);
 
-  function selectEmail(index) {
-    emailList[index]["read"] = true;
-    setIsScamSelected(false);
-    setSelectedEmail(emailList[index]);
-    setEmailList([...emailList]);
-  }
-
-  function selectScamEmail(index) {
-    scamList[index]["read"] = true;
-    setIsScamSelected(true);
-    setSelectedEmail(scamList[index]);
-    setScamList([...scamList]);
-  }
+  const width = useContext(WindowWidthContext);
 
   function findEmailIndex(selectedEmail) {
     return emailList.findIndex((email) => selectedEmail.id === email.id);
@@ -135,11 +125,6 @@ export default function Main() {
     orderListByTime(scamList);
     setScamList([...scamList]);
     navigate("/scambox");
-  }
-
-  function handleDeselect() {
-    let inboxType = location.pathname.split('/')[1];
-    navigate(`/${inboxType}`, {replace: false});
   }
 
   function calculateResults() {
@@ -179,8 +164,8 @@ export default function Main() {
     localStorage.removeItem("phishme_attempts");
     setScamList([]);
     setEmailList(JSON.parse(JSON.stringify(emails)));
-    setSelectedEmail(null);
-    setShowResult(false);
+    dispatch(deselect());
+    dispatch(hide());
     setOpen(false);
     setIsScamSelected(false);
     setResult({});
@@ -210,34 +195,25 @@ export default function Main() {
       } else {
         setAttempts([...attempts, results.caught]);
       }
-      setShowResult(true);
+      dispatch(show());
     } 
   };
   
   const getEmailSidebar = () => {
     return (
-
           <EmailSidebar
             emailList={emailList}
             scamList={scamList}
-            selectEmail={selectEmail}
-            selectScamEmail={selectScamEmail}
-            selectedEmail={selectedEmail}
-            showResult={showResult}
           />
     );
   };
 
-  const getEmailDisplay = (isMobile = false) => {
+  const getEmailDisplay = () => {
     return (
       <EmailDisplay
-        selectedEmail={selectedEmail}
         isScamEmail={isScamSelected}
         add={addToScamList}
         remove={removeFromScamList}
-        isMobile={isMobile}
-        handleDeselect={handleDeselect}
-        showResult={showResult}
       ></EmailDisplay>
     );
   };
@@ -255,23 +231,24 @@ export default function Main() {
     if (emailFound) {
       setIsScamSelected(false);
       let index = findEmailIndex(emailFound);
-      emailFound.read = true;
+      emailFound['read'] = true;
       setEmailList(e => {
         e[index].read = true;
         return [...e]
       });
-      setSelectedEmail(emailFound);
+      dispatch(select(emailFound));
       if (currentStep === 1 && isOpen) setCurrentStep(2);
     }
     else if (scamFound) {
       setIsScamSelected(true);
       let index = findScamEmailIndex(scamFound);
       scamFound.read = true;
-      scamList[index].read = true;
+      console.log(scamList[index]);
+      scamList[index]['read'] = true;
       setScamList([...scamList]);
-      setSelectedEmail(scamFound);
+      dispatch(select(scamFound));
     } else {
-      setSelectedEmail(null);
+      dispatch(deselect());
     }
   }, [params]);
 
@@ -298,7 +275,7 @@ export default function Main() {
         setPreviousScores(scoreList);
       }
     } else {
-      setShowResult(false);
+      dispatch(hide());
     }
     setItem("phishme_showResult", showResult);
   }, [showResult]);
@@ -314,18 +291,11 @@ export default function Main() {
     setItem("phishme_scores", JSON.stringify(previousScores));
   }, [previousScores]);
 
-  useEffect(() => {
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
-  }, []);
-
   return (
     <>
       <NavBar
         openClick={handleClickOpen}
         resetClick={handleClickReset}
-        showResult={showResult}
         result={result}
         attempts={attempts}
       />

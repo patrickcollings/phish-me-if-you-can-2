@@ -6,26 +6,27 @@ import Template from "../EmailTemplate/EmailTemplate";
 import EmailOptionBar from "./EmailOptionBar";
 import Attachment from "./Attachment";
 import logo from "../../assets/black-logo.png";
+import { useContext } from "react";
+import { WindowWidthContext } from "../../context/WindowWidthContext";
+import { useSelector } from "react-redux";
 
 export default function EmailDisplay({
-  selectedEmail,
   isScamEmail,
-  handleDeselect,
   remove,
   add,
-  isMobile,
-  showResult,
 }) {
+  const width = useContext(WindowWidthContext);
+  const isMobile = width < 1000;
+  const showResult = useSelector((state) => state.showResult.value);
+  const selectedEmail = useSelector((state) => state.selectedEmail.value);
+
   if (selectedEmail) {
     return (
       <>
         <EmailOptionBar
           isScamEmail={isScamEmail}
-          isComplete={showResult}
-          handleDeselect={handleDeselect}
           remove={remove}
           add={add}
-          isMobile={isMobile}
         />
 
         <div

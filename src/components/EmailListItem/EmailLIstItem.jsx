@@ -3,9 +3,9 @@ import { Cancel, CheckCircle } from "@mui/icons-material/";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Link } from "react-router-dom";
 import { getColor } from '../../helpers/helper';
+import { useSelector } from "react-redux";
 
 let styles = {
-  //   borderTop: "1px solid grey",
   borderBottom: "1px solid lightgrey",
   display: "flex",
   alignItems: "center",
@@ -55,6 +55,10 @@ const getResult = (props) => {
 export default function EmailListItem(props) {
   const names = props.email.name.split(' ');
   const initials = names.length === 1 ? names[0][0] : names[0][0] + names[names.length - 1][0];
+  
+  const selectedEmail = useSelector((state) => state.selectedEmail.value);
+  const isSelected = selectedEmail === props.email.id; 
+
   return (
     <>
       <Link
@@ -66,7 +70,7 @@ export default function EmailListItem(props) {
             {},
             styles,
             props.email.read && { backgroundColor: "#f1f1f1" },
-            props.isSelected && { backgroundColor: "#c9c7d3" },
+            isSelected && { backgroundColor: "#c9c7d3" },
           )}
         >
           <div

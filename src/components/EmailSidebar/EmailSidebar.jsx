@@ -42,15 +42,11 @@ function a11yProps(index) {
   };
 }
 
-function getEmailList(list, selectEmail, selectedEmail, showResult) {
+function getEmailList(list) {
   return list.map((email, index) => (
     <EmailListItem
       key={index}
       email={email}
-      index={index}
-      onClick={selectEmail}
-      isSelected={selectedEmail && selectedEmail.id === email.id}
-      showResult={showResult}
     ></EmailListItem>
   ));
 }
@@ -103,17 +99,11 @@ export default function EmailSidebar(props) {
       <TabPanel value={value} index={0} data-tour="sidebar-box">
         {getEmailList(
           props.emailList,
-          props.selectEmail,
-          props.selectedEmail,
-          props.showResult
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
         {getEmailList(
           props.scamList,
-          props.selectScamEmail,
-          props.selectedEmail,
-          props.showResult
         )}
       </TabPanel>
     </Box>

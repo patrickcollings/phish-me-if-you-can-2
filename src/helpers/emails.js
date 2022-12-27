@@ -157,13 +157,6 @@ const normalList = [
   },
 ];
 
-const addDefaults = (email, scam) => {
-  email['read'] = false;
-  email['scam'] = scam;
-  email['time'] = getRandomTime();
-  return email;
-}  
-
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" }).toLowerCase();
 const year = date.getFullYear();
@@ -200,6 +193,13 @@ const monthlyNormalEmailIndexes = getRandomIndexes(5, normalList.length);
 
 const monthlyScamList = monthlyScamEmailIndexes.map((index) => scamList[index]);
 const monthlyNormalList = monthlyNormalEmailIndexes.map((index) => normalList[index]);
+
+const addDefaults = (email, scam) => {
+  email["read"] = false;
+  email["scam"] = scam;
+  email["time"] = getRandomTime();
+  return email;
+};  
 
 let emails = [
   ...monthlyScamList.map((email) => addDefaults(email, true)),

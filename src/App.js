@@ -8,6 +8,7 @@ import ExternalLinkDialog from './components/ExternalLinkDialog/ExternalLinkDial
 import Main from './views/Main';
 import WelcomeDialog from './components/WelcomeDialog.js/WelcomeDialog';
 import { Button } from '@mui/material';
+import { GlobalContextProvider } from './context/GlobalContextProvider';
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 
@@ -168,19 +169,21 @@ function App() {
             handleClose={() => setExternalLinkOpen(false)}
           ></ExternalLinkDialog>
           <WelcomeDialog open={open} handleClose={handleClose} />
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={<Navigate to={`/inbox/`} replace />}
-            />
-            {["/inbox", "/scambox"].map((path, index) => (
-              <Route path={path} element={<Main />} key={index}>
-                <Route path=":emailId" element={<Main />} replace />
-                <Route path="" element={<Main />} replace />
-              </Route>
-            ))}
-          </Routes>
+          <GlobalContextProvider>
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={<Navigate to={`/inbox/`} replace />}
+              />
+                {["/inbox", "/scambox"].map((path, index) => (
+                  <Route path={path} element={<Main />} key={index}>
+                    <Route path=":emailId" element={<Main />} replace />
+                    <Route path="" element={<Main />} replace />
+                  </Route>
+                ))}
+            </Routes>
+          </GlobalContextProvider>
         </div>
       </TourProvider>
     </>

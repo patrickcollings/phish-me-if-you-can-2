@@ -1,15 +1,22 @@
 import { Icon } from "@mui/material";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import { ArrowBack } from "@mui/icons-material";
+import { useContext } from "react";
+import { WindowWidthContext } from "../../context/WindowWidthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { deselect } from '../../redux/selectedEmail';
 
 export default function EmailOptionBar({
   isScamEmail,
-  handleDeselect,
   remove,
   add,
-  isMobile,
-  isComplete,
 }) {
+  const dispatch = useDispatch();
+
+  const width = useContext(WindowWidthContext);
+  const showResult = useSelector((state) => state.showResult.value);
+
+  const isMobile = width < 1000;
   return (
     <>
       <div
@@ -28,14 +35,14 @@ export default function EmailOptionBar({
               padding: "5px 0",
               cursor: "pointer",
             }}
-            onClick={handleDeselect}
+            onClick={() => dispatch(deselect())}
           >
             <Icon aria-label="done" fontSize="large" style={{ color: "black" }}>
               <ArrowBack fontSize="large" />
             </Icon>
           </div>
         )}
-        {!isComplete && (
+        {!showResult && (
           <div
             data-tour="add-to-scambox"
             style={{
