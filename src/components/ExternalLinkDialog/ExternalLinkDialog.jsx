@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import { DialogContent } from "@mui/material";
 
 export default function ExternalLinkDialog(props) {
+  if (typeof props.url !== 'String') return;
     return (
       <Dialog
         open={props.open}

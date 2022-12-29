@@ -9,7 +9,7 @@ export const selectedEmailSlice = createSlice({
   initialState,
   reducers: {
     select: (state, action) => {
-        state.value = Object.assign({}, action.payload);
+        state.value = JSON.parse(JSON.stringify(action.payload));
     },
     deselect: (state) => {
         state.value = null;

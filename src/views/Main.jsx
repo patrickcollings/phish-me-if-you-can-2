@@ -19,6 +19,8 @@ import { WindowWidthContext } from "../context/WindowWidthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { deselect, select } from '../redux/selectedEmail';
 import { show, hide } from "../redux/showResult";
+import { appendEmailList, readEmail, resetEmailList, showResultOnEmail, spliceEmailList } from "../redux/emailList";
+import { appendScamList, resetScamList, showResultOnScamEmail, spliceScamList } from "../redux/scamList";
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 mixpanel.track("joined");
@@ -62,7 +64,6 @@ const Container = styled.div`
 `;
 
 let { savedScores, savedEmailList, savedScamList, savedShowResult, savedAttempts } = getPreviousResults();
-orderListByTime(emails);
 
 export default function Main() {
   let params = useParams();
@@ -70,15 +71,9 @@ export default function Main() {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const [scamList, setScamList] = useState(savedScamList ?? []);
-  const [emailList, setEmailList] = useState(
-    savedEmailList ?? JSON.parse(JSON.stringify(emails))
-  );
-  const [isScamSelected, setIsScamSelected] = useState(false);
   const [open, setOpen] = useState(false);
   const [tipOpen, setTipOpen] = useState(false);
   const [finishedOpen, setFinishedOpen] = useState(false);
-  // const [showResult, setShowResult] = useState(savedShowResult ?? false);
   const showResult = useSelector((state) => state.showResult.value);
   const [attempts, setAttempts] = useState(savedAttempts ?? []);
   const [previousScores, setPreviousScores] = useState(savedScores ?? []);
@@ -87,6 +82,8 @@ export default function Main() {
   const { isOpen, currentStep, setCurrentStep } = useTour();
 
   const selectedEmail = useSelector((state) => state.selectedEmail.value);
+  const emailList = useSelector((state) => state.emailList.value);
+  const scamList = useSelector((state) => state.scamList.value);
 
   const width = useContext(WindowWidthContext);
 
@@ -105,12 +102,8 @@ export default function Main() {
       setScamboxFullSnackBar(true);
       return;
     }
-    let newScamList = [...scamList, selectedEmail];
-    orderListByTime(newScamList);
-    setScamList(newScamList);
-    emailList.splice(index, 1);
-    orderListByTime(emailList);
-    setEmailList([...emailList]);
+    dispatch(appendScamList(selectedEmail));
+    dispatch(spliceEmailList(index))
     navigate('/inbox');
   }
 
@@ -118,12 +111,8 @@ export default function Main() {
     const index = findScamEmailIndex(selectedEmail);
     if (index < 0) return;
     delete selectedEmail.correct;
-    let newEmailList = [...emailList, selectedEmail];
-    orderListByTime(newEmailList);
-    setEmailList(newEmailList);
-    scamList.splice(index, 1);
-    orderListByTime(scamList);
-    setScamList([...scamList]);
+    dispatch(appendEmailList(selectedEmail));
+    dispatch(spliceScamList(index));
     navigate("/scambox");
   }
 
@@ -142,14 +131,6 @@ export default function Main() {
     };
   }
 
-  const showScamListResults = () => {
-    scamList.map((email) => {
-      email.correct = email.scam;
-      return email;
-    });
-    setScamList([...scamList]);
-  }
-
   const handleClickOpen = () => {
     if (attempts.length > 2) setFinishedOpen(true);
     if (attempts.length < 2) handleClose(true);
@@ -162,12 +143,11 @@ export default function Main() {
     localStorage.removeItem("phishme_showResult");
     localStorage.removeItem("phishme_hide_welcome_dialog");
     localStorage.removeItem("phishme_attempts");
-    setScamList([]);
-    setEmailList(JSON.parse(JSON.stringify(emails)));
+    dispatch(resetScamList());
+    dispatch(resetEmailList())
     dispatch(deselect());
     dispatch(hide());
     setOpen(false);
-    setIsScamSelected(false);
     setResult({});
     setAttempts([]);
   };
@@ -211,7 +191,6 @@ export default function Main() {
   const getEmailDisplay = () => {
     return (
       <EmailDisplay
-        isScamEmail={isScamSelected}
         add={addToScamList}
         remove={removeFromScamList}
       ></EmailDisplay>
@@ -229,23 +208,11 @@ export default function Main() {
       );
     }
     if (emailFound) {
-      setIsScamSelected(false);
-      let index = findEmailIndex(emailFound);
-      emailFound['read'] = true;
-      setEmailList(e => {
-        e[index].read = true;
-        return [...e]
-      });
       dispatch(select(emailFound));
+      dispatch(readEmail(emailFound))
       if (currentStep === 1 && isOpen) setCurrentStep(2);
     }
     else if (scamFound) {
-      setIsScamSelected(true);
-      let index = findScamEmailIndex(scamFound);
-      scamFound.read = true;
-      console.log(scamList[index]);
-      scamList[index]['read'] = true;
-      setScamList([...scamList]);
       dispatch(select(scamFound));
     } else {
       dispatch(deselect());
@@ -253,21 +220,9 @@ export default function Main() {
   }, [params]);
 
   useEffect(() => {
-    setItem("phishme_scamList", JSON.stringify(scamList));
-  }, [scamList]);
-
-  useEffect(() => {
-    setItem("phishme_emailList", JSON.stringify(emailList));
-  }, [emailList]);
-
-  useEffect(() => {
     if (attempts.length === 3 && showResult) {
-      emailList.map((email) => {
-        email.correct = !email.scam;
-        return email;
-      });
-      setEmailList([...emailList]);
-      showScamListResults();
+      dispatch(showResultOnEmail());
+      dispatch(showResultOnScamEmail());
       setFinishedOpen(true);
       if (!checkChallengeStarted(previousScores, true)) {
         const scoreList = [...previousScores];
@@ -277,7 +232,6 @@ export default function Main() {
     } else {
       dispatch(hide());
     }
-    setItem("phishme_showResult", showResult);
   }, [showResult]);
 
   useEffect(() => {

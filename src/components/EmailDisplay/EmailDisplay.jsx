@@ -11,7 +11,6 @@ import { WindowWidthContext } from "../../context/WindowWidthContext";
 import { useSelector } from "react-redux";
 
 export default function EmailDisplay({
-  isScamEmail,
   remove,
   add,
 }) {
@@ -24,7 +23,6 @@ export default function EmailDisplay({
     return (
       <>
         <EmailOptionBar
-          isScamEmail={isScamEmail}
           remove={remove}
           add={add}
         />

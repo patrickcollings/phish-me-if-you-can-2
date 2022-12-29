@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { deselect } from '../../redux/selectedEmail';
 
 export default function EmailOptionBar({
-  isScamEmail,
   remove,
   add,
 }) {
@@ -15,8 +14,13 @@ export default function EmailOptionBar({
 
   const width = useContext(WindowWidthContext);
   const showResult = useSelector((state) => state.showResult.value);
-
+  const selectedEmail = useSelector((state) => state.selectedEmail.value);
+  const scamList = useSelector((state) => state.scamList.value);
   const isMobile = width < 1000;
+  const isScamBox = (scamList.findIndex(
+    (email) => selectedEmail.id === email.id
+  ) > -1);
+
   return (
     <>
       <div
@@ -51,10 +55,10 @@ export default function EmailOptionBar({
               padding: "5px",
               cursor: "pointer",
             }}
-            onClick={isScamEmail ? remove : add}
+            onClick={isScamBox ? remove : add}
           >
             <p style={{ margin: '0px 5px' }}>
-              {isScamEmail ? "remove from scambox" : "add to scambox"}
+              {isScamBox ? "remove from scambox" : "add to scambox"}
             </p>
             <Icon
               aria-label="done"

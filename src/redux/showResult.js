@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+
 const initialState = {
-  value: false,
+  value: JSON.parse(localStorage.getItem('phishme_showResult')),
 };
 
 export const showResultSlice = createSlice({

@@ -1,4 +1,4 @@
-import { cyrb128, getRandomTime } from "./helper";
+import { cyrb128, getRandomTime, orderListByTime } from "./helper";
 
 const scamList = [
   {
@@ -210,5 +210,7 @@ emails = emails.map((email, index) => {
   email['id'] = index;
   return email;
 });
+
+orderListByTime(emails);
 
 export default emails;
