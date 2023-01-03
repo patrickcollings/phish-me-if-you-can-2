@@ -2,10 +2,11 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import EmailListItem from "../EmailListItem/EmailLIstItem";
+import EmailListItem from "../EmailListItem/EmailListItem";
 import { useNavigate, useLocation, matchRoutes, Link } from "react-router-dom";
 import { useEffect } from "react";
 import './EmailSidebar.css';
+import { useSelector } from "react-redux";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,6 +63,8 @@ export default function EmailSidebar(props) {
   const [value, setValue] = React.useState(0);
   let navigate = useNavigate();
   const location = useLocation();
+  const emailList = useSelector((state) => state.emails.emailList);
+  const scamList = useSelector((state) => state.emails.scamList);
   
   useEffect(() => {
     const [{ route }] = matchRoutes(routes, location);
@@ -83,13 +86,13 @@ export default function EmailSidebar(props) {
           centered
         >
           <Tab
-            label={`Inbox (${props.emailList.length})`}
+            label={`Inbox (${emailList.length})`}
             component={Link}
             to={"/inbox"}
             {...a11yProps(0)}
           />
           <Tab
-            label={`Scambox (${props.scamList.length})`}
+            label={`Scambox (${scamList.length})`}
             component={Link}
             to={"/scambox"}
             {...a11yProps(1)}
@@ -98,12 +101,12 @@ export default function EmailSidebar(props) {
       </Box>
       <TabPanel value={value} index={0} data-tour="sidebar-box">
         {getEmailList(
-          props.emailList,
+          emailList,
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
         {getEmailList(
-          props.scamList,
+          scamList,
         )}
       </TabPanel>
     </Box>

@@ -1,11 +1,10 @@
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTour } from '@reactour/tour';
 import mixpanel from "mixpanel-browser";
 import styled from "styled-components";
 
-import emails from "../helpers/emails";
-import { checkChallengeStarted, orderListByTime } from "../helpers/helper";
+import { checkChallengeStarted } from "../helpers/helper";
 import EmailDisplay from "../components/EmailDisplay/EmailDisplay";
 import EmailSidebar from "../components/EmailSidebar/EmailSidebar";
 import FinishedDialog from "../components/FinishedDialog/FinishedDialog";
@@ -17,10 +16,8 @@ import { getPreviousResults, setItem } from "../helpers/local-storage";
 import { useContext } from "react";
 import { WindowWidthContext } from "../context/WindowWidthContext";
 import { useDispatch, useSelector } from "react-redux";
-import { deselect, select } from '../redux/selectedEmail';
 import { show, hide } from "../redux/showResult";
-import { appendEmailList, readEmail, resetEmailList, showResultOnEmail, spliceEmailList } from "../redux/emailList";
-import { appendScamList, resetScamList, showResultOnScamEmail, spliceScamList } from "../redux/scamList";
+import { addSelectedEmailToScamList, deselectEmail, readEmail, removeSelectedEmailFromScamList, resetEmails, selectEmail, showResultOnEmail } from "../redux/emails";
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 mixpanel.track("joined");
@@ -63,17 +60,15 @@ const Container = styled.div`
   display: flex;
 `;
 
-let { savedScores, savedEmailList, savedScamList, savedShowResult, savedAttempts } = getPreviousResults();
+let { savedScores, savedAttempts } = getPreviousResults();
 
 export default function Main() {
   let params = useParams();
-  let navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // TODO implement global modal service
   const [tipOpen, setTipOpen] = useState(false);
-  const [finishedOpen, setFinishedOpen] = useState(false);
+  const [finishedOpen, setFinishedOpen] = useState(false); 
   const showResult = useSelector((state) => state.showResult.value);
   const [attempts, setAttempts] = useState(savedAttempts ?? []);
   const [previousScores, setPreviousScores] = useState(savedScores ?? []);
@@ -81,40 +76,10 @@ export default function Main() {
   const [openScamboxFullSnackBar, setScamboxFullSnackBar] = useState(false);
   const { isOpen, currentStep, setCurrentStep } = useTour();
 
-  const selectedEmail = useSelector((state) => state.selectedEmail.value);
-  const emailList = useSelector((state) => state.emailList.value);
-  const scamList = useSelector((state) => state.scamList.value);
-
+  const selectedEmail = useSelector((state) => state.emails.selectedEmail);
+  const emailList = useSelector((state) => state.emails.emailList);
+  const scamList = useSelector((state) => state.emails.scamList);
   const width = useContext(WindowWidthContext);
-
-  function findEmailIndex(selectedEmail) {
-    return emailList.findIndex((email) => selectedEmail.id === email.id);
-  }
-
-  function findScamEmailIndex(selectedEmail) {
-    return scamList.findIndex((email) => selectedEmail.id === email.id);
-  }
-
-  function addToScamList() {
-    const index = findEmailIndex(selectedEmail);
-    if (index < 0) return;
-    if (scamList.length > 4) {
-      setScamboxFullSnackBar(true);
-      return;
-    }
-    dispatch(appendScamList(selectedEmail));
-    dispatch(spliceEmailList(index))
-    navigate('/inbox');
-  }
-
-  function removeFromScamList() {
-    const index = findScamEmailIndex(selectedEmail);
-    if (index < 0) return;
-    delete selectedEmail.correct;
-    dispatch(appendEmailList(selectedEmail));
-    dispatch(spliceScamList(index));
-    navigate("/scambox");
-  }
 
   function calculateResults() {
     const scamsMissed = emailList.filter((email) => !!email.scam);
@@ -138,14 +103,10 @@ export default function Main() {
   };
 
   const handleClickReset = () => {
-    localStorage.removeItem("phishme_scamList");
-    localStorage.removeItem("phishme_emailList");
-    localStorage.removeItem("phishme_showResult");
     localStorage.removeItem("phishme_hide_welcome_dialog");
     localStorage.removeItem("phishme_attempts");
-    dispatch(resetScamList());
-    dispatch(resetEmailList())
-    dispatch(deselect());
+    dispatch(resetEmails())
+    dispatch(deselectEmail());
     dispatch(hide());
     setOpen(false);
     setResult({});
@@ -178,24 +139,6 @@ export default function Main() {
       dispatch(show());
     } 
   };
-  
-  const getEmailSidebar = () => {
-    return (
-          <EmailSidebar
-            emailList={emailList}
-            scamList={scamList}
-          />
-    );
-  };
-
-  const getEmailDisplay = () => {
-    return (
-      <EmailDisplay
-        add={addToScamList}
-        remove={removeFromScamList}
-      ></EmailDisplay>
-    );
-  };
 
   useEffect(() => {
     let emailFound, scamFound;
@@ -208,21 +151,20 @@ export default function Main() {
       );
     }
     if (emailFound) {
-      dispatch(select(emailFound));
+      dispatch(selectEmail(emailFound));
       dispatch(readEmail(emailFound))
       if (currentStep === 1 && isOpen) setCurrentStep(2);
     }
     else if (scamFound) {
-      dispatch(select(scamFound));
+      dispatch(selectEmail(scamFound));
     } else {
-      dispatch(deselect());
+      dispatch(deselectEmail());
     }
   }, [params]);
 
   useEffect(() => {
     if (attempts.length === 3 && showResult) {
       dispatch(showResultOnEmail());
-      dispatch(showResultOnScamEmail());
       setFinishedOpen(true);
       if (!checkChallengeStarted(previousScores, true)) {
         const scoreList = [...previousScores];
@@ -287,19 +229,25 @@ export default function Main() {
       {width > 1000 && (
         <Container>
           <EmailSidebarContainer>
-            <div style={{ height: "100%" }}>{getEmailSidebar()}</div>
+            <div style={{ height: "100%" }}>
+              <EmailSidebar />
+            </div>
           </EmailSidebarContainer>
-          <EmailDisplayContainer>{getEmailDisplay()}</EmailDisplayContainer>
+          <EmailDisplayContainer>
+            <EmailDisplay />
+          </EmailDisplayContainer>
         </Container>
       )}
       {width < 1000 && !selectedEmail && (
         <EmailSidebarContainerMobile>
-          <div style={{ height: "100%" }}>{getEmailSidebar()}</div>
+          <div style={{ height: "100%" }}>
+            <EmailSidebar />
+          </div>
         </EmailSidebarContainerMobile>
       )}
       {width < 1000 && !!selectedEmail && (
         <EmailSidebarContainerMobile>
-          <div style={{ height: "100%" }}>{getEmailDisplay(true)}</div>
+          <div style={{ height: "100%" }}><EmailDisplay /></div>
         </EmailSidebarContainerMobile>
       )}
     </>

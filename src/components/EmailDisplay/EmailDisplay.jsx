@@ -17,7 +17,7 @@ export default function EmailDisplay({
   const width = useContext(WindowWidthContext);
   const isMobile = width < 1000;
   const showResult = useSelector((state) => state.showResult.value);
-  const selectedEmail = useSelector((state) => state.selectedEmail.value);
+  const selectedEmail = useSelector((state) => state.emails.selectedEmail);
 
   if (selectedEmail) {
     return (

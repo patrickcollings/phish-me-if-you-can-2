@@ -1,17 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import selectedEmail from "./selectedEmail";
 import showResult from './showResult';
-import emailList from "./emailList";
-import scamList from "./scamList";
+import emails from "./emails";
 
 const preloadedState = localStorage.getItem('reduxStore') ? JSON.parse(localStorage.getItem('reduxStore')) : {};
 
 export const store = configureStore({
   reducer: {
-    selectedEmail,
     showResult,
-    emailList,
-    scamList
+    emails
   },
   preloadedState,
 });
