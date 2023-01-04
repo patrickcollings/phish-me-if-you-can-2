@@ -1,29 +1,23 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContent } from "@mui/material";
+import useModal from "../../../hooks/useModal";
 
-export default function ConfirmationDialog(props) {
+export default function ConfirmationDialog({description, title, handleClose}) {
+  const { handleModal } = useModal();
   return (
     <div>
-      <Dialog
-        open={props.open}
-        onClose={() => {
-          props.handleClose(false);
-        }}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{props.title ? props.title : "Are you sure?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{title ? title : "Are you sure?"}</DialogTitle>
         <DialogContent>
-            {props.description && <p>{props.description}</p>}
+            {description && <p>{description}</p>}
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
-              props.handleClose(false);
+              handleModal(false);
+              handleClose(false);
             }}
           >
             No
@@ -31,13 +25,13 @@ export default function ConfirmationDialog(props) {
           <Button
             variant="contained"
             onClick={() => {
-              props.handleClose(true);
+              handleModal(false);
+              handleClose(true);
             }}
           >
             Yes
           </Button>
         </DialogActions>
-      </Dialog>
     </div>
   );
 }

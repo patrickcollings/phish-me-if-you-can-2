@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,21 +8,49 @@ import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import EmailIcon from "@mui/icons-material/Email";
 
 import "./NavBar.css";
-import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
 import SideDrawer from "../SideDrawer/SideDrawer";
+import useModal from "../../hooks/useModal";
+import { FinishedDialog } from '../Modals/FinishedDialog/FinishedDialog';
+import ConfirmationDialog from "../Modals/ConfirmationDialog/ConfirmationDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentAttempts, selectCurrentResult, selectIsFinished, updateScoreForCurrentMonth } from "../../redux/scores";
+import TipDialog from "../Modals/TipDialog/TipDialog";
+import { TOTAL_ATTEMPTS_ALLOWED } from "../../helpers/constants";
 
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" });
 
-export default function NavBar({ openClick, resetClick, attempts, result }) {
-  const [open, setOpen] = useState(false);
+export default function NavBar() {
+  const dispatch = useDispatch();
 
-  const isFinished = attempts.length === 3;
+  const { handleModal } = useModal();
 
-  const confirmReset = (confirm) => {
-    if (confirm) resetClick();
-    setOpen(false);
-  };
+  const isFinished = useSelector((state) => selectIsFinished(state));
+  const currentAttempts = useSelector((state) => selectCurrentAttempts(state));
+  const currentResult = useSelector((state) => selectCurrentResult(state));
+  const emailList = useSelector((state) => state.emails.emailList);
+  const scamList = useSelector((state) => state.emails.scamList);
+
+  const handleSubmit = () => {
+    if (currentAttempts.length === TOTAL_ATTEMPTS_ALLOWED - 1) {
+      handleModal(
+        <ConfirmationDialog
+          handleClose={(confirm) => confirm && dispatch(updateScoreForCurrentMonth({ emailList, scamList }))}
+          description={"Finish the game?"}
+        ></ConfirmationDialog>
+      );
+    } else {
+      dispatch(updateScoreForCurrentMonth({ emailList, scamList }));
+    }
+  }
+
+  useEffect(() => {
+    if (currentResult && isFinished) {
+      handleModal(<FinishedDialog />);
+    } else {
+      handleModal(<TipDialog />);
+    }
+  }, [currentResult])
 
   return (
     <>
@@ -39,10 +67,7 @@ export default function NavBar({ openClick, resetClick, attempts, result }) {
                 alignItems: "center",
               }}
             >
-              <SideDrawer
-                openResetConfirmation={setOpen}
-                showReset={isFinished}
-              />
+              <SideDrawer />
               <p className="ChallengeTitle" style={{ margin: "0 0 0 1rem" }}>
                 {month} challenge
               </p>
@@ -70,16 +95,16 @@ export default function NavBar({ openClick, resetClick, attempts, result }) {
                 }}
               >
                 {isFinished ? (
-                  <span>{result.score}%</span>
+                  <span>{currentResult.score}%</span>
                 ) : (
-                  attempts.length > 0 && (
+                  currentAttempts.length > 0 && (
                     <span
                       style={{
                         display: "flex",
                         alignItems: "center",
                       }}
                     >
-                      {[...Array(attempts[attempts.length - 1])].map(
+                      {[...Array(currentAttempts[currentAttempts.length - 1])].map(
                         (attempt, i) => {
                           return (
                             <MarkEmailReadIcon
@@ -89,7 +114,7 @@ export default function NavBar({ openClick, resetClick, attempts, result }) {
                           );
                         }
                       )}
-                      {[...Array(5 - attempts[attempts.length - 1])].map(
+                      {[...Array(5 - currentAttempts[currentAttempts.length - 1])].map(
                         (attempt, i) => {
                           return (
                             <EmailIcon key={i} style={{ marginLeft: "0.5rem", opacity: 0.2 }} />
@@ -117,7 +142,7 @@ export default function NavBar({ openClick, resetClick, attempts, result }) {
                   backgroundColor: isFinished ? "" : "white",
                   color: isFinished ? "white" : "black",
                 }}
-                onClick={openClick}
+                onClick={handleSubmit}
               >
                 <span className="SubmitButtonText">
                   {isFinished && "View Score"}
@@ -128,11 +153,6 @@ export default function NavBar({ openClick, resetClick, attempts, result }) {
           </Toolbar>
         </AppBar>
       </Box>
-      <ConfirmationDialog
-        handleClose={confirmReset}
-        open={open}
-        description={"This will restart the entire game"}
-      ></ConfirmationDialog>
     </>
   );
 }

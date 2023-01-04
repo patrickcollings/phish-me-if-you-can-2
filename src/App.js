@@ -21,17 +21,6 @@ function App() {
   const { setIsOpen } = useTour();
   const navigate = useNavigate();
 
-  function Close({ onClick }) {
-    return (
-      <button
-        onClick={onClick}
-        style={{ position: "absolute", right: 0, top: 0, color: 'red' }}
-      >
-        x
-      </button>
-    );
-  }
-
   const steps = [
     {
       position: "center",
@@ -146,6 +135,7 @@ function App() {
 
   return (
     <>
+    <GlobalContextProvider>
       <TourProvider
         steps={steps}
         disableFocusLock={true}
@@ -169,7 +159,6 @@ function App() {
             handleClose={() => setExternalLinkOpen(false)}
           ></ExternalLinkDialog>
           <WelcomeDialog open={open} handleClose={handleClose} />
-          <GlobalContextProvider>
             <Routes>
               <Route
                 exact
@@ -183,9 +172,9 @@ function App() {
                   </Route>
                 ))}
             </Routes>
-          </GlobalContextProvider>
         </div>
       </TourProvider>
+    </GlobalContextProvider>
     </>
   );
 }

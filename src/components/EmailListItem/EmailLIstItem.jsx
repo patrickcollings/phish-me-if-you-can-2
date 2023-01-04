@@ -4,6 +4,8 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Link } from "react-router-dom";
 import { getColor } from '../../helpers/helper';
 import { useSelector } from "react-redux";
+import { selectIsFinished } from "../../redux/scores";
+import { selectIsEmailCorrect } from "../../redux/emails";
 
 let styles = {
   borderBottom: "1px solid lightgrey",
@@ -44,39 +46,42 @@ let timestampStyle = {
   justifyContent: "top",
 };
 
-const getResult = (props) => {
-  return props.email.correct ? (
-    <CheckCircle style={{ color: "green" }} />
-  ) : (
-    <Cancel style={{ color: "red" }} />
-  );
-};
-
-export default function EmailListItem(props) {
-  const names = props.email.name.split(' ');
+export default function EmailListItem({ email }) {
+  const names = email.name.split(' ');
   const initials = names.length === 1 ? names[0][0] : names[0][0] + names[names.length - 1][0];
   
   const selectedEmail = useSelector((state) => state.emails.selectedEmail);
-  const isSelected = selectedEmail && selectedEmail.id === props.email.id; 
+  const isFinished = useSelector((state) => selectIsFinished(state));
+  const isCorrect = useSelector((state) => selectIsEmailCorrect(state, email));
+
+  const isSelected = selectedEmail && selectedEmail.id === email.id; 
+
+  const getResult = () => {
+    return isCorrect ? (
+      <CheckCircle style={{ color: "green" }} />
+    ) : (
+      <Cancel style={{ color: "red" }} />
+    );
+  };
 
   return (
     <>
       <Link
-        to={`${props.email.id}`}
+        to={`${email.id}`}
         style={{ textDecoration: "none", color: "unset" }}
       >
         <div
           style={Object.assign(
             {},
             styles,
-            props.email.read && { backgroundColor: "#f1f1f1" },
+            email.read && { backgroundColor: "#f1f1f1" },
             isSelected && { backgroundColor: "#c9c7d3" },
           )}
         >
           <div
             style={{
               ...circleStyle,
-              backgroundColor: getColor(props.email.id),
+              backgroundColor: getColor(email.id),
             }}
           >
             <p>{initials}</p>
@@ -84,14 +89,14 @@ export default function EmailListItem(props) {
           <div style={textStyle}>
             <span
               style={{
-                fontWeight: props.email.read ? "" : "bold",
+                fontWeight: email.read ? "" : "bold",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 fontSize: "16px",
               }}
             >
-              {props.email.name}
+              {email.name}
             </span>
             <span
               style={{
@@ -99,23 +104,23 @@ export default function EmailListItem(props) {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 fontSize: "15px",
-                fontWeight: props.email.read ? "" : "bold",
-                color: !props.email.read && "#493698",
+                fontWeight: email.read ? "" : "bold",
+                color: !email.read && "#493698",
               }}
             >
-              {props.email.subject}
+              {email.subject}
             </span>
             {/* <span
             style={{
               color: "grey",
             }}
           >
-            {props.email.body}
+            {email.body}
           </span> */}
           </div>
           <div style={timestampStyle}>
-            {"correct" in props.email ? (
-              getResult(props)
+            {isFinished ? (
+              getResult()
             ) : (
               <div
                 style={{
@@ -125,17 +130,17 @@ export default function EmailListItem(props) {
                   alignItems: "flex-end",
                 }}
               >
-                {props.email.attachment && <AttachFileIcon fontSize="1.2rem" />}
+                {email.attachment && <AttachFileIcon fontSize="1.2rem" />}
                 <span
                   style={{
                     position: "sticky",
                     top: "0",
                     right: "0",
                     fontSize: "11px",
-                    fontWeight: props.email.read ? "" : "bold",
+                    fontWeight: email.read ? "" : "bold",
                   }}
                 >
-                  {getHoursAndMinutes(props.email.time)}
+                  {getHoursAndMinutes(email.time)}
                 </span>
               </div>
             )}

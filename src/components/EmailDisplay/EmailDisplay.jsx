@@ -9,23 +9,18 @@ import logo from "../../assets/black-logo.png";
 import { useContext } from "react";
 import { WindowWidthContext } from "../../context/WindowWidthContext";
 import { useSelector } from "react-redux";
+import { selectIsFinished } from "../../redux/scores";
 
-export default function EmailDisplay({
-  remove,
-  add,
-}) {
+export default function EmailDisplay() {
   const width = useContext(WindowWidthContext);
   const isMobile = width < 1000;
-  const showResult = useSelector((state) => state.showResult.value);
+  const isFinished = useSelector((state) => selectIsFinished(state));
   const selectedEmail = useSelector((state) => state.emails.selectedEmail);
 
   if (selectedEmail) {
     return (
       <>
-        <EmailOptionBar
-          remove={remove}
-          add={add}
-        />
+        {!isFinished && <EmailOptionBar />}
 
         <div
           data-tour="email-display"
@@ -34,20 +29,20 @@ export default function EmailDisplay({
             right: 0,
             left: 0,
             bottom: 0,
-            top: isMobile || !showResult ? "46px" : "0px",
+            top: isMobile || !isFinished ? "46px" : "0px",
             overflowY: "auto",
             display: "flex",
             flexDirection: "column",
           }}
         >
-          {"correct" in selectedEmail && selectedEmail.scam && (
+          {isFinished && selectedEmail.scam && (
             <div style={{ padding: "0 3rem" }}>
               <h1>Why is this a scam?</h1>
               <p>{selectedEmail.description}</p>
             </div>
           )}
 
-          {"correct" in selectedEmail && !selectedEmail.scam && (
+          {isFinished && !selectedEmail.scam && (
             <div style={{ padding: "0 3rem" }}>
               <h1>This is not a scam email</h1>
             </div>
@@ -55,7 +50,7 @@ export default function EmailDisplay({
 
           <div
             style={{
-              opacity: "correct" in selectedEmail ? "0.8" : "1",
+              opacity: isFinished ? "0.8" : "1",
               flexGrow: 1,
               display: "flex",
               flexDirection: "column",

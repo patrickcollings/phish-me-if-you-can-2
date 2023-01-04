@@ -1,39 +1,40 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import fishing from '../../assets/fishing2.png';
+import fishing from '../../../assets/fishing2.png';
 import ShareIcon from "@mui/icons-material/Share";
 import { TwitterIcon, TwitterShareButton, LinkedinIcon, LinkedinShareButton, FacebookShareButton, FacebookIcon } from "react-share";
-import Snackbar from "@mui/material/Snackbar";
-import { useState } from "react";
-import { getScoreTitle } from "../../helpers/helper";
+import { getScoreTitle } from "../../../helpers/helper";
 import './FinishedDialog.css';
-import Subscribe from "../Subscribe/Subscribe";
 import mixpanel from "mixpanel-browser";
+import { Snackbar } from "@mui/material";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import Subscribe from "../../Subscribe/Subscribe";
+import { selectCurrentResult } from "../../../redux/scores";
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 
-export default function FinishedDialog({result, open, handleClose}) {
+export function FinishedDialog() {
   const [openSnackBar, setOpenSnackBar] = useState(false);
+  const currentResult = useSelector((state) => selectCurrentResult(state));
+
   const scoreBreakdown = [
     {
-      score: result.caught,
+      score: currentResult.caught,
       title: "caught",
     },
     {
-      score: result.missed,
+      score: currentResult.missed,
       title: "missed",
     },
     {
-      score: result.accidental,
+      score: currentResult.accidental,
       title: "accidental",
     },
   ];
 
   const copyToClipboard = () => {
-    const text = `I scored ${result.score}% meaning I am: "unhackable". How scammable are you? Find out on www.phishmeifyoucan.com`;
+    console.log('copying to clipboard');
+    const text = `I scored ${currentResult.score}% meaning I am: "unhackable". How scammable are you? Find out on www.phishmeifyoucan.com`;
     navigator.clipboard.writeText(text);
     setOpenSnackBar(true);
     shareClicked('clipboard');
@@ -49,7 +50,7 @@ export default function FinishedDialog({result, open, handleClose}) {
 
   return (
     <div>
-      <Dialog
+      {/* <Dialog
         open={open}
         onClose={() => {
           handleClose();
@@ -64,7 +65,7 @@ export default function FinishedDialog({result, open, handleClose}) {
             },
           },
         }}
-      >
+      > */}
         <DialogContent>
           <div>
             <div
@@ -112,9 +113,9 @@ export default function FinishedDialog({result, open, handleClose}) {
               }}
             >
               <p style={{ margin: 0 }}>Score</p>
-              <h1 style={{ margin: 0 }}>{result.score}%</h1>
+              <h1 style={{ margin: 0 }}>{currentResult.score}%</h1>
               <h2 style={{ margin: 0, textAlign: "center" }}>
-                "{getScoreTitle(result.score)}"
+                "{getScoreTitle(currentResult.score)}"
               </h2>
             </div>
             <div
@@ -125,7 +126,7 @@ export default function FinishedDialog({result, open, handleClose}) {
               }}
             >
               <TwitterShareButton
-                title={`I scored ${result.score}% meaning I am: "unhackable". How scammable are you?`}
+                title={`I scored ${currentResult.score}% meaning I am: "unhackable". How scammable are you?`}
                 hashtags={["phishmeifyoucan"]}
                 url="https://play.phishmeifyoucan.com"
                 onClick={() => shareClicked("twitter")}
@@ -133,7 +134,7 @@ export default function FinishedDialog({result, open, handleClose}) {
                 <TwitterIcon size={32} round={true}></TwitterIcon>
               </TwitterShareButton>
               <LinkedinShareButton
-                title={`I scored ${result.score}% meaning I am: "unhackable". How scammable are you?`}
+                title={`I scored ${currentResult.score}% meaning I am: "unhackable". How scammable are you?`}
                 summary="i am summary"
                 source="Phish Me If You Can"
                 url="https://play.phishmeifyoucan.com"
@@ -143,7 +144,7 @@ export default function FinishedDialog({result, open, handleClose}) {
               </LinkedinShareButton>
               <FacebookShareButton
                 url="https://play.phishmeifyoucan.com"
-                quote={`I scored ${result.score}% meaning I am: "unhackable". How scammable are you?`}
+                quote={`I scored ${currentResult.score}% meaning I am: "unhackable". How scammable are you?`}
                 onClick={() => shareClicked("facebook")}
               >
                 <FacebookIcon size={32} round={true}></FacebookIcon>
@@ -182,7 +183,7 @@ export default function FinishedDialog({result, open, handleClose}) {
             </div>
           </div>
         </DialogContent>
-        <DialogActions>
+        {/* <DialogActions>
           <Button
             variant="contained"
             onClick={() => {
@@ -191,8 +192,8 @@ export default function FinishedDialog({result, open, handleClose}) {
           >
             See your results!
           </Button>
-        </DialogActions>
-      </Dialog>
+        </DialogActions> */}
+      {/* </Dialog> */}
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={openSnackBar}

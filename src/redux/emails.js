@@ -58,6 +58,16 @@ export const emailSlice = createSlice({
   },
 });
 
+export const selectIsEmailCorrect = (state, email) => {
+  const inScamList = state.emails.scamList.findIndex((e) => email.id === e.id) > -1;
+  const inEmailList = state.emails.emailList.findIndex((e) => email.id === e.id) > -1;
+  if (email.scam && inScamList) return true;
+  if (!email.scam && inScamList) return false;
+  if (email.scam && inEmailList) return false;
+  if (!email.scam && inEmailList) return true;
+  return false;
+};
+
 export const {
   resetEmails,
   readEmail,

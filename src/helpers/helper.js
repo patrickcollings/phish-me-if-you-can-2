@@ -100,13 +100,20 @@ export const getColor = (index) => {
   return emailColors[index];
 }
 
+export const getYearAndMonth = () => {
+  const date = new Date();
+  const month = date.toLocaleString("default", { month: "long" });
+  const year = date.getFullYear();
+  return `${year}${month}`;
+}
+
 export const checkChallengeStarted = (scores, completed = false) => {
   const date = new Date();
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
   if (!scores) return false;
   for (let i = 0; i < scores.length; i++) {
-    if (scores[i].month === month && scores[i].year === year) {
+    if (scores[i].month === "february" && scores[i].year === year) {
       return completed && !scores[i].result ? false : true;
     }
   }
