@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import showResult from './showResult';
 import emails from "./emails";
 import scores from "./scores";
 
@@ -8,7 +7,6 @@ const preloadedState = localStorage.getItem('reduxStore') ? JSON.parse(localStor
 export const store = configureStore({
   reducer: {
     scores,
-    showResult,
     emails,
   },
   preloadedState,

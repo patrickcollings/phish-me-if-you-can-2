@@ -39,16 +39,6 @@ export const emailSlice = createSlice({
       );
       state.emailList[index].read = true;
     },
-    showResultOnEmail: (state) => {
-      state.emailList = state.emailList.map((email) => {
-        email.correct = !email.scam;
-        return email;
-      });
-      state.scamList = state.scamList.map((email) => {
-        email.correct = email.scam;
-        return email;
-      });
-    },
     selectEmail: (state, action) => {
       state.selectedEmail = JSON.parse(JSON.stringify(action.payload));
     },
@@ -71,7 +61,6 @@ export const selectIsEmailCorrect = (state, email) => {
 export const {
   resetEmails,
   readEmail,
-  showResultOnEmail,
   selectEmail,
   deselectEmail,
   addSelectedEmailToScamList,
