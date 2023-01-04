@@ -20,8 +20,7 @@ export default function EmailDisplay() {
   if (selectedEmail) {
     return (
       <>
-        {!isFinished && <EmailOptionBar />}
-
+        <EmailOptionBar />
         <div
           data-tour="email-display"
           style={{

@@ -1,11 +1,10 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import DialogActions from "@mui/material/DialogActions";
 import { DialogContent, DialogTitle } from "@mui/material";
 
 import './TipDialog.css';
 import { useSelector } from "react-redux";
 import { selectCurrentAttempts } from "../../../redux/scores";
+import { TOTAL_ATTEMPTS_ALLOWED, TOTAL_SCAM_EMAILS } from "../../../helpers/constants";
 
 export default function TipDialog() {
   const currentAttempts = useSelector((state) => selectCurrentAttempts(state));
@@ -20,12 +19,12 @@ export default function TipDialog() {
       <DialogContent>
         {currentAttempts.length > 0 && (
           <p style={{ textAlign: "center", marginBottom: "50px" }}>
-            You've caught <b>{currentAttempts[currentAttempts.length - 1]}/5</b> of the scam emails.
+            You've caught <b>{currentAttempts[currentAttempts.length - 1]}/{TOTAL_SCAM_EMAILS}</b> of the scam emails.
           </p>
         )}
         {currentAttempts && (
           <p style={{ textAlign: "center", marginBottom: "50px" }}>
-            <b>{3 - currentAttempts.length}</b> attempt{3 - currentAttempts.length > 1 && "s"} remaining.
+            <b>{TOTAL_ATTEMPTS_ALLOWED - currentAttempts.length}</b> attempt{TOTAL_ATTEMPTS_ALLOWED - currentAttempts.length > 1 && "s"} remaining.
           </p>
         )}
         <ul className="TipList">
@@ -35,16 +34,6 @@ export default function TipDialog() {
           <li>If it seems too good to be true, then it probably is!</li>
         </ul>
       </DialogContent>
-      {/* <DialogActions>
-        <Button
-          variant="contained"
-          onClick={() => {
-            handleClose();
-          }}
-        >
-          Got it!
-        </Button>
-      </DialogActions> */}
     </>
   );
 }

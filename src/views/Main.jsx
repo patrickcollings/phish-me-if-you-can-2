@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 import { useTour } from '@reactour/tour';
 import mixpanel from "mixpanel-browser";
 import styled from "styled-components";
@@ -7,11 +7,11 @@ import styled from "styled-components";
 import EmailDisplay from "../components/EmailDisplay/EmailDisplay";
 import EmailSidebar from "../components/EmailSidebar/EmailSidebar";
 import NavBar from "../components/NavBar/NavBar";
-import { Alert, Snackbar } from "@mui/material";
 import { useContext } from "react";
 import { WindowWidthContext } from "../context/WindowWidthContext";
 import { useDispatch, useSelector } from "react-redux";
-import { deselectEmail, readEmail, selectEmail } from "../redux/emails";
+import { deselectEmail, selectEmail } from "../redux/emails";
+import { MAX_MOBILE_WIDTH } from "../helpers/constants";
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 mixpanel.track("joined");
@@ -57,8 +57,6 @@ const Container = styled.div`
 export default function Main() {
   let params = useParams();
   const dispatch = useDispatch();
-
-  const [openScamboxFullSnackBar, setScamboxFullSnackBar] = useState(false);
   const { isOpen, currentStep, setCurrentStep } = useTour();
   
   const selectedEmail = useSelector((state) => state.emails.selectedEmail);
@@ -79,7 +77,6 @@ export default function Main() {
     }
     if (emailFound) {
       dispatch(selectEmail(emailFound));
-      dispatch(readEmail(emailFound))
       if (currentStep === 1 && isOpen) setCurrentStep(2);
     }
     else if (scamFound) {
@@ -92,22 +89,7 @@ export default function Main() {
   return (
     <>
       <NavBar />
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={openScamboxFullSnackBar}
-        autoHideDuration={10000}
-        onClose={() => setScamboxFullSnackBar(false)}
-      >
-        <Alert
-          onClose={() => setScamboxFullSnackBar(false)}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          <b>Scambox full!</b> There is only 5 scams to find.
-        </Alert>
-      </Snackbar>
-
-      {width > 1000 && (
+      {width > MAX_MOBILE_WIDTH && (
         <Container>
           <EmailSidebarContainer>
             <div style={{ height: "100%" }}>
@@ -119,14 +101,14 @@ export default function Main() {
           </EmailDisplayContainer>
         </Container>
       )}
-      {width < 1000 && !selectedEmail && (
+      {width < MAX_MOBILE_WIDTH && !selectedEmail && (
         <EmailSidebarContainerMobile>
           <div style={{ height: "100%" }}>
             <EmailSidebar />
           </div>
         </EmailSidebarContainerMobile>
       )}
-      {width < 1000 && !!selectedEmail && (
+      {width < MAX_MOBILE_WIDTH && !!selectedEmail && (
         <EmailSidebarContainerMobile>
           <div style={{ height: "100%" }}><EmailDisplay /></div>
         </EmailSidebarContainerMobile>

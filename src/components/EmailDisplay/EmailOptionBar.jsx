@@ -1,4 +1,4 @@
-import { Icon } from "@mui/material";
+import { Alert, Icon } from "@mui/material";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import { ArrowBack } from "@mui/icons-material";
 import { useContext } from "react";
@@ -6,24 +6,37 @@ import { WindowWidthContext } from "../../context/WindowWidthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { addSelectedEmailToScamList, deselectEmail, removeSelectedEmailFromScamList } from "../../redux/emails";
 import { useNavigate } from "react-router-dom";
+import { selectIsFinished } from "../../redux/scores";
+import useModal from "../../hooks/useModal";
+import { MAX_MOBILE_WIDTH, TOTAL_SCAM_EMAILS } from "../../helpers/constants";
 
 export default function EmailOptionBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { handleSnackbar } = useModal();
+
   const width = useContext(WindowWidthContext);
-  const showResult = useSelector((state) => state.showResult.value);
   const selectedEmail = useSelector((state) => state.emails.selectedEmail);
   const scamList = useSelector((state) => state.emails.scamList);
-  const isMobile = width < 1000;
+  const isFinished = useSelector((state) => selectIsFinished(state));
+
+  const isMobile = width < MAX_MOBILE_WIDTH;
   const isScamBox = (scamList.findIndex(
     (email) => selectedEmail.id === email.id
   ) > -1);
 
   const addOrRemoveSelectedEmail = () => {
-    if (scamList.length > 4 && !isScamBox) {
-      // setScamboxFullSnackBar(true); 
-      // TODO implement global snackbar service
+    if (scamList.length >= TOTAL_SCAM_EMAILS && !isScamBox) {
+      handleSnackbar(
+        <Alert
+          onClose={() => handleSnackbar(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          <b>Scambox full!</b> There is only {TOTAL_SCAM_EMAILS} scams to find.
+        </Alert>
+      );
       return;
     }
     isScamBox
@@ -57,7 +70,7 @@ export default function EmailOptionBar() {
             </Icon>
           </div>
         )}
-        {!showResult && (
+        {!isFinished && (
           <div
             data-tour="add-to-scambox"
             style={{
@@ -75,7 +88,6 @@ export default function EmailOptionBar() {
               aria-label="done"
               fontSize="large"
               style={{ color: "red" }}
-              onClick={() => dispatch(removeSelectedEmailFromScamList())}
             >
               <ReportGmailerrorredIcon fontSize="large" />
             </Icon>

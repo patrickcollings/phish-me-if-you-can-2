@@ -5,17 +5,17 @@ import { TwitterIcon, TwitterShareButton, LinkedinIcon, LinkedinShareButton, Fac
 import { getScoreTitle } from "../../../helpers/helper";
 import './FinishedDialog.css';
 import mixpanel from "mixpanel-browser";
-import { Snackbar } from "@mui/material";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import Subscribe from "../../Subscribe/Subscribe";
 import { selectCurrentResult } from "../../../redux/scores";
+import useModal from "../../../hooks/useModal";
+import { Alert } from "@mui/material";
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 
 export function FinishedDialog() {
-  const [openSnackBar, setOpenSnackBar] = useState(false);
   const currentResult = useSelector((state) => selectCurrentResult(state));
+  const { handleSnackbar } = useModal();
 
   const scoreBreakdown = [
     {
@@ -33,15 +33,12 @@ export function FinishedDialog() {
   ];
 
   const copyToClipboard = () => {
-    console.log('copying to clipboard');
     const text = `I scored ${currentResult.score}% meaning I am: "unhackable". How scammable are you? Find out on www.phishmeifyoucan.com`;
     navigator.clipboard.writeText(text);
-    setOpenSnackBar(true);
+    handleSnackbar(
+      <Alert severity='info'>result copied to clipboard</Alert>
+    );
     shareClicked('clipboard');
-  }
-
-  const handleSnackbarClose = () => {
-    setOpenSnackBar(false);
   }
 
   const shareClicked = (type) => {
@@ -194,13 +191,7 @@ export function FinishedDialog() {
           </Button>
         </DialogActions> */}
       {/* </Dialog> */}
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        open={openSnackBar}
-        autoHideDuration={5000}
-        onClose={handleSnackbarClose}
-        message="result copied to clipboard"
-      />
+
     </div>
   );
 }

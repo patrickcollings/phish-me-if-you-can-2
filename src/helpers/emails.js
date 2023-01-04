@@ -1,3 +1,4 @@
+import { TOTAL_NORMAL_EMAILS, TOTAL_SCAM_EMAILS } from "./constants";
 import { cyrb128, getRandomTime, orderListByTime } from "./helper";
 
 const scamList = [
@@ -188,8 +189,8 @@ function getRandomIndexes(count, max) {
   return arr;
 }
 
-const monthlyScamEmailIndexes = getRandomIndexes(5, scamList.length);
-const monthlyNormalEmailIndexes = getRandomIndexes(5, normalList.length);
+const monthlyScamEmailIndexes = getRandomIndexes(TOTAL_SCAM_EMAILS, scamList.length);
+const monthlyNormalEmailIndexes = getRandomIndexes(TOTAL_NORMAL_EMAILS, normalList.length);
 
 const monthlyScamList = monthlyScamEmailIndexes.map((index) => scamList[index]);
 const monthlyNormalList = monthlyNormalEmailIndexes.map((index) => normalList[index]);

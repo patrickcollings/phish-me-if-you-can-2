@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,7 +15,7 @@ import ConfirmationDialog from "../Modals/ConfirmationDialog/ConfirmationDialog"
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentAttempts, selectCurrentResult, selectIsFinished, updateScoreForCurrentMonth } from "../../redux/scores";
 import TipDialog from "../Modals/TipDialog/TipDialog";
-import { TOTAL_ATTEMPTS_ALLOWED } from "../../helpers/constants";
+import { TOTAL_ATTEMPTS_ALLOWED, TOTAL_SCAM_EMAILS } from "../../helpers/constants";
 
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" });
@@ -32,6 +32,10 @@ export default function NavBar() {
   const scamList = useSelector((state) => state.emails.scamList);
 
   const handleSubmit = () => {
+    if (isFinished) {
+      handleModal(<FinishedDialog />);
+      return;
+    }
     if (currentAttempts.length === TOTAL_ATTEMPTS_ALLOWED - 1) {
       handleModal(
         <ConfirmationDialog
@@ -114,7 +118,7 @@ export default function NavBar() {
                           );
                         }
                       )}
-                      {[...Array(5 - currentAttempts[currentAttempts.length - 1])].map(
+                      {[...Array(TOTAL_SCAM_EMAILS - currentAttempts[currentAttempts.length - 1])].map(
                         (attempt, i) => {
                           return (
                             <EmailIcon key={i} style={{ marginLeft: "0.5rem", opacity: 0.2 }} />

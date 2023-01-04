@@ -80,8 +80,10 @@ export const scoresSlice = createSlice({
  * @returns boolean 
  */
 export const selectIsFinished = (state) => {
-    return state.scores.scores[getYearAndMonth()] &&
-      state.scores.scores[getYearAndMonth()].score >= 0;
+    return (
+      state.scores.scores[getYearAndMonth()] &&
+      'score' in state.scores.scores[getYearAndMonth()]
+    );
 }
 
 export const selectCurrentAttempts = (state) => {

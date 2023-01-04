@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
-import ExternalLinkDialog from "../ExternalLinkDialog/ExternalLinkDialog";
+import useModal from "../../hooks/useModal";
+import ExternalLinkDialog from "../Modals/ExternalLinkDialog/ExternalLinkDialog";
 
 const templateUrl = process.env.REACT_APP_EMAIL_TEMPLATES_S3;
 
 export default function Template({ template }) {
-  const [externalUrl, setExternalUrl] = useState('');
-  const [open, setOpen] = useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  }
+  const { handleModal } = useModal();
 
   useEffect(() => {
     const handler = (event) => {
       if (
-        event.data.type === "webpackWarnings" ||
-        event.data.type === "webpackInvalid"
+        typeof event.data === "object" ||
+        event.origin === 'http://localhost:3000'
       )
         return;
-        
-      setExternalUrl(event.data);
-      setOpen(true);
+      console.log(event);
+      handleModal(<ExternalLinkDialog url={event.data}></ExternalLinkDialog>);
     };
     window.addEventListener("message", handler);
     return () => window.removeEventListener("message", handler);
@@ -28,11 +23,6 @@ export default function Template({ template }) {
 
   return (
     <>
-      <ExternalLinkDialog
-        open={open}
-        url={externalUrl}
-        handleClose={handleClose}
-      ></ExternalLinkDialog>
       <div
         style={{ height: `200vh`, overflowX: "auto", overflowY: "hidden" }}
       >

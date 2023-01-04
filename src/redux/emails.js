@@ -33,13 +33,11 @@ export const emailSlice = createSlice({
       state.emailList = JSON.parse(JSON.stringify(emails));
       state.scamList = [];
     },
-    readEmail: (state, action) => {
+    selectEmail: (state, action) => {
       const index = state.emailList.findIndex(
         (email) => action.payload.id === email.id
       );
       state.emailList[index].read = true;
-    },
-    selectEmail: (state, action) => {
       state.selectedEmail = JSON.parse(JSON.stringify(action.payload));
     },
     deselectEmail: (state) => {
@@ -60,7 +58,6 @@ export const selectIsEmailCorrect = (state, email) => {
 
 export const {
   resetEmails,
-  readEmail,
   selectEmail,
   deselectEmail,
   addSelectedEmailToScamList,

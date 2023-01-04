@@ -4,22 +4,19 @@ import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import mixpanel from "mixpanel-browser";
 
 import './App.css';
-import ExternalLinkDialog from './components/ExternalLinkDialog/ExternalLinkDialog';
 import Main from './views/Main';
-import WelcomeDialog from './components/WelcomeDialog.js/WelcomeDialog';
+import WelcomeDialog from './components/Modals/WelcomeDialog.js/WelcomeDialog';
 import { Button } from '@mui/material';
-import { GlobalContextProvider } from './context/GlobalContextProvider';
+import useModal from './hooks/useModal';
+import ExternalLinkDialog from './components/Modals/ExternalLinkDialog/ExternalLinkDialog';
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 
-const hideWelcomeDialog = !!localStorage.getItem('phishme_hide_welcome_dialog');
-
 function App() {
-  const [isExternalLinkOpen, setExternalLinkOpen] = useState(false);
-  const [open, setOpen] = useState(!hideWelcomeDialog);
   const [step, setStep] = useState(0);
   const { setIsOpen } = useTour();
   const navigate = useNavigate();
+  const { handleModal } = useModal();
 
   const steps = [
     {
@@ -67,10 +64,14 @@ function App() {
       mutationObservables: [".shown"],
       position: "top",
       action: (node) => {
-        setExternalLinkOpen(true);
+        handleModal(
+          <ExternalLinkDialog
+            url={"https://www.phishmeifyoucan.com"}
+          ></ExternalLinkDialog>
+        );
       },
       actionAfter: (node) => {
-        setExternalLinkOpen(false);
+        handleModal(false);
       },
       content: () => (
         <div>
@@ -118,24 +119,21 @@ function App() {
     setStep(step);
   };
 
-  const handleClose = (hideDialog = false) => {
-    if (hideDialog) localStorage.setItem('phishme_hide_welcome_dialog', true);
+  const handleClose = () => {
     navigate("/inbox", false);
-    setOpen(false);
     setStep(0);
     setIsOpen(true);
+    handleModal(false);
   }
 
   useEffect(() => {
-    // If welcome modal open then navigate back to inbox
-    if (open) {
-      navigate('/inbox', true);
+    if (!localStorage.getItem('phishme_hide_welcome_dialog')) {
+      handleModal(<WelcomeDialog handleClose={handleClose} />);
     }
-  }, [open]);
+  }, []);
 
   return (
     <>
-    <GlobalContextProvider>
       <TourProvider
         steps={steps}
         disableFocusLock={true}
@@ -153,12 +151,6 @@ function App() {
         }}
       >
         <div className="App" style={{ maxHeight: "100vh", height: "100vh" }}>
-          <ExternalLinkDialog
-            open={isExternalLinkOpen}
-            url={"https://www.phishmeifyoucan.com"}
-            handleClose={() => setExternalLinkOpen(false)}
-          ></ExternalLinkDialog>
-          <WelcomeDialog open={open} handleClose={handleClose} />
             <Routes>
               <Route
                 exact
@@ -174,7 +166,6 @@ function App() {
             </Routes>
         </div>
       </TourProvider>
-    </GlobalContextProvider>
     </>
   );
 }
