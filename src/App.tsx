@@ -1,4 +1,4 @@
-import { TourProvider, useTour } from '@reactour/tour';
+import { StepType, TourProvider, useTour } from '@reactour/tour';
 import { useEffect, useState } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'; 
 import mixpanel from "mixpanel-browser";
@@ -10,7 +10,9 @@ import { Button } from '@mui/material';
 import useModal from './hooks/useModal';
 import ExternalLinkDialog from './components/Modals/ExternalLinkDialog/ExternalLinkDialog';
 
-mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
+if (process.env.REACT_APP_MIXPANEL_ID) {
+  mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
+}
 
 function App() {
   const [step, setStep] = useState(0);
@@ -18,10 +20,28 @@ function App() {
   const navigate = useNavigate();
   const { handleModal } = useModal();
 
-  const steps = [
+  const setCurrentStep = (step: number) => {
+    switch (step) {
+      case 0:
+        navigate("/inbox");
+        break;
+      default:
+        break;
+    }
+    setStep(step);
+  };
+
+  const handleClose = () => {
+    navigate("/inbox");
+    setStep(0);
+    setIsOpen(true);
+    handleModal(false);
+  }
+
+  const steps: StepType[] = [
     {
       position: "center",
-      content: ({setIsOpen, setCurrentStep}) => (
+      content: ({setIsOpen, setCurrentStep}: {setIsOpen: React.Dispatch<React.SetStateAction<Boolean>>, setCurrentStep: (step: number) => void}) => (
         <div>
           <h1>Do you want to see how the game works?</h1>
           <p>We'll give you a quick run-down of how to play.</p>
@@ -34,6 +54,7 @@ function App() {
           </div>
         </div>
       ),
+      selector: '[]',
     },
     {
       selector: "[data-tour='sidebar-box']",
@@ -63,14 +84,14 @@ function App() {
       highlightedSelectors: ["[data-tour='external-link']"],
       mutationObservables: [".shown"],
       position: "top",
-      action: (node) => {
+      action: () => {
         handleModal(
           <ExternalLinkDialog
             url={"https://www.phishmeifyoucan.com"}
           ></ExternalLinkDialog>
         );
       },
-      actionAfter: (node) => {
+      actionAfter: () => {
         handleModal(false);
       },
       content: () => (
@@ -107,24 +128,6 @@ function App() {
       ),
     },
   ];
-  
-  const setCurrentStep = (step) => {
-    switch (step) {
-      case 0:
-        navigate("/inbox", true);
-        break;
-      default:
-        break;
-    }
-    setStep(step);
-  };
-
-  const handleClose = () => {
-    navigate("/inbox", false);
-    setStep(0);
-    setIsOpen(true);
-    handleModal(false);
-  }
 
   useEffect(() => {
     if (!localStorage.getItem('phishme_hide_welcome_dialog')) {
@@ -138,7 +141,10 @@ function App() {
         steps={steps}
         disableFocusLock={true}
         currentStep={step}
-        setCurrentStep={setCurrentStep}
+        // setCurrentStep={(step) => {
+        //   setCurrentStep(step);
+        //   setStep(step);
+        // }}
         padding={0}
         disableDotsNavigation={true}
         disableKeyboardNavigation={true}
@@ -153,14 +159,14 @@ function App() {
         <div className="App" style={{ maxHeight: "100vh", height: "100vh" }}>
             <Routes>
               <Route
-                exact
+                // exact
                 path="/"
                 element={<Navigate to={`/inbox/`} replace />}
               />
                 {["/inbox", "/scambox"].map((path, index) => (
                   <Route path={path} element={<Main />} key={index}>
-                    <Route path=":emailId" element={<Main />} replace />
-                    <Route path="" element={<Main />} replace />
+                    <Route path=":emailId" element={<Main />} />
+                    <Route path="" element={<Main />} />
                   </Route>
                 ))}
             </Routes>

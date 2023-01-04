@@ -1,5 +1,6 @@
-export function getRandomTime() {
+import { Email } from "models/Email";
 
+export function getRandomTime() {
     const start = new Date();
     start.setHours(0, 0, 0, 0);
 
@@ -11,7 +12,7 @@ export function getRandomTime() {
     );
 } 
 
-function compare(a, b) {
+function compare(a: Email, b: Email) {
   const aDate = new Date(a.time);
   const bDate = new Date(b.time);
   if (aDate.getTime() < bDate.getTime()) {
@@ -24,12 +25,12 @@ function compare(a, b) {
 }
 
 
-export function orderListByTime(emailList) {
+export function orderListByTime(emailList: Email[]) {
     if (!emailList) return;
     emailList.sort(compare);
 }
 
-export function getHoursAndMinutes(time) {
+export function getHoursAndMinutes(time: Date) {
     var date = new Date(time);
     return date.toLocaleTimeString(navigator.language, {
       hour: "2-digit",
@@ -37,7 +38,7 @@ export function getHoursAndMinutes(time) {
     });
 }
 
-export const getScoreTitle = (score) => {
+export const getScoreTitle = (score: number) => {
   if (score < 0)
     return 'time to get off the internet...';
   if (score >= 0 && score < 10)
@@ -59,7 +60,7 @@ export const getScoreTitle = (score) => {
 } 
 
 // generate set of random numbers using a seed
-export function cyrb128(str) {
+export function cyrb128(str: string) {
   let h1 = 1779033703,
     h2 = 3144134277,
     h3 = 1013904242,
@@ -96,7 +97,7 @@ const emailColors = [
   "#5d5909",
 ];
 
-export const getColor = (index) => {
+export const getColor = (index: number) => {
   return emailColors[index];
 }
 
@@ -106,16 +107,3 @@ export const getYearAndMonth = () => {
   const year = date.getFullYear();
   return `${year}${month}`;
 }
-
-export const checkChallengeStarted = (scores, completed = false) => {
-  const date = new Date();
-  const month = date.toLocaleString("default", { month: "long" });
-  const year = date.getFullYear();
-  if (!scores) return false;
-  for (let i = 0; i < scores.length; i++) {
-    if (scores[i].month === "february" && scores[i].year === year) {
-      return completed && !scores[i].result ? false : true;
-    }
-  }
-  return false;
-};

@@ -5,7 +5,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContent } from "@mui/material";
 import useModal from "../../../hooks/useModal";
 
-export default function ConfirmationDialog({description, title, handleClose}) {
+export default function ConfirmationDialog({description, title, handleClose}: {description: string, title?: string, handleClose: Function}) {
   const { handleModal } = useModal();
   return (
     <div>

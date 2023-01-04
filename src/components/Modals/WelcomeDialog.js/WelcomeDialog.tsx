@@ -4,12 +4,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import tutorialGraphic from '../../../assets/tutorialGraphic.svg';
-import tutorialGraphicMobile from "../../../assets/tutorialGraphicMobile.svg";
+import tutorialGraphic from 'assets/tutorialGraphic.svg';
+import tutorialGraphicMobile from "assets/tutorialGraphicMobile.svg";
 
 import './WelcomeDialog.css';
 
-export default function WelcomeDialog({ handleClose }) {
+export default function WelcomeDialog({ handleClose }: { handleClose: Function }) {
   return (
     <div>
         <DialogTitle

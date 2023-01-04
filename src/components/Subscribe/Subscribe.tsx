@@ -5,13 +5,13 @@ import { useState } from "react";
 
 import { Button, TextField } from "@mui/material";
 
-export default function Subscribe(props) {
+export default function Subscribe({}) {
   const [email, setEmail] = useState("");
 
   return (
     <div>
       <form
-        action="https://phishmeifyoucan.us7.list-manage.com/subscribe/post"
+        action={process.env.REACT_APP_MAIL_CHIMP_LIST}
         method="POST"
         noValidate
         style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: '10px' }}
@@ -49,7 +49,7 @@ export default function Subscribe(props) {
           <input
             type="text"
             name="b_name"
-            tabIndex="-1"
+            tabIndex={-1}
             value=""
             placeholder="Freddie"
             id="b_name"
@@ -60,7 +60,7 @@ export default function Subscribe(props) {
           <input
             type="email"
             name="b_email"
-            tabIndex="-1"
+            tabIndex={-1}
             value=""
             placeholder="youremail@gmail.com"
             id="b_email"
@@ -70,7 +70,7 @@ export default function Subscribe(props) {
           <label htmlFor="b_comment">Comment: </label>
           <textarea
             name="b_comment"
-            tabIndex="-1"
+            tabIndex={-1}
             placeholder="Please comment"
             id="b_comment"
             onChange={() => {}}

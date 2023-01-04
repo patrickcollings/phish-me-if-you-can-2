@@ -1,17 +1,25 @@
 import { Snackbar } from "@mui/material";
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, ReactElement } from "react";
 import Modal from "../components/Modals/Modal";
 
-const ModalContext = createContext();
+export type ModalContextType = {
+  handleModal: (modal: any) => void;
+  handleSnackbar: (alert: any) => void;
+};
 
-const ModalContextProvider = ({ children }) => {
+const ModalContext = createContext<ModalContextType>({
+  handleModal: () => null,
+  handleSnackbar: () => null,
+});
+
+const ModalContextProvider = ({ children }: { children: any }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState(false);
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbar, setSnackbar] = useState(null);
+  const [snackbar, setSnackbar] = useState<ReactElement | null>(null);
 
-  const handleModal = (modal) => {
+  const handleModal = (modal: any) => {
     if (modal) {
       setModal(modal);
       setModalOpen(true);
@@ -21,7 +29,7 @@ const ModalContextProvider = ({ children }) => {
     }
   }
 
-  const handleSnackbar = (alert) => {
+  const handleSnackbar = (alert: any) => {
     if (alert) {
       setSnackbar(alert);
       setSnackbarOpen(true);
@@ -29,6 +37,10 @@ const ModalContextProvider = ({ children }) => {
       setSnackbar(null);
       setSnackbarOpen(false);
     }
+  }
+
+  const getSnackbarContent = () => {
+    if (!!snackbar) return snackbar;
   }
 
   return (
@@ -42,7 +54,7 @@ const ModalContextProvider = ({ children }) => {
         autoHideDuration={10000}
         onClose={() => setSnackbarOpen(false)}
       >
-        {snackbar}
+        {getSnackbarContent()}
       </Snackbar>
       {children}
     </ModalContext.Provider>

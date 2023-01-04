@@ -1,31 +1,33 @@
-import { getHoursAndMinutes } from "../../helpers/helper";
+import { getHoursAndMinutes } from "helpers/helper";
 import { Cancel, CheckCircle } from "@mui/icons-material/";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Link } from "react-router-dom";
-import { getColor } from '../../helpers/helper';
+import { getColor } from 'helpers/helper';
 import { useSelector } from "react-redux";
-import { selectIsFinished } from "../../redux/scores";
-import { selectIsEmailCorrect } from "../../redux/emails";
+import { selectIsFinished } from "redux/scores";
+import { selectIsEmailCorrect } from "redux/emails";
+import { Email } from "models/Email";
+import { RootState } from "redux/store";
 
-let styles = {
+const styles = {
   borderBottom: "1px solid lightgrey",
   display: "flex",
   alignItems: "center",
   padding: "1.1rem 0.5rem",
   justifyContent: "space-between",
   cursor: "pointer",
-};
+} as const;
 
-let textStyle = {
+const textStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "left",
   textAlign: "left",
   maxWidth: '70%',
   flex: '1',
-};
+} as const;
 
-let circleStyle = {
+const circleStyle = {
   borderRadius: "30%",
   width: "30px",
   height: "30px",
@@ -38,21 +40,21 @@ let circleStyle = {
     color: "white",
   },
   color: "white",
-};
+} as const;
 
-let timestampStyle = {
+const timestampStyle = {
   display: "flex",
   alignItems: "right",
   justifyContent: "top",
-};
+} as const;
 
-export default function EmailListItem({ email }) {
+export default function EmailListItem({ email }: { email: Email }) {
   const names = email.name.split(' ');
   const initials = names.length === 1 ? names[0][0] : names[0][0] + names[names.length - 1][0];
   
-  const selectedEmail = useSelector((state) => state.emails.selectedEmail);
-  const isFinished = useSelector((state) => selectIsFinished(state));
-  const isCorrect = useSelector((state) => selectIsEmailCorrect(state, email));
+  const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
+  const isFinished = useSelector((state: RootState) => selectIsFinished(state));
+  const isCorrect = useSelector((state: RootState) => selectIsEmailCorrect(state, email));
 
   const isSelected = selectedEmail && selectedEmail.id === email.id; 
 
@@ -105,18 +107,11 @@ export default function EmailListItem({ email }) {
                 textOverflow: "ellipsis",
                 fontSize: "15px",
                 fontWeight: email.read ? "" : "bold",
-                color: !email.read && "#493698",
+                color: !email.read ? "#493698" : "",
               }}
             >
               {email.subject}
             </span>
-            {/* <span
-            style={{
-              color: "grey",
-            }}
-          >
-            {email.body}
-          </span> */}
           </div>
           <div style={timestampStyle}>
             {isFinished ? (
@@ -130,7 +125,7 @@ export default function EmailListItem({ email }) {
                   alignItems: "flex-end",
                 }}
               >
-                {email.attachment && <AttachFileIcon fontSize="1.2rem" />}
+                {email.attachment && <AttachFileIcon fontSize="medium" />}
                 <span
                   style={{
                     position: "sticky",

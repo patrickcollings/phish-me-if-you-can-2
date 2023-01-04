@@ -3,11 +3,12 @@ import { DialogContent, DialogTitle } from "@mui/material";
 
 import './TipDialog.css';
 import { useSelector } from "react-redux";
-import { selectCurrentAttempts } from "../../../redux/scores";
-import { TOTAL_ATTEMPTS_ALLOWED, TOTAL_SCAM_EMAILS } from "../../../helpers/constants";
+import { selectCurrentAttempts } from "redux/scores";
+import { TOTAL_ATTEMPTS_ALLOWED, TOTAL_SCAM_EMAILS } from "helpers/constants";
+import { RootState } from "redux/store";
 
 export default function TipDialog() {
-  const currentAttempts = useSelector((state) => selectCurrentAttempts(state));
+  const currentAttempts = useSelector((state: RootState) => selectCurrentAttempts(state));
   return (
     <>
       <DialogTitle

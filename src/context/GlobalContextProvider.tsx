@@ -1,7 +1,7 @@
 import { ModalContextProvider } from "./ModalContext";
 import { WindowWidthContextProvider } from "./WindowWidthContext";
 
-const GlobalContextProvider = ({ children }) => {
+const GlobalContextProvider = ({ children }: { children: any }) => {
   return (
     <WindowWidthContextProvider>
       <ModalContextProvider>

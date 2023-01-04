@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { selectIsFinished } from "../../redux/scores";
 import useModal from "../../hooks/useModal";
 import { MAX_MOBILE_WIDTH, TOTAL_SCAM_EMAILS } from "../../helpers/constants";
+import { RootState } from "redux/store";
+import { Email } from "models/Email";
 
 export default function EmailOptionBar() {
   const dispatch = useDispatch();
@@ -17,13 +19,13 @@ export default function EmailOptionBar() {
   const { handleSnackbar } = useModal();
 
   const width = useContext(WindowWidthContext);
-  const selectedEmail = useSelector((state) => state.emails.selectedEmail);
-  const scamList = useSelector((state) => state.emails.scamList);
-  const isFinished = useSelector((state) => selectIsFinished(state));
+  const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
+  const scamList = useSelector((state: RootState) => state.emails.scamList);
+  const isFinished = useSelector((state: RootState) => selectIsFinished(state));
 
   const isMobile = width < MAX_MOBILE_WIDTH;
   const isScamBox = (scamList.findIndex(
-    (email) => selectedEmail.id === email.id
+    (email: Email) => selectedEmail && selectedEmail.id === email.id
   ) > -1);
 
   const addOrRemoveSelectedEmail = () => {

@@ -1,10 +1,10 @@
-import pdf from "../../assets/logo-pdf.png";
-import exe from "../../assets/logo-exe.png";
-import doc from "../../assets/logo-doc.png";
-import jpg from "../../assets/logo-jpg.png";
-import zip from "../../assets/logo-zip.png";
+import pdf from "assets/logo-pdf.png";
+import exe from "assets/logo-exe.png";
+import doc from "assets/logo-doc.png";
+import jpg from "assets/logo-jpg.png";
+import zip from "assets/logo-zip.png";
 
-const getExtensionLogo = (extension) => {
+const getExtensionLogo = (extension: string) => {
     switch (extension) {
       case "pdf":
         return pdf;
@@ -21,7 +21,7 @@ const getExtensionLogo = (extension) => {
     }
 }
 
-const getExtension = ({ name, extension }) => {
+const getExtension = ({ name, extension }: { name: string, extension: string}) => {
   return (
     <>
       <div

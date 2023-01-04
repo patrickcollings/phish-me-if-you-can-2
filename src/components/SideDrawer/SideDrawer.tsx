@@ -7,26 +7,28 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useState, } from "react";
 import { useTour } from '@reactour/tour';
 import { useNavigate } from 'react-router-dom';
-import Subscribe from "../Subscribe/Subscribe";
-import logo from '../../assets/black-logo.png'
-import useModal from "../../hooks/useModal";
+import Subscribe from "components/Subscribe/Subscribe";
+import logo from 'assets/black-logo.png'
+import useModal from "hooks/useModal";
 import ConfirmationDialog from "../Modals/ConfirmationDialog/ConfirmationDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { resetEmails } from "../../redux/emails";
-import { restartCurrentMonth, selectIsFinished } from "../../redux/scores";
+import { resetEmails } from "redux/emails";
+import { restartCurrentMonth, selectIsFinished } from "redux/scores";
+import { RootState } from "redux/store";
+import { ModalContextType } from "context/ModalContext";
 
 function SideDrawer() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { setIsOpen, setCurrentStep } = useTour();
-  const { handleModal } = useModal();
-  const isFinished = useSelector((state) => selectIsFinished(state));
+  const { handleModal }: ModalContextType = useModal();
+  const isFinished = useSelector((state: RootState) => selectIsFinished(state));
 
   const openConfirmationDialog = () => {
     handleModal(
       <ConfirmationDialog
-        handleClose={(confirm) => {
+        handleClose={(confirm: boolean) => {
           if (confirm) {
             dispatch(resetEmails());
             dispatch(restartCurrentMonth());

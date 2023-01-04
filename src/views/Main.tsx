@@ -4,17 +4,20 @@ import { useTour } from '@reactour/tour';
 import mixpanel from "mixpanel-browser";
 import styled from "styled-components";
 
-import EmailDisplay from "../components/EmailDisplay/EmailDisplay";
-import EmailSidebar from "../components/EmailSidebar/EmailSidebar";
-import NavBar from "../components/NavBar/NavBar";
+import EmailDisplay from "components/EmailDisplay/EmailDisplay";
+import EmailSidebar from "components/EmailSidebar/EmailSidebar";
+import NavBar from "components/NavBar/NavBar";
 import { useContext } from "react";
-import { WindowWidthContext } from "../context/WindowWidthContext";
+import { WindowWidthContext } from "context/WindowWidthContext";
 import { useDispatch, useSelector } from "react-redux";
-import { deselectEmail, selectEmail } from "../redux/emails";
-import { MAX_MOBILE_WIDTH } from "../helpers/constants";
+import { deselectEmail, selectEmail } from "redux/emails";
+import { MAX_MOBILE_WIDTH } from "helpers/constants";
+import { RootState } from "redux/store";
 
-mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
-mixpanel.track("joined");
+if (process.env.REACT_APP_MIXPANEL_ID) {
+  mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
+  mixpanel.track("joined");
+}
 
 const EmailSidebarContainer = styled.div`
   position: absolute;
@@ -59,9 +62,9 @@ export default function Main() {
   const dispatch = useDispatch();
   const { isOpen, currentStep, setCurrentStep } = useTour();
   
-  const selectedEmail = useSelector((state) => state.emails.selectedEmail);
-  const emailList = useSelector((state) => state.emails.emailList);
-  const scamList = useSelector((state) => state.emails.scamList);
+  const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
+  const emailList = useSelector((state: RootState) => state.emails.emailList);
+  const scamList = useSelector((state: RootState) => state.emails.scamList);
 
   const width = useContext(WindowWidthContext);
 
@@ -69,10 +72,10 @@ export default function Main() {
     let emailFound, scamFound;
     if (params.emailId) {
       emailFound = emailList.find(
-        (email) => email.id === parseInt(params.emailId)
+        (email) => params.emailId && email.id === parseInt(params.emailId)
       );
       scamFound = scamList.find(
-        (email) => email.id === parseInt(params.emailId)
+        (email) => params.emailId && email.id === parseInt(params.emailId)
       );
     }
     if (emailFound) {

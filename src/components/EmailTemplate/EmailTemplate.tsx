@@ -1,20 +1,15 @@
-import { useEffect, useState } from "react";
-import useModal from "../../hooks/useModal";
-import ExternalLinkDialog from "../Modals/ExternalLinkDialog/ExternalLinkDialog";
+import { useEffect } from "react";
+import useModal from "hooks/useModal";
+import ExternalLinkDialog from "components/Modals/ExternalLinkDialog/ExternalLinkDialog";
 
 const templateUrl = process.env.REACT_APP_EMAIL_TEMPLATES_S3;
 
-export default function Template({ template }) {
+export default function Template({ template }: { template: string }) {
   const { handleModal } = useModal();
 
   useEffect(() => {
-    const handler = (event) => {
-      if (
-        typeof event.data === "object" ||
-        event.origin === 'http://localhost:3000'
-      )
-        return;
-      console.log(event);
+    const handler = (event: MessageEvent) => {
+      if (typeof event.data === "object" || event.origin === 'http://localhost:3000') return;
       handleModal(<ExternalLinkDialog url={event.data}></ExternalLinkDialog>);
     };
     window.addEventListener("message", handler);
@@ -29,7 +24,6 @@ export default function Template({ template }) {
         <iframe
           key={template}
           src={`${templateUrl}${template}/index.html`}
-          frameBorder="0"
           title={templateUrl}
           style={{ width: "100%", height: "100%" }}
         />

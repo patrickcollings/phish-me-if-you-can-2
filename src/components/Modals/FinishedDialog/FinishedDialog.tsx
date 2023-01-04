@@ -1,20 +1,23 @@
 import DialogContent from "@mui/material/DialogContent";
-import fishing from '../../../assets/fishing2.png';
+import fishing from 'assets/fishing2.png';
 import ShareIcon from "@mui/icons-material/Share";
 import { TwitterIcon, TwitterShareButton, LinkedinIcon, LinkedinShareButton, FacebookShareButton, FacebookIcon } from "react-share";
-import { getScoreTitle } from "../../../helpers/helper";
+import { getScoreTitle } from "helpers/helper";
 import './FinishedDialog.css';
 import mixpanel from "mixpanel-browser";
 import { useSelector } from "react-redux";
 import Subscribe from "../../Subscribe/Subscribe";
-import { selectCurrentResult } from "../../../redux/scores";
-import useModal from "../../../hooks/useModal";
+import { selectCurrentResult } from "redux/scores";
+import useModal from "hooks/useModal";
 import { Alert } from "@mui/material";
+import { RootState } from "redux/store";
 
-mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
+if (process.env.REACT_APP_MIXPANEL_ID) {
+  mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
+}
 
 export function FinishedDialog() {
-  const currentResult = useSelector((state) => selectCurrentResult(state));
+  const currentResult = useSelector((state: RootState) => selectCurrentResult(state));
   const { handleSnackbar } = useModal();
 
   const scoreBreakdown = [
@@ -41,8 +44,8 @@ export function FinishedDialog() {
     shareClicked('clipboard');
   }
 
-  const shareClicked = (type) => {
-    mixpanel.track("share", type);
+  const shareClicked = (type: string) => {
+    mixpanel.track("share", { type });
   }
 
   return (
@@ -112,7 +115,7 @@ export function FinishedDialog() {
               <p style={{ margin: 0 }}>Score</p>
               <h1 style={{ margin: 0 }}>{currentResult.score}%</h1>
               <h2 style={{ margin: 0, textAlign: "center" }}>
-                "{getScoreTitle(currentResult.score)}"
+                "{currentResult.score && getScoreTitle(currentResult.score)}"
               </h2>
             </div>
             <div

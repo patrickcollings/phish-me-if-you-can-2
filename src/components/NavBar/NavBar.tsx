@@ -8,14 +8,15 @@ import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import EmailIcon from "@mui/icons-material/Email";
 
 import "./NavBar.css";
-import SideDrawer from "../SideDrawer/SideDrawer";
-import useModal from "../../hooks/useModal";
-import { FinishedDialog } from '../Modals/FinishedDialog/FinishedDialog';
-import ConfirmationDialog from "../Modals/ConfirmationDialog/ConfirmationDialog";
+import SideDrawer from "components/SideDrawer/SideDrawer";
+import useModal from "hooks/useModal";
+import { FinishedDialog } from 'components/Modals/FinishedDialog/FinishedDialog';
+import ConfirmationDialog from "components/Modals/ConfirmationDialog/ConfirmationDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentAttempts, selectCurrentResult, selectIsFinished, updateScoreForCurrentMonth } from "../../redux/scores";
+import { selectCurrentAttempts, selectCurrentResult, selectIsFinished, updateScoreForCurrentMonth } from "redux/scores";
 import TipDialog from "../Modals/TipDialog/TipDialog";
-import { TOTAL_ATTEMPTS_ALLOWED, TOTAL_SCAM_EMAILS } from "../../helpers/constants";
+import { TOTAL_ATTEMPTS_ALLOWED, TOTAL_SCAM_EMAILS } from "helpers/constants";
+import { RootState } from "redux/store";
 
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" });
@@ -25,11 +26,11 @@ export default function NavBar() {
 
   const { handleModal } = useModal();
 
-  const isFinished = useSelector((state) => selectIsFinished(state));
-  const currentAttempts = useSelector((state) => selectCurrentAttempts(state));
-  const currentResult = useSelector((state) => selectCurrentResult(state));
-  const emailList = useSelector((state) => state.emails.emailList);
-  const scamList = useSelector((state) => state.emails.scamList);
+  const isFinished = useSelector((state: RootState) => selectIsFinished(state));
+  const currentAttempts = useSelector((state: RootState) => selectCurrentAttempts(state));
+  const currentResult = useSelector((state: RootState) => selectCurrentResult(state));
+  const emailList = useSelector((state: RootState) => state.emails.emailList);
+  const scamList = useSelector((state: RootState) => state.emails.scamList);
 
   const handleSubmit = () => {
     if (isFinished) {
@@ -39,7 +40,7 @@ export default function NavBar() {
     if (currentAttempts.length === TOTAL_ATTEMPTS_ALLOWED - 1) {
       handleModal(
         <ConfirmationDialog
-          handleClose={(confirm) => confirm && dispatch(updateScoreForCurrentMonth({ emailList, scamList }))}
+          handleClose={(confirm: boolean) => confirm && dispatch(updateScoreForCurrentMonth({ emailList, scamList }))}
           description={"Finish the game?"}
         ></ConfirmationDialog>
       );

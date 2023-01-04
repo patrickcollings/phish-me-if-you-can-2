@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
 
-const WindowWidthContext = createContext();
+const WindowWidthContext = createContext<number | {}>({});
 
-const WindowWidthContextProvider = ({ children }) => {
-  const [windowWidth, setWindowWidth] = useState(null);
+const WindowWidthContextProvider = ({ children }: { children: any }) => {
+  const [windowWidth, setWindowWidth] = useState<number | {}>({});
 
   const updateDimensions = () => {
     setWindowWidth(window.innerWidth);

@@ -1,21 +1,23 @@
 import * as React from "react";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import { getHoursAndMinutes } from "../../helpers/helper";
-import Template from "../EmailTemplate/EmailTemplate";
+import { getHoursAndMinutes } from "helpers/helper";
+import Template from "components/EmailTemplate/EmailTemplate";
 import EmailOptionBar from "./EmailOptionBar";
 import Attachment from "./Attachment";
-import logo from "../../assets/black-logo.png";
+import logo from "assets/black-logo.png";
 import { useContext } from "react";
-import { WindowWidthContext } from "../../context/WindowWidthContext";
+import { WindowWidthContext } from "context/WindowWidthContext";
 import { useSelector } from "react-redux";
-import { selectIsFinished } from "../../redux/scores";
+import { selectIsFinished } from "redux/scores";
+import { RootState } from "redux/store";
+import { MAX_MOBILE_WIDTH } from "helpers/constants";
 
 export default function EmailDisplay() {
   const width = useContext(WindowWidthContext);
-  const isMobile = width < 1000;
-  const isFinished = useSelector((state) => selectIsFinished(state));
-  const selectedEmail = useSelector((state) => state.emails.selectedEmail);
+  const isMobile = width < MAX_MOBILE_WIDTH;
+  const isFinished = useSelector((state: RootState) => selectIsFinished(state));
+  const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
 
   if (selectedEmail) {
     return (

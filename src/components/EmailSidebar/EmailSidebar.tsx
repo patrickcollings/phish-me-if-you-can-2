@@ -2,15 +2,15 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import EmailListItem from "../EmailListItem/EmailListItem";
-import { useNavigate, useLocation, matchRoutes, Link } from "react-router-dom";
+import EmailListItem from "components/EmailListItem/EmailListItem";
+import { useNavigate, useLocation, matchRoutes, Link, RouteObject, To } from "react-router-dom";
 import { useEffect } from "react";
 import './EmailSidebar.css';
 import { useSelector } from "react-redux";
+import { Email } from "models/Email";
+import { RootState } from "redux/store";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
+function TabPanel({ children, value, index, ...other }: {children: any, value: number, index: number}) {
   return (
     <div
       role="tabpanel"
@@ -36,14 +36,14 @@ function TabPanel(props) {
   );
 }
 
-function a11yProps(index) {
+function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
-function getEmailList(list) {
+function getEmailList(list: Email[]) {
   return list.map((email, index) => (
     <EmailListItem
       key={index}
@@ -52,28 +52,31 @@ function getEmailList(list) {
   ));
 }
 
-const routes = [
-  { path: "/inbox/:emailId", value: 0 },
-  { path: "/scambox/:emailId", value: 1 },
-  { path: "/inbox", value: 0 },
-  { path: "/scambox", value: 1 },
+const routes: RouteObject[] = [
+  { path: "/inbox/:emailId", index: false },
+  { path: "/scambox/:emailId", index: true },
+  { path: "/inbox", index: false },
+  { path: "/scambox", index: true },
 ];
 
-export default function EmailSidebar(props) {
+export default function EmailSidebar() {
   const [value, setValue] = React.useState(0);
   let navigate = useNavigate();
   const location = useLocation();
-  const emailList = useSelector((state) => state.emails.emailList);
-  const scamList = useSelector((state) => state.emails.scamList);
+  const emailList = useSelector((state: RootState) => state.emails.emailList);
+  const scamList = useSelector((state: RootState) => state.emails.scamList);
   
   useEffect(() => {
-    const [{ route }] = matchRoutes(routes, location);
-    setValue(route.value !== -1 ? route.value : 0);
+    const route = matchRoutes(routes, location);
+    if (route) {
+      const routeObj: RouteObject = route[0].route;
+      setValue(routeObj.index ? 1 : 0);
+    }
   }, [location]);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    navigate(routes[newValue]);
+  const handleChange = (event: React.SyntheticEvent, value: number) => {
+    setValue(value);
+    navigate(routes[value].path as To);
   };
 
   return (

@@ -1,8 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Email } from "models/Email";
 import { TOTAL_ATTEMPTS_ALLOWED } from "../helpers/constants";
 import { getYearAndMonth } from "../helpers/helper";
+import { RootState } from "./store";
 
-const initialState = {
+type Score = {
+  attempts: number[],
+  missed?: number,
+  accidental?: number,
+  caught?: number,
+  score?: number,
+}
+
+type SliceState = {
+  scores: {
+    [key: string]: Score
+  }
+}
+
+const initialState: SliceState = {
   scores: {},
 };
 
@@ -18,10 +34,10 @@ export const scoresSlice = createSlice({
       }
 
       const scamsMissed = action.payload.emailList.filter(
-        (email) => !!email.scam
+        (email: Email) => !!email.scam
       );
       const normalsCaught = action.payload.scamList.filter(
-        (email) => !email.scam
+        (email: Email) => !email.scam
       );
       const totalScamsCaught =
         action.payload.scamList.length - normalsCaught.length;
@@ -79,20 +95,20 @@ export const scoresSlice = createSlice({
  * @param {*} state 
  * @returns boolean 
  */
-export const selectIsFinished = (state) => {
+export const selectIsFinished = (state: RootState) => {
     return (
       state.scores.scores[getYearAndMonth()] &&
       'score' in state.scores.scores[getYearAndMonth()]
     );
 }
 
-export const selectCurrentAttempts = (state) => {
+export const selectCurrentAttempts = (state: RootState) => {
     return state.scores.scores[getYearAndMonth()] &&
       state.scores.scores[getYearAndMonth()].attempts ?
       state.scores.scores[getYearAndMonth()].attempts : [];
 }
 
-export const selectCurrentResult = (state) => {
+export const selectCurrentResult = (state: RootState) => {
     const yearAndMonth = getYearAndMonth();
     return state.scores.scores[yearAndMonth];
 }

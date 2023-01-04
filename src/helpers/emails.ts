@@ -1,3 +1,4 @@
+import { Email } from "models/Email";
 import { TOTAL_NORMAL_EMAILS, TOTAL_SCAM_EMAILS } from "./constants";
 import { cyrb128, getRandomTime, orderListByTime } from "./helper";
 
@@ -163,7 +164,7 @@ const month = date.toLocaleString("default", { month: "long" }).toLowerCase();
 const year = date.getFullYear();
 const seed = cyrb128(`${month}/${year}`)[0];
 
-Math.seed = function (s) {
+Math.seed = function (s: number) {
   return function () {
     s = Math.sin(s) * 10000;
     return s - Math.floor(s);
@@ -174,13 +175,13 @@ var random1 = Math.seed(seed);
 var random2 = Math.seed(random1());
 Math.random = Math.seed(random2());
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min; // not inclusive of the max number
 }
 
-function getRandomIndexes(count, max) {
+function getRandomIndexes(count: number, max: number) {
   let arr = [];
   while (arr.length < count) {
     var r = getRandomInt(0, max);
@@ -195,10 +196,10 @@ const monthlyNormalEmailIndexes = getRandomIndexes(TOTAL_NORMAL_EMAILS, normalLi
 const monthlyScamList = monthlyScamEmailIndexes.map((index) => scamList[index]);
 const monthlyNormalList = monthlyNormalEmailIndexes.map((index) => normalList[index]);
 
-const addDefaults = (email, scam) => {
-  email["read"] = false;
-  email["scam"] = scam;
-  email["time"] = getRandomTime();
+const addDefaults = (email: any, scam: boolean) => {
+  email['read'] = false;
+  email['scam'] = scam;
+  email['time'] = getRandomTime();
   return email;
 };  
 
@@ -214,4 +215,4 @@ emails = emails.map((email, index) => {
 
 orderListByTime(emails);
 
-export default emails;
+export default <Email[]>emails;
