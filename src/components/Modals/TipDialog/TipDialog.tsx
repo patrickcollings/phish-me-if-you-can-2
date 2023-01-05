@@ -1,14 +1,16 @@
 import * as React from "react";
-import { DialogContent, DialogTitle } from "@mui/material";
+import { Button, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 import './TipDialog.css';
 import { useSelector } from "react-redux";
 import { selectCurrentAttempts } from "redux/scores";
 import { TOTAL_ATTEMPTS_ALLOWED, TOTAL_SCAM_EMAILS } from "helpers/constants";
 import { RootState } from "redux/store";
+import useModal from "hooks/useModal";
 
 export default function TipDialog() {
   const currentAttempts = useSelector((state: RootState) => selectCurrentAttempts(state));
+  const { handleModal } = useModal();
   return (
     <>
       <DialogTitle
@@ -35,6 +37,16 @@ export default function TipDialog() {
           <li>If it seems too good to be true, then it probably is!</li>
         </ul>
       </DialogContent>
+      <DialogActions>
+        <Button
+          variant="contained"
+          onClick={() => {
+            handleModal(false);
+          }}
+        >
+          Got it!
+        </Button>
+      </DialogActions>
     </>
   );
 }

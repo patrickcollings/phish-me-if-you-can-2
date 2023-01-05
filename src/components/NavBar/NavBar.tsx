@@ -50,11 +50,10 @@ export default function NavBar() {
   }
 
   useEffect(() => {
-    if (currentResult && isFinished) {
-      handleModal(<FinishedDialog />);
-    } else {
+    if (!currentResult) return;
+    (isFinished) ?
+      handleModal(<FinishedDialog />) : 
       handleModal(<TipDialog />);
-    }
   }, [currentResult])
 
   return (

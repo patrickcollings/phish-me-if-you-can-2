@@ -9,39 +9,38 @@ import WelcomeDialog from './components/Modals/WelcomeDialog.js/WelcomeDialog';
 import { Button } from '@mui/material';
 import useModal from './hooks/useModal';
 import ExternalLinkDialog from './components/Modals/ExternalLinkDialog/ExternalLinkDialog';
+import { useDispatch } from 'react-redux';
+import { deselectEmail } from 'redux/emails';
 
 if (process.env.REACT_APP_MIXPANEL_ID) {
   mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 }
 
 function App() {
+  const dispatch = useDispatch();
   const [step, setStep] = useState(0);
-  const { setIsOpen } = useTour();
   const navigate = useNavigate();
   const { handleModal } = useModal();
+  const { setIsOpen } = useTour();
 
   const setCurrentStep = (step: number) => {
     switch (step) {
       case 0:
+      case 1:
+        dispatch(deselectEmail());
         navigate("/inbox");
-        break;
       default:
         break;
     }
     setStep(step);
   };
 
-  const handleClose = () => {
-    navigate("/inbox");
-    setStep(0);
-    setIsOpen(true);
-    handleModal(false);
-  }
-
   const steps: StepType[] = [
     {
+      selector: "body",
       position: "center",
-      content: ({setIsOpen, setCurrentStep}: {setIsOpen: React.Dispatch<React.SetStateAction<Boolean>>, setCurrentStep: (step: number) => void}) => (
+      //@ts-ignore
+      content: ({setIsOpen, setCurrentStep}) => (
         <div>
           <h1>Do you want to see how the game works?</h1>
           <p>We'll give you a quick run-down of how to play.</p>
@@ -54,7 +53,6 @@ function App() {
           </div>
         </div>
       ),
-      selector: '[]',
     },
     {
       selector: "[data-tour='sidebar-box']",
@@ -129,8 +127,17 @@ function App() {
     },
   ];
 
+  const handleClose = () => {
+    handleModal(false);
+    setCurrentStep(0);
+    setTimeout(() => {
+      setIsOpen(true);
+    }, 3000);
+  }
+
   useEffect(() => {
     if (!localStorage.getItem('phishme_hide_welcome_dialog')) {
+      localStorage.setItem('phishme_hide_welcome_dialog', 'true');
       handleModal(<WelcomeDialog handleClose={handleClose} />);
     }
   }, []);
@@ -141,11 +148,9 @@ function App() {
         steps={steps}
         disableFocusLock={true}
         currentStep={step}
-        // setCurrentStep={(step) => {
-        //   setCurrentStep(step);
-        //   setStep(step);
-        // }}
         padding={0}
+        //@ts-ignore
+        setCurrentStep={setCurrentStep}
         disableDotsNavigation={true}
         disableKeyboardNavigation={true}
         disableInteraction={true}
@@ -159,7 +164,6 @@ function App() {
         <div className="App" style={{ maxHeight: "100vh", height: "100vh" }}>
             <Routes>
               <Route
-                // exact
                 path="/"
                 element={<Navigate to={`/inbox/`} replace />}
               />

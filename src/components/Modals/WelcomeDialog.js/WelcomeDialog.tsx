@@ -32,9 +32,7 @@ export default function WelcomeDialog({ handleClose }: { handleClose: Function }
           <div style={{ display: "flex", alignItems: "center" }}>
             <Button
               variant="contained"
-              onClick={() => {
-                handleClose();
-              }}
+              onClick={() => handleClose()}
               style={{ backgroundColor: "#493698", width: "150px" }}
             >
               Play

@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import Subscribe from "../../Subscribe/Subscribe";
 import { selectCurrentResult } from "redux/scores";
 import useModal from "hooks/useModal";
-import { Alert } from "@mui/material";
+import { Alert, Button, DialogActions } from "@mui/material";
 import { RootState } from "redux/store";
 
 if (process.env.REACT_APP_MIXPANEL_ID) {
@@ -18,7 +18,7 @@ if (process.env.REACT_APP_MIXPANEL_ID) {
 
 export function FinishedDialog() {
   const currentResult = useSelector((state: RootState) => selectCurrentResult(state));
-  const { handleSnackbar } = useModal();
+  const { handleModal, handleSnackbar } = useModal();
 
   const scoreBreakdown = [
     {
@@ -183,17 +183,14 @@ export function FinishedDialog() {
             </div>
           </div>
         </DialogContent>
-        {/* <DialogActions>
+        <DialogActions>
           <Button
             variant="contained"
-            onClick={() => {
-              handleClose();
-            }}
+            onClick={() => handleModal(false)}
           >
             See your results!
           </Button>
-        </DialogActions> */}
-      {/* </Dialog> */}
+        </DialogActions>
 
     </div>
   );

@@ -12,15 +12,7 @@ export default function Modal({ children, close, open }: { children: any, close:
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-    {children}
-      <DialogActions>
-        <Button
-          variant="contained"
-          onClick={close}
-        >
-          Close
-        </Button>
-      </DialogActions>
+      {children}
     </Dialog>
   );
 }
