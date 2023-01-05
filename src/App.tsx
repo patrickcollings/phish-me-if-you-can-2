@@ -1,11 +1,10 @@
-import { StepType, TourProvider, useTour } from '@reactour/tour';
-import { useEffect, useState } from 'react';
+import { StepType, TourProvider } from '@reactour/tour';
+import { useState } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'; 
 import mixpanel from "mixpanel-browser";
 
 import './App.css';
 import Main from './views/Main';
-import WelcomeDialog from './components/Modals/WelcomeDialog.js/WelcomeDialog';
 import { Button } from '@mui/material';
 import useModal from './hooks/useModal';
 import ExternalLinkDialog from './components/Modals/ExternalLinkDialog/ExternalLinkDialog';
@@ -21,7 +20,6 @@ function App() {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const { handleModal } = useModal();
-  const { setIsOpen } = useTour();
 
   const setCurrentStep = (step: number) => {
     switch (step) {
@@ -29,6 +27,7 @@ function App() {
       case 1:
         dispatch(deselectEmail());
         navigate("/inbox");
+        break;
       default:
         break;
     }
@@ -126,21 +125,6 @@ function App() {
       ),
     },
   ];
-
-  const handleClose = () => {
-    handleModal(false);
-    setCurrentStep(0);
-    setTimeout(() => {
-      setIsOpen(true);
-    }, 3000);
-  }
-
-  useEffect(() => {
-    if (!localStorage.getItem('phishme_hide_welcome_dialog')) {
-      localStorage.setItem('phishme_hide_welcome_dialog', 'true');
-      handleModal(<WelcomeDialog handleClose={handleClose} />);
-    }
-  }, []);
 
   return (
     <>

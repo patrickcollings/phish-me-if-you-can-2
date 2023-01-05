@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { deselectEmail, selectEmail } from "redux/emails";
 import { MAX_MOBILE_WIDTH } from "helpers/constants";
 import { RootState } from "redux/store";
+import useModal from "hooks/useModal";
+import WelcomeDialog from "components/Modals/WelcomeDialog.js/WelcomeDialog";
 
 if (process.env.REACT_APP_MIXPANEL_ID) {
   mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
@@ -60,7 +62,8 @@ const Container = styled.div`
 export default function Main() {
   let params = useParams();
   const dispatch = useDispatch();
-  const { isOpen, currentStep, setCurrentStep } = useTour();
+  const { isOpen, currentStep, setCurrentStep, setIsOpen } = useTour();
+  const { handleModal } = useModal();
   
   const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
   const emailList = useSelector((state: RootState) => state.emails.emailList);
@@ -88,6 +91,17 @@ export default function Main() {
       dispatch(deselectEmail());
     }
   }, [params]);
+
+  useEffect(() => {
+    if (!localStorage.getItem('phishme_hide_welcome_dialog')) {
+      localStorage.setItem('phishme_hide_welcome_dialog', 'true');
+      handleModal(<WelcomeDialog handleClose={() => {
+        handleModal(false);
+        setCurrentStep(0);
+        setIsOpen(true);
+      }} />);
+    }
+  }, []);
 
   return (
     <>
