@@ -1,5 +1,5 @@
 export function getItem(name: string) {
-  const item = localStorage.getItem(name); 
+  const item = localStorage.getItem(name);
   return !!item && item;
 }
 

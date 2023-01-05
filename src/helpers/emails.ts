@@ -190,18 +190,26 @@ function getRandomIndexes(count: number, max: number) {
   return arr;
 }
 
-const monthlyScamEmailIndexes = getRandomIndexes(TOTAL_SCAM_EMAILS, scamList.length);
-const monthlyNormalEmailIndexes = getRandomIndexes(TOTAL_NORMAL_EMAILS, normalList.length);
+const monthlyScamEmailIndexes = getRandomIndexes(
+  TOTAL_SCAM_EMAILS,
+  scamList.length
+);
+const monthlyNormalEmailIndexes = getRandomIndexes(
+  TOTAL_NORMAL_EMAILS,
+  normalList.length
+);
 
 const monthlyScamList = monthlyScamEmailIndexes.map((index) => scamList[index]);
-const monthlyNormalList = monthlyNormalEmailIndexes.map((index) => normalList[index]);
+const monthlyNormalList = monthlyNormalEmailIndexes.map(
+  (index) => normalList[index]
+);
 
 const addDefaults = (email: any, scam: boolean) => {
-  email['read'] = false;
-  email['scam'] = scam;
-  email['time'] = getRandomTime();
+  email["read"] = false;
+  email["scam"] = scam;
+  email["time"] = getRandomTime();
   return email;
-};  
+};
 
 let emails = [
   ...monthlyScamList.map((email) => addDefaults(email, true)),
@@ -209,7 +217,7 @@ let emails = [
 ];
 
 emails = emails.map((email, index) => {
-  email['id'] = index;
+  email["id"] = index;
   return email;
 });
 

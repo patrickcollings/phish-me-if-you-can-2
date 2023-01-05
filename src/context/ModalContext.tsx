@@ -27,7 +27,7 @@ const ModalContextProvider = ({ children }: { children: any }) => {
       setModal(false);
       setModalOpen(false);
     }
-  }
+  };
 
   const handleSnackbar = (alert: any) => {
     if (alert) {
@@ -37,11 +37,11 @@ const ModalContextProvider = ({ children }: { children: any }) => {
       setSnackbar(null);
       setSnackbarOpen(false);
     }
-  }
+  };
 
   const getSnackbarContent = () => {
     if (!!snackbar) return snackbar;
-  }
+  };
 
   return (
     <ModalContext.Provider value={{ handleModal, handleSnackbar }}>

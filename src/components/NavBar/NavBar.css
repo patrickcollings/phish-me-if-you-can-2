@@ -1,17 +1,17 @@
 .ScoreContainer {
-    width: 200px;
+  width: 200px;
 }
 
 @media screen and (max-width: 600px) {
-    .ChallengeTitle {
-        display: none;
-    }
+  .ChallengeTitle {
+    display: none;
+  }
 
-    .SubmitButtonText {
-        display: none;
-    }
+  .SubmitButtonText {
+    display: none;
+  }
 }
 
 .css-1yo9slo-MuiToolbar-root {
-    height: 64px !important;
+  height: 64px !important;
 }

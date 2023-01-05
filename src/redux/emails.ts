@@ -5,11 +5,11 @@ import { Email } from "models/Email";
 import { RootState } from "./store";
 
 type SliceState = {
-  emails: Email[],
-  emailList: Email[],
-  scamList: Email[],
-  selectedEmail: Email | null
-}
+  emails: Email[];
+  emailList: Email[];
+  scamList: Email[];
+  selectedEmail: Email | null;
+};
 
 const initialState: SliceState = {
   emails: JSON.parse(JSON.stringify(emails)),
@@ -56,8 +56,10 @@ export const emailSlice = createSlice({
 });
 
 export const selectIsEmailCorrect = (state: RootState, email: Email) => {
-  const inScamList = state.emails.scamList.findIndex((e) => email.id === e.id) > -1;
-  const inEmailList = state.emails.emailList.findIndex((e) => email.id === e.id) > -1;
+  const inScamList =
+    state.emails.scamList.findIndex((e) => email.id === e.id) > -1;
+  const inEmailList =
+    state.emails.emailList.findIndex((e) => email.id === e.id) > -1;
   if (email.scam && inScamList) return true;
   if (!email.scam && inScamList) return false;
   if (email.scam && inEmailList) return false;

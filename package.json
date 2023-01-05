@@ -158,6 +158,7 @@
   "devDependencies": {
     "@types/mixpanel-browser": "^2.38.0",
     "@types/react-router-dom": "^5.3.3",
-    "@types/styled-components": "^5.1.26"
+    "@types/styled-components": "^5.1.26",
+    "prettier": "2.8.1"
   }
 }

@@ -1,16 +1,16 @@
 import { Email } from "models/Email";
 
 export function getRandomTime() {
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
 
-    const end = new Date();
-    end.setHours(23, 59, 59, 999);
+  const end = new Date();
+  end.setHours(23, 59, 59, 999);
 
-    return new Date(
+  return new Date(
     start.getTime() + Math.random() * (end.getTime() - start.getTime())
-    );
-} 
+  );
+}
 
 function compare(a: Email, b: Email) {
   const aDate = new Date(a.time);
@@ -24,40 +24,31 @@ function compare(a: Email, b: Email) {
   return 0;
 }
 
-
 export function orderListByTime(emailList: Email[]) {
-    if (!emailList) return;
-    emailList.sort(compare);
+  if (!emailList) return;
+  emailList.sort(compare);
 }
 
 export function getHoursAndMinutes(time: Date) {
-    var date = new Date(time);
-    return date.toLocaleTimeString(navigator.language, {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  var date = new Date(time);
+  return date.toLocaleTimeString(navigator.language, {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 export const getScoreTitle = (score: number) => {
-  if (score < 0)
-    return 'time to get off the internet...';
-  if (score >= 0 && score < 10)
-    return 'ouch...';
-  if (score >= 10 && score < 30)
-    return 'really?';
-  if (score >= 30 && score < 60)
-    return "please be careful...";
-  if (score >= 60 && score < 80)
-    return 'keep trying...';
-  if (score >= 80 && score < 90)
-    return 'not bad...';
-  if (score >= 90 && score < 100)
-    return 'so close...';
-  if (score >= 100)
-    return 'Congratulations. You are ready for the internet!';
+  if (score < 0) return "time to get off the internet...";
+  if (score >= 0 && score < 10) return "ouch...";
+  if (score >= 10 && score < 30) return "really?";
+  if (score >= 30 && score < 60) return "please be careful...";
+  if (score >= 60 && score < 80) return "keep trying...";
+  if (score >= 80 && score < 90) return "not bad...";
+  if (score >= 90 && score < 100) return "so close...";
+  if (score >= 100) return "Congratulations. You are ready for the internet!";
 
-  return 'uncharted territory';
-} 
+  return "uncharted territory";
+};
 
 // generate set of random numbers using a seed
 export function cyrb128(str: string) {
@@ -99,11 +90,11 @@ const emailColors = [
 
 export const getColor = (index: number) => {
   return emailColors[index];
-}
+};
 
 export const getYearAndMonth = () => {
   const date = new Date();
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
   return `${year}${month}`;
-}
+};

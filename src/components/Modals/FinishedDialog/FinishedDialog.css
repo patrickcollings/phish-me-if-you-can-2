@@ -1,15 +1,15 @@
 .scoreContainer div:not(:first-child) {
-    border-left: 1px solid black;
+  border-left: 1px solid black;
 }
 
 .ScoreTitles {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #493698;
+  margin: 0;
+  font-size: 1.5rem;
+  color: #493698;
 }
 
 @media screen and (max-width: 450px) {
-    .ScoreTitles {
-        font-size: 1rem;
-    }
+  .ScoreTitles {
+    font-size: 1rem;
+  }
 }

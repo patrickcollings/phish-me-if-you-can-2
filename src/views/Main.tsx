@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useTour } from '@reactour/tour';
+import { useTour } from "@reactour/tour";
 import mixpanel from "mixpanel-browser";
 import styled from "styled-components";
 
@@ -64,8 +64,10 @@ export default function Main() {
   const dispatch = useDispatch();
   const { isOpen, currentStep, setCurrentStep, setIsOpen } = useTour();
   const { handleModal } = useModal();
-  
-  const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
+
+  const selectedEmail = useSelector(
+    (state: RootState) => state.emails.selectedEmail
+  );
   const emailList = useSelector((state: RootState) => state.emails.emailList);
   const scamList = useSelector((state: RootState) => state.emails.scamList);
 
@@ -84,8 +86,7 @@ export default function Main() {
     if (emailFound) {
       dispatch(selectEmail(emailFound));
       if (currentStep === 1 && isOpen) setCurrentStep(2);
-    }
-    else if (scamFound) {
+    } else if (scamFound) {
       dispatch(selectEmail(scamFound));
     } else {
       dispatch(deselectEmail());
@@ -93,13 +94,17 @@ export default function Main() {
   }, [params]);
 
   useEffect(() => {
-    if (!localStorage.getItem('phishme_hide_welcome_dialog')) {
-      localStorage.setItem('phishme_hide_welcome_dialog', 'true');
-      handleModal(<WelcomeDialog handleClose={() => {
-        handleModal(false);
-        setCurrentStep(0);
-        setIsOpen(true);
-      }} />);
+    if (!localStorage.getItem("phishme_hide_welcome_dialog")) {
+      localStorage.setItem("phishme_hide_welcome_dialog", "true");
+      handleModal(
+        <WelcomeDialog
+          handleClose={() => {
+            handleModal(false);
+            setCurrentStep(0);
+            setIsOpen(true);
+          }}
+        />
+      );
     }
   }, []);
 
@@ -127,7 +132,9 @@ export default function Main() {
       )}
       {width < MAX_MOBILE_WIDTH && !!selectedEmail && (
         <EmailSidebarContainerMobile>
-          <div style={{ height: "100%" }}><EmailDisplay /></div>
+          <div style={{ height: "100%" }}>
+            <EmailDisplay />
+          </div>
         </EmailSidebarContainerMobile>
       )}
     </>

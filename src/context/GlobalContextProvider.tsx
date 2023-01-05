@@ -4,9 +4,7 @@ import { WindowWidthContextProvider } from "./WindowWidthContext";
 const GlobalContextProvider = ({ children }: { children: any }) => {
   return (
     <WindowWidthContextProvider>
-      <ModalContextProvider>
-        {children}
-      </ModalContextProvider>
+      <ModalContextProvider>{children}</ModalContextProvider>
     </WindowWidthContextProvider>
   );
 };

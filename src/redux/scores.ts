@@ -5,18 +5,18 @@ import { getYearAndMonth } from "../helpers/helper";
 import { RootState } from "./store";
 
 type Score = {
-  attempts: number[],
-  missed?: number,
-  accidental?: number,
-  caught?: number,
-  score?: number,
-}
+  attempts: number[];
+  missed?: number;
+  accidental?: number;
+  caught?: number;
+  score?: number;
+};
 
 type SliceState = {
   scores: {
-    [key: string]: Score
-  }
-}
+    [key: string]: Score;
+  };
+};
 
 const initialState: SliceState = {
   scores: {},
@@ -29,7 +29,11 @@ export const scoresSlice = createSlice({
     updateScoreForCurrentMonth: (state, action) => {
       const yearAndMonth = getYearAndMonth();
 
-      if (state.scores[yearAndMonth] && state.scores[yearAndMonth].attempts && state.scores[yearAndMonth].attempts.length >= TOTAL_ATTEMPTS_ALLOWED) {
+      if (
+        state.scores[yearAndMonth] &&
+        state.scores[yearAndMonth].attempts &&
+        state.scores[yearAndMonth].attempts.length >= TOTAL_ATTEMPTS_ALLOWED
+      ) {
         return;
       }
 
@@ -46,8 +50,6 @@ export const scoresSlice = createSlice({
       const score = Math.round(
         (totalScore / (totalScamsCaught + scamsMissed.length)) * 100
       );
-
-      
 
       // Get previous attempts if exists
       let attempts =
@@ -81,38 +83,40 @@ export const scoresSlice = createSlice({
       // });
     },
     restartCurrentMonth: (state) => {
-        const yearAndMonth = getYearAndMonth();
-        if (state.scores[yearAndMonth]) {
-            delete state.scores[yearAndMonth];
-        }
-    }
+      const yearAndMonth = getYearAndMonth();
+      if (state.scores[yearAndMonth]) {
+        delete state.scores[yearAndMonth];
+      }
+    },
   },
 });
 
 /**
  * Check that a score exists for the month. If it does then the game has been completed.
- * 
- * @param {*} state 
- * @returns boolean 
+ *
+ * @param {*} state
+ * @returns boolean
  */
 export const selectIsFinished = (state: RootState) => {
-    return (
-      state.scores.scores[getYearAndMonth()] &&
-      'score' in state.scores.scores[getYearAndMonth()]
-    );
-}
+  return (
+    state.scores.scores[getYearAndMonth()] &&
+    "score" in state.scores.scores[getYearAndMonth()]
+  );
+};
 
 export const selectCurrentAttempts = (state: RootState) => {
-    return state.scores.scores[getYearAndMonth()] &&
-      state.scores.scores[getYearAndMonth()].attempts ?
-      state.scores.scores[getYearAndMonth()].attempts : [];
-}
+  return state.scores.scores[getYearAndMonth()] &&
+    state.scores.scores[getYearAndMonth()].attempts
+    ? state.scores.scores[getYearAndMonth()].attempts
+    : [];
+};
 
 export const selectCurrentResult = (state: RootState) => {
-    const yearAndMonth = getYearAndMonth();
-    return state.scores.scores[yearAndMonth];
-}
+  const yearAndMonth = getYearAndMonth();
+  return state.scores.scores[yearAndMonth];
+};
 
-export const { updateScoreForCurrentMonth, restartCurrentMonth } = scoresSlice.actions;
+export const { updateScoreForCurrentMonth, restartCurrentMonth } =
+  scoresSlice.actions;
 
 export default scoresSlice.reducer;

@@ -7,7 +7,7 @@ const WindowWidthContextProvider = ({ children }: { children: any }) => {
 
   const updateDimensions = () => {
     setWindowWidth(window.innerWidth);
-  }
+  };
 
   useEffect(() => {
     updateDimensions();
@@ -15,11 +15,12 @@ const WindowWidthContextProvider = ({ children }: { children: any }) => {
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  useEffect(() => {
-  }, [windowWidth]);
+  useEffect(() => {}, [windowWidth]);
 
   return (
-    <WindowWidthContext.Provider value={windowWidth}>{children}</WindowWidthContext.Provider>
+    <WindowWidthContext.Provider value={windowWidth}>
+      {children}
+    </WindowWidthContext.Provider>
   );
 };
 
