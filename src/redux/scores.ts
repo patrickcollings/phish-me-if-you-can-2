@@ -1,8 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import mixpanel from "mixpanel-browser";
 import { Email } from "models/Email";
 import { TOTAL_ATTEMPTS_ALLOWED } from "../helpers/constants";
 import { getYearAndMonth } from "../helpers/helper";
 import { RootState } from "./store";
+
+if (process.env.REACT_APP_MIXPANEL_ID) {
+  mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
+}
 
 type Score = {
   attempts: number[];
@@ -70,17 +75,8 @@ export const scoresSlice = createSlice({
           caught: totalScamsCaught,
           score: score,
         };
+        mixpanel.track("finished_test", state.scores[yearAndMonth]);
       }
-      // TODO log to mixpanel here?
-      // mixpanel.track("finished_test", {
-      //   breakdown: {
-      //     scamsMissed: results.missed,
-      //     accidental: results.accidental,
-      //     caught: results.caught,
-      //   },
-      //   score: results.score,
-      //   attempt: attempts.length + 1,
-      // });
     },
     restartCurrentMonth: (state) => {
       const yearAndMonth = getYearAndMonth();

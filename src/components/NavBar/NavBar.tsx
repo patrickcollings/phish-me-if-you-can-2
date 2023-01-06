@@ -10,10 +10,15 @@ import EmailIcon from "@mui/icons-material/Email";
 import "./NavBar.css";
 import SideDrawer from "components/SideDrawer/SideDrawer";
 import useModal from "hooks/useModal";
-import { FinishedDialog } from 'components/Modals/FinishedDialog/FinishedDialog';
+import { FinishedDialog } from "components/Modals/FinishedDialog/FinishedDialog";
 import ConfirmationDialog from "components/Modals/ConfirmationDialog/ConfirmationDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentAttempts, selectCurrentResult, selectIsFinished, updateScoreForCurrentMonth } from "redux/scores";
+import {
+  selectCurrentAttempts,
+  selectCurrentResult,
+  selectIsFinished,
+  updateScoreForCurrentMonth,
+} from "redux/scores";
 import TipDialog from "../Modals/TipDialog/TipDialog";
 import { TOTAL_ATTEMPTS_ALLOWED, TOTAL_SCAM_EMAILS } from "helpers/constants";
 import { RootState } from "redux/store";
@@ -27,8 +32,12 @@ export default function NavBar() {
   const { handleModal } = useModal();
 
   const isFinished = useSelector((state: RootState) => selectIsFinished(state));
-  const currentAttempts = useSelector((state: RootState) => selectCurrentAttempts(state));
-  const currentResult = useSelector((state: RootState) => selectCurrentResult(state));
+  const currentAttempts = useSelector((state: RootState) =>
+    selectCurrentAttempts(state)
+  );
+  const currentResult = useSelector((state: RootState) =>
+    selectCurrentResult(state)
+  );
   const emailList = useSelector((state: RootState) => state.emails.emailList);
   const scamList = useSelector((state: RootState) => state.emails.scamList);
 
@@ -40,21 +49,22 @@ export default function NavBar() {
     if (currentAttempts.length === TOTAL_ATTEMPTS_ALLOWED - 1) {
       handleModal(
         <ConfirmationDialog
-          handleClose={(confirm: boolean) => confirm && dispatch(updateScoreForCurrentMonth({ emailList, scamList }))}
+          handleClose={(confirm: boolean) =>
+            confirm &&
+            dispatch(updateScoreForCurrentMonth({ emailList, scamList }))
+          }
           description={"Finish the game?"}
         ></ConfirmationDialog>
       );
     } else {
       dispatch(updateScoreForCurrentMonth({ emailList, scamList }));
     }
-  }
+  };
 
   useEffect(() => {
     if (!currentResult) return;
-    (isFinished) ?
-      handleModal(<FinishedDialog />) : 
-      handleModal(<TipDialog />);
-  }, [currentResult])
+    isFinished ? handleModal(<FinishedDialog />) : handleModal(<TipDialog />);
+  }, [currentResult]);
 
   return (
     <>
@@ -108,23 +118,30 @@ export default function NavBar() {
                         alignItems: "center",
                       }}
                     >
-                      {[...Array(currentAttempts[currentAttempts.length - 1])].map(
-                        (attempt, i) => {
-                          return (
-                            <MarkEmailReadIcon
-                              key={i}
-                              style={{ marginLeft: "0.5rem" }}
-                            />
-                          );
-                        }
-                      )}
-                      {[...Array(TOTAL_SCAM_EMAILS - currentAttempts[currentAttempts.length - 1])].map(
-                        (attempt, i) => {
-                          return (
-                            <EmailIcon key={i} style={{ marginLeft: "0.5rem", opacity: 0.2 }} />
-                          );
-                        }
-                      )}
+                      {[
+                        ...Array(currentAttempts[currentAttempts.length - 1]),
+                      ].map((attempt, i) => {
+                        return (
+                          <MarkEmailReadIcon
+                            key={i}
+                            style={{ marginLeft: "0.5rem" }}
+                          />
+                        );
+                      })}
+                      {[
+                        ...Array(
+                          TOTAL_SCAM_EMAILS -
+                            currentAttempts[currentAttempts.length - 1]
+                        ),
+                      ].map((attempt, i) => {
+                        return (
+                          <EmailIcon
+                            data-testid="emailicon"
+                            key={i}
+                            style={{ marginLeft: "0.5rem", opacity: 0.2 }}
+                          />
+                        );
+                      })}
                     </span>
                   )
                 )}
@@ -141,7 +158,7 @@ export default function NavBar() {
               <Button
                 className="submit-button"
                 data-tour="submit-attempt"
-                variant={isFinished ? 'text': 'outlined'}
+                variant={isFinished ? "text" : "outlined"}
                 style={{
                   backgroundColor: isFinished ? "" : "white",
                   color: isFinished ? "white" : "black",
