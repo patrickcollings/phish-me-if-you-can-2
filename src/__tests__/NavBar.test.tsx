@@ -7,7 +7,7 @@ import { cleanup, fireEvent, screen } from "@testing-library/react";
 const mockedUsedNavigate = jest.fn();
 
 jest.mock("react-router-dom", () => ({
-  ...(jest.requireActual("react-router-dom") as any),
+  ...(jest.requireActual("react-router-dom") ),
   useNavigate: () => mockedUsedNavigate,
 }));
 

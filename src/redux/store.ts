@@ -1,11 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { TypedUseSelectorHook, useSelector , useDispatch } from "react-redux";
 import emails from "./emails";
 import scores from "./scores";
 
 const savedStore = localStorage.getItem("reduxStore");
-const preloadedState = !!savedStore ? JSON.parse(savedStore) : {};
+const preloadedState = savedStore ? JSON.parse(savedStore) : {};
 
 export const store = configureStore({
   reducer: {

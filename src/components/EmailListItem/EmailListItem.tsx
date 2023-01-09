@@ -1,8 +1,8 @@
-import { getHoursAndMinutes } from "helpers/helper";
+import { getHoursAndMinutes , getColor } from "helpers/helper";
 import { Cancel, CheckCircle } from "@mui/icons-material/";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Link } from "react-router-dom";
-import { getColor } from 'helpers/helper';
+
 import { useSelector } from "react-redux";
 import { selectIsFinished } from "redux/scores";
 import { selectIsEmailCorrect } from "redux/emails";
@@ -56,7 +56,7 @@ export default function EmailListItem({ email }: { email: Email }) {
   const isFinished = useSelector((state: RootState) => selectIsFinished(state));
   const isCorrect = useSelector((state: RootState) => selectIsEmailCorrect(state, email));
 
-  const isSelected = selectedEmail && selectedEmail.id === email.id; 
+  const isSelected = (selectedEmail != null) && selectedEmail.id === email.id; 
 
   const getResult = () => {
     return isCorrect ? (

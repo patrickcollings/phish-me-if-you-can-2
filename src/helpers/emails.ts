@@ -171,8 +171,8 @@ Math.seed = function (s: number) {
   };
 };
 
-var random1 = Math.seed(seed);
-var random2 = Math.seed(random1());
+const random1 = Math.seed(seed);
+const random2 = Math.seed(random1());
 Math.random = Math.seed(random2());
 
 function getRandomInt(min: number, max: number) {
@@ -182,10 +182,10 @@ function getRandomInt(min: number, max: number) {
 }
 
 function getRandomIndexes(count: number, max: number) {
-  let arr = [];
+  const arr = [];
   while (arr.length < count) {
-    var r = getRandomInt(0, max);
-    if (arr.indexOf(r) === -1) arr.push(r);
+    const r = getRandomInt(0, max);
+    if (!arr.includes(r)) arr.push(r);
   }
   return arr;
 }
@@ -205,9 +205,9 @@ const monthlyNormalList = monthlyNormalEmailIndexes.map(
 );
 
 const addDefaults = (email: any, scam: boolean) => {
-  email["read"] = false;
-  email["scam"] = scam;
-  email["time"] = getRandomTime();
+  email.read = false;
+  email.scam = scam;
+  email.time = getRandomTime();
   return email;
 };
 
@@ -217,7 +217,7 @@ let emails = [
 ];
 
 emails = emails.map((email, index) => {
-  email["id"] = index;
+  email.id = index;
   return email;
 });
 

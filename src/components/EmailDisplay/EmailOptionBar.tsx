@@ -25,14 +25,14 @@ export default function EmailOptionBar() {
 
   const isMobile = width < MAX_MOBILE_WIDTH;
   const isScamBox = (scamList.findIndex(
-    (email: Email) => selectedEmail && selectedEmail.id === email.id
+    (email: Email) => (selectedEmail != null) && selectedEmail.id === email.id
   ) > -1);
 
   const addOrRemoveSelectedEmail = () => {
     if (scamList.length >= TOTAL_SCAM_EMAILS && !isScamBox) {
       handleSnackbar(
         <Alert
-          onClose={() => handleSnackbar(false)}
+          onClose={() => { handleSnackbar(false); }}
           severity="error"
           sx={{ width: "100%" }}
         >

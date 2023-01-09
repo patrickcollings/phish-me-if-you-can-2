@@ -129,7 +129,7 @@ export function FinishedDialog() {
                 title={`I scored ${currentResult.score}% meaning I am: "unhackable". How scammable are you?`}
                 hashtags={["phishmeifyoucan"]}
                 url="https://play.phishmeifyoucan.com"
-                onClick={() => shareClicked("twitter")}
+                onClick={() => { shareClicked("twitter"); }}
               >
                 <TwitterIcon size={32} round={true}></TwitterIcon>
               </TwitterShareButton>
@@ -138,19 +138,19 @@ export function FinishedDialog() {
                 summary="i am summary"
                 source="Phish Me If You Can"
                 url="https://play.phishmeifyoucan.com"
-                onClick={() => shareClicked("linkedin")}
+                onClick={() => { shareClicked("linkedin"); }}
               >
                 <LinkedinIcon size={32} round={true}></LinkedinIcon>
               </LinkedinShareButton>
               <FacebookShareButton
                 url="https://play.phishmeifyoucan.com"
                 quote={`I scored ${currentResult.score}% meaning I am: "unhackable". How scammable are you?`}
-                onClick={() => shareClicked("facebook")}
+                onClick={() => { shareClicked("facebook"); }}
               >
                 <FacebookIcon size={32} round={true}></FacebookIcon>
               </FacebookShareButton>
               <div
-                onClick={() => copyToClipboard()}
+                onClick={() => { copyToClipboard(); }}
                 style={{
                   border: "1px solid none",
                   width: "32px",
@@ -186,7 +186,7 @@ export function FinishedDialog() {
         <DialogActions>
           <Button
             variant="contained"
-            onClick={() => handleModal(false)}
+            onClick={() => { handleModal(false); }}
           >
             See your results!
           </Button>

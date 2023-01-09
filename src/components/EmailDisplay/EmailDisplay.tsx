@@ -19,7 +19,7 @@ export default function EmailDisplay() {
   const isFinished = useSelector((state: RootState) => selectIsFinished(state));
   const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
 
-  if (selectedEmail) {
+  if (selectedEmail != null) {
     return (
       <>
         <EmailOptionBar />

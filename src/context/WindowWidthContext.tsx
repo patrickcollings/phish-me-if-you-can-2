@@ -12,7 +12,7 @@ const WindowWidthContextProvider = ({ children }: { children: any }) => {
   useEffect(() => {
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
+    return () => { window.removeEventListener("resize", updateDimensions); };
   }, []);
 
   useEffect(() => {}, [windowWidth]);

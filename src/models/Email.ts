@@ -1,4 +1,4 @@
-export type Email = {
+export interface Email {
   subject: string;
   name: string;
   email: string;
@@ -12,4 +12,4 @@ export type Email = {
   read: boolean;
   time: Date;
   scam: boolean;
-};
+}

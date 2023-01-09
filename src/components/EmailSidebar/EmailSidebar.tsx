@@ -61,14 +61,14 @@ const routes: RouteObject[] = [
 
 export default function EmailSidebar() {
   const [value, setValue] = React.useState(0);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const emailList = useSelector((state: RootState) => state.emails.emailList);
   const scamList = useSelector((state: RootState) => state.emails.scamList);
   
   useEffect(() => {
     const route = matchRoutes(routes, location);
-    if (route) {
+    if (route != null) {
       const routeObj: RouteObject = route[0].route;
       setValue(routeObj.index ? 1 : 0);
     }

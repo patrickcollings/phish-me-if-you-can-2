@@ -13,7 +13,7 @@ export default function Template({ template }: { template: string }) {
       handleModal(<ExternalLinkDialog url={event.data}></ExternalLinkDialog>);
     };
     window.addEventListener("message", handler);
-    return () => window.removeEventListener("message", handler);
+    return () => { window.removeEventListener("message", handler); };
   }, []); // empty array => run only once
 
   return (

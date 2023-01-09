@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect , useContext } from "react";
 import { useTour } from "@reactour/tour";
 import mixpanel from "mixpanel-browser";
 import styled from "styled-components";
@@ -7,7 +7,6 @@ import styled from "styled-components";
 import EmailDisplay from "components/EmailDisplay/EmailDisplay";
 import EmailSidebar from "components/EmailSidebar/EmailSidebar";
 import NavBar from "components/NavBar/NavBar";
-import { useContext } from "react";
 import { WindowWidthContext } from "context/WindowWidthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { deselectEmail, selectEmail } from "redux/emails";
@@ -60,7 +59,7 @@ const Container = styled.div`
 `;
 
 export default function Main() {
-  let params = useParams();
+  const params = useParams();
   const dispatch = useDispatch();
   const { isOpen, currentStep, setCurrentStep, setIsOpen } = useTour();
   const { handleModal } = useModal();
@@ -83,10 +82,10 @@ export default function Main() {
         (email) => params.emailId && email.id === parseInt(params.emailId)
       );
     }
-    if (emailFound) {
+    if (emailFound != null) {
       dispatch(selectEmail(emailFound));
       if (currentStep === 1 && isOpen) setCurrentStep(2);
-    } else if (scamFound) {
+    } else if (scamFound != null) {
       dispatch(selectEmail(scamFound));
     } else {
       dispatch(deselectEmail());
@@ -123,14 +122,14 @@ export default function Main() {
           </EmailDisplayContainer>
         </Container>
       )}
-      {width < MAX_MOBILE_WIDTH && !selectedEmail && (
+      {width < MAX_MOBILE_WIDTH && (selectedEmail == null) && (
         <EmailSidebarContainerMobile>
           <div style={{ height: "100%" }}>
             <EmailSidebar />
           </div>
         </EmailSidebarContainerMobile>
       )}
-      {width < MAX_MOBILE_WIDTH && !!selectedEmail && (
+      {width < MAX_MOBILE_WIDTH && !(selectedEmail == null) && (
         <EmailSidebarContainerMobile>
           <div style={{ height: "100%" }}>
             <EmailDisplay />

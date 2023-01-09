@@ -9,7 +9,7 @@ export default function ConfirmationDialog({description, title, handleClose}: {d
   const { handleModal } = useModal();
   return (
     <div>
-        <DialogTitle id="alert-dialog-title">{title ? title : "Are you sure?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{title || "Are you sure?"}</DialogTitle>
         <DialogContent>
             {description && <p>{description}</p>}
         </DialogContent>

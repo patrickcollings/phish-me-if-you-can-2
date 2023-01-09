@@ -78,10 +78,10 @@ function SideDrawer() {
   ];
 
   const getList = () => (
-    <div style={{ width: '100%' }} onClick={() => setOpen(false)}>
+    <div style={{ width: '100%' }} onClick={() => { setOpen(false); }}>
       {data.map((item, index) => (
         !item.hide && 
-        <ListItem button key={index} onClick={() => item.onClick()}>
+        <ListItem button key={index} onClick={() => { item.onClick(); }}>
           <ListItemText primary={item.name} />
         </ListItem>
       ))}
@@ -91,9 +91,9 @@ function SideDrawer() {
     <div>
       <Menu
         style={{ color: "white", cursor: "pointer" }}
-        onClick={() => setOpen(true)}
+        onClick={() => { setOpen(true); }}
       />
-      <Drawer open={open} anchor={"left"} onClose={() => setOpen(false)}>
+      <Drawer open={open} anchor={"left"} onClose={() => { setOpen(false); }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <img
             src={logo}
@@ -102,7 +102,7 @@ function SideDrawer() {
           />
           <CloseIcon
             style={{ height: "30px", width: "30px", margin: "15px" }}
-            onClick={() => setOpen(false)}
+            onClick={() => { setOpen(false); }}
           />
         </div>
         {getList()}

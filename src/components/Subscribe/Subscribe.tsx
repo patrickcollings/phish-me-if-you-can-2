@@ -26,7 +26,7 @@ export default function Subscribe({}) {
           name="EMAIL"
           id="MERGE0"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => { setEmail(e.target.value); }}
         />
         <Button
           type="submit"

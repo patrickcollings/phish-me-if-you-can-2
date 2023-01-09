@@ -9,19 +9,17 @@ if (process.env.REACT_APP_MIXPANEL_ID) {
   mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 }
 
-type Score = {
+interface Score {
   attempts: number[];
   missed?: number;
   accidental?: number;
   caught?: number;
   score?: number;
-};
+}
 
-type SliceState = {
-  scores: {
-    [key: string]: Score;
-  };
-};
+interface SliceState {
+  scores: Record<string, Score>;
+}
 
 const initialState: SliceState = {
   scores: {},
@@ -57,7 +55,7 @@ export const scoresSlice = createSlice({
       );
 
       // Get previous attempts if exists
-      let attempts =
+      const attempts =
         state.scores[yearAndMonth] && state.scores[yearAndMonth].attempts
           ? [...state.scores[yearAndMonth].attempts, totalScamsCaught]
           : [totalScamsCaught];
@@ -73,7 +71,7 @@ export const scoresSlice = createSlice({
           missed: scamsMissed.length,
           accidental: normalsCaught.length,
           caught: totalScamsCaught,
-          score: score,
+          score,
         };
         mixpanel.track("finished_test", state.scores[yearAndMonth]);
       }

@@ -111,6 +111,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-standard-with-typescript": "^26.0.0",
     "eslint-plugin-n": "^15.6.0",
+    "eslint-plugin-promise": "^6.1.1",
     "prettier": "2.8.1",
     "react-test-renderer": "^18.2.0"
   }

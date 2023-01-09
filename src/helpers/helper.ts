@@ -30,7 +30,7 @@ export function orderListByTime(emailList: Email[]) {
 }
 
 export function getHoursAndMinutes(time: Date) {
-  var date = new Date(time);
+  const date = new Date(time);
   return date.toLocaleTimeString(navigator.language, {
     hour: "2-digit",
     minute: "2-digit",
@@ -52,10 +52,10 @@ export const getScoreTitle = (score: number) => {
 
 // generate set of random numbers using a seed
 export function cyrb128(str: string) {
-  let h1 = 1779033703,
-    h2 = 3144134277,
-    h3 = 1013904242,
-    h4 = 2773480762;
+  let h1 = 1779033703;
+    let h2 = 3144134277;
+    let h3 = 1013904242;
+    let h4 = 2773480762;
   for (let i = 0, k; i < str.length; i++) {
     k = str.charCodeAt(i);
     h1 = h2 ^ Math.imul(h1 ^ k, 597399067);

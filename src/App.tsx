@@ -38,7 +38,7 @@ function App() {
     {
       selector: "body",
       position: "center",
-      //@ts-ignore
+      // @ts-expect-error
       content: ({setIsOpen, setCurrentStep}) => (
         <div>
           <h1>Do you want to see how the game works?</h1>
@@ -47,8 +47,8 @@ function App() {
             display: 'flex',
             justifyContent: 'center',
           }}>
-            <Button variant="text" onClick={() => setIsOpen(false)}>No thanks</Button>
-            <Button variant="contained" onClick={() => setCurrentStep(1)}>Start</Button>
+            <Button variant="text" onClick={() => { setIsOpen(false); }}>No thanks</Button>
+            <Button variant="contained" onClick={() => { setCurrentStep(1); }}>Start</Button>
           </div>
         </div>
       ),
@@ -133,7 +133,7 @@ function App() {
         disableFocusLock={true}
         currentStep={step}
         padding={0}
-        //@ts-ignore
+        // @ts-expect-error
         setCurrentStep={setCurrentStep}
         disableDotsNavigation={true}
         disableKeyboardNavigation={true}

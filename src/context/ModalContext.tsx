@@ -2,10 +2,10 @@ import { Snackbar } from "@mui/material";
 import React, { createContext, useState, useEffect, ReactElement } from "react";
 import Modal from "../components/Modals/Modal";
 
-export type ModalContextType = {
+export interface ModalContextType {
   handleModal: (modal: any) => void;
   handleSnackbar: (alert: any) => void;
-};
+}
 
 const ModalContext = createContext<ModalContextType>({
   handleModal: () => null,
@@ -40,19 +40,19 @@ const ModalContextProvider = ({ children }: { children: any }) => {
   };
 
   const getSnackbarContent = () => {
-    if (!!snackbar) return snackbar;
+    if (snackbar != null) return snackbar;
   };
 
   return (
     <ModalContext.Provider value={{ handleModal, handleSnackbar }}>
-      <Modal open={modalOpen} close={() => setModalOpen(false)}>
+      <Modal open={modalOpen} close={() => { setModalOpen(false); }}>
         {modal}
       </Modal>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={snackbarOpen}
         autoHideDuration={10000}
-        onClose={() => setSnackbarOpen(false)}
+        onClose={() => { setSnackbarOpen(false); }}
       >
         {getSnackbarContent()}
       </Snackbar>
