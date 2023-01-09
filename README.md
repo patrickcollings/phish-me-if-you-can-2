@@ -1,76 +1,24 @@
-# Getting Started with Create React App
+## What is PhishMeIfYouCan?
+3.4 billion scam emails are sent every day. Email filters are constantly lagging behind as new scams and methods come out that bypass them. PhishMeIfYouCan is a game to teach people how to avoid scam emails. It mimicks an email inbox where users must find all the scam emails and add them to their scambox. They get 3 attempts to find all 5. Each month the game rotates through a new set of emails.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Architecture
+![phish-me-architecture](https://user-images.githubusercontent.com/30416464/211018608-da456fd3-c0aa-4956-9bcc-a0ca9d5c4682.PNG)
 
-## Available Scripts
+## How to setup
+Add `.env.development` file to root directory with the environment variables required below.
 
-In the project directory, you can run:
+`npm install`
 
-### `npm start`
+`npm run start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Environment Variables
+````
+REACT_APP_LANDING_URL={Landing Page URL}
+REACT_APP_MIXPANEL_ID={Mixpanel id}
+REACT_APP_EMAIL_TEMPLATES_S3={Email Templates URL}
+REACT_APP_MAIL_CHIMP_LIST={MailChimp Subscriber List ID}
+````
 
 
 
 
-### To convert email source into usuable HTML
-https://proofjump.com/email-source-converter/
