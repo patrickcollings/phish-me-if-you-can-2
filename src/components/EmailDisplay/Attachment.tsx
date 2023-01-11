@@ -3,25 +3,32 @@ import exe from "assets/logo-exe.png";
 import doc from "assets/logo-doc.png";
 import jpg from "assets/logo-jpg.png";
 import zip from "assets/logo-zip.png";
+import { ReactElement } from "react";
 
-const getExtensionLogo = (extension: string) => {
-    switch (extension) {
-      case "pdf":
-        return pdf;
-      case "exe":
-        return exe;
-      case "jpg":
-        return jpg;
-      case "zip":
-        return zip;
-      case "doc":
-        return doc;
-      default:
-        return pdf;
-    }
-}
+const getExtensionLogo = (extension: string | undefined): any => {
+  switch (extension) {
+    case "pdf":
+      return pdf;
+    case "exe":
+      return exe;
+    case "jpg":
+      return jpg;
+    case "zip":
+      return zip;
+    case "doc":
+      return doc;
+    default:
+      return pdf;
+  }
+};
 
-const getExtension = ({ name, extension }: { name: string, extension: string}) => {
+const getExtension = ({
+  name,
+  extension,
+}: {
+  name: string | undefined;
+  extension: string | undefined;
+}): ReactElement => {
   return (
     <>
       <div
@@ -55,6 +62,6 @@ const getExtension = ({ name, extension }: { name: string, extension: string}) =
       </div>
     </>
   );
-} 
+};
 
 export default getExtension;

@@ -1,18 +1,24 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, ReactElement } from "react";
 
 const WindowWidthContext = createContext<number | {}>({});
 
-const WindowWidthContextProvider = ({ children }: { children: any }) => {
+const WindowWidthContextProvider = ({
+  children,
+}: {
+  children: any;
+}): ReactElement => {
   const [windowWidth, setWindowWidth] = useState<number | {}>({});
 
-  const updateDimensions = () => {
+  const updateDimensions = (): void => {
     setWindowWidth(window.innerWidth);
   };
 
   useEffect(() => {
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
-    return () => { window.removeEventListener("resize", updateDimensions); };
+    return () => {
+      window.removeEventListener("resize", updateDimensions);
+    };
   }, []);
 
   useEffect(() => {}, [windowWidth]);

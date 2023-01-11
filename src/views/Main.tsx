@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect , useContext } from "react";
+import React, { useEffect, useContext, ReactElement } from "react";
 import { useTour } from "@reactour/tour";
 import mixpanel from "mixpanel-browser";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ import { RootState } from "redux/store";
 import useModal from "hooks/useModal";
 import WelcomeDialog from "components/Modals/WelcomeDialog.js/WelcomeDialog";
 
-if (process.env.REACT_APP_MIXPANEL_ID) {
+if (process.env.REACT_APP_MIXPANEL_ID != null) {
   mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
   mixpanel.track("joined");
 }
@@ -58,7 +58,7 @@ const Container = styled.div`
   display: flex;
 `;
 
-export default function Main() {
+export default function Main(): ReactElement {
   const params = useParams();
   const dispatch = useDispatch();
   const { isOpen, currentStep, setCurrentStep, setIsOpen } = useTour();
@@ -74,17 +74,19 @@ export default function Main() {
 
   useEffect(() => {
     let emailFound, scamFound;
-    if (params.emailId) {
+    if (params.emailId != null) {
       emailFound = emailList.find(
-        (email) => params.emailId && email.id === parseInt(params.emailId)
+        (email) =>
+          params.emailId != null && email.id === parseInt(params.emailId)
       );
       scamFound = scamList.find(
-        (email) => params.emailId && email.id === parseInt(params.emailId)
+        (email) =>
+          params.emailId != null && email.id === parseInt(params.emailId)
       );
     }
     if (emailFound != null) {
       dispatch(selectEmail(emailFound));
-      if (currentStep === 1 && isOpen) setCurrentStep(2);
+      if (currentStep === 1 && isOpen != null) setCurrentStep(2);
     } else if (scamFound != null) {
       dispatch(selectEmail(scamFound));
     } else {
@@ -93,7 +95,7 @@ export default function Main() {
   }, [params]);
 
   useEffect(() => {
-    if (!localStorage.getItem("phishme_hide_welcome_dialog")) {
+    if (localStorage.getItem("phishme_hide_welcome_dialog") == null) {
       localStorage.setItem("phishme_hide_welcome_dialog", "true");
       handleModal(
         <WelcomeDialog
@@ -122,7 +124,7 @@ export default function Main() {
           </EmailDisplayContainer>
         </Container>
       )}
-      {width < MAX_MOBILE_WIDTH && (selectedEmail == null) && (
+      {width < MAX_MOBILE_WIDTH && selectedEmail == null && (
         <EmailSidebarContainerMobile>
           <div style={{ height: "100%" }}>
             <EmailSidebar />

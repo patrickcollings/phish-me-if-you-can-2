@@ -5,7 +5,7 @@ import { TOTAL_ATTEMPTS_ALLOWED } from "../helpers/constants";
 import { getYearAndMonth } from "../helpers/helper";
 import { RootState } from "./store";
 
-if (process.env.REACT_APP_MIXPANEL_ID) {
+if (process.env.REACT_APP_MIXPANEL_ID != null) {
   mixpanel.init(process.env.REACT_APP_MIXPANEL_ID);
 }
 
@@ -29,13 +29,14 @@ export const scoresSlice = createSlice({
   name: "scores",
   initialState,
   reducers: {
-    updateScoreForCurrentMonth: (state, action) => {
+    updateScoreForCurrentMonth: (
+      state,
+      action: { payload: { emailList: Email[]; scamList: Email[] } }
+    ) => {
       const yearAndMonth = getYearAndMonth();
 
       if (
-        state.scores[yearAndMonth] &&
-        state.scores[yearAndMonth].attempts &&
-        state.scores[yearAndMonth].attempts.length >= TOTAL_ATTEMPTS_ALLOWED
+        state.scores[yearAndMonth]?.attempts?.length >= TOTAL_ATTEMPTS_ALLOWED
       ) {
         return;
       }
@@ -56,7 +57,7 @@ export const scoresSlice = createSlice({
 
       // Get previous attempts if exists
       const attempts =
-        state.scores[yearAndMonth] && state.scores[yearAndMonth].attempts
+        state.scores[yearAndMonth]?.attempts != null
           ? [...state.scores[yearAndMonth].attempts, totalScamsCaught]
           : [totalScamsCaught];
 
@@ -78,7 +79,7 @@ export const scoresSlice = createSlice({
     },
     restartCurrentMonth: (state) => {
       const yearAndMonth = getYearAndMonth();
-      if (state.scores[yearAndMonth]) {
+      if (state.scores[yearAndMonth] != null) {
         delete state.scores[yearAndMonth];
       }
     },
@@ -91,21 +92,20 @@ export const scoresSlice = createSlice({
  * @param {*} state
  * @returns boolean
  */
-export const selectIsFinished = (state: RootState) => {
+export const selectIsFinished = (state: RootState): boolean => {
   return (
-    state.scores.scores[getYearAndMonth()] &&
+    state.scores.scores[getYearAndMonth()] != null &&
     "score" in state.scores.scores[getYearAndMonth()]
   );
 };
 
-export const selectCurrentAttempts = (state: RootState) => {
-  return state.scores.scores[getYearAndMonth()] &&
-    state.scores.scores[getYearAndMonth()].attempts
+export const selectCurrentAttempts = (state: RootState): number[] => {
+  return state.scores.scores[getYearAndMonth()]?.attempts != null
     ? state.scores.scores[getYearAndMonth()].attempts
     : [];
 };
 
-export const selectCurrentResult = (state: RootState) => {
+export const selectCurrentResult = (state: RootState): Score => {
   const yearAndMonth = getYearAndMonth();
   return state.scores.scores[yearAndMonth];
 };

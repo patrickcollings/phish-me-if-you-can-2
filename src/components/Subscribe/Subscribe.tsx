@@ -1,11 +1,9 @@
-import * as React from "react";
-
 import "./Subscribe.css";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 
 import { Button, TextField } from "@mui/material";
 
-export default function Subscribe({}) {
+export default function Subscribe(): ReactElement {
   const [email, setEmail] = useState("");
 
   return (
@@ -14,7 +12,12 @@ export default function Subscribe({}) {
         action={process.env.REACT_APP_MAIL_CHIMP_LIST}
         method="POST"
         noValidate
-        style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: '10px' }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: "10px",
+        }}
       >
         <input type="hidden" name="u" value="66b58fda85306ad2562755ec1" />
         <input type="hidden" name="id" value="88a5b5590b" />
@@ -26,7 +29,9 @@ export default function Subscribe({}) {
           name="EMAIL"
           id="MERGE0"
           value={email}
-          onChange={(e) => { setEmail(e.target.value); }}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
         />
         <Button
           type="submit"

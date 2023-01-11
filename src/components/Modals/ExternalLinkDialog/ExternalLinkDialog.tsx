@@ -1,7 +1,11 @@
-import * as React from "react";
+import { ReactElement } from "react";
 import { DialogContent } from "@mui/material";
 
-export default function ExternalLinkDialog({url}: {url: string}) {
+export default function ExternalLinkDialog({
+  url,
+}: {
+  url: string;
+}): ReactElement {
   return (
     <>
       {/* Span is required to trigger a redraw of the reactour */}

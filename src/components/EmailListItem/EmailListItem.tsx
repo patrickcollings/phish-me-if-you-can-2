@@ -1,4 +1,4 @@
-import { getHoursAndMinutes , getColor } from "helpers/helper";
+import { getHoursAndMinutes, getColor } from "helpers/helper";
 import { Cancel, CheckCircle } from "@mui/icons-material/";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import { selectIsFinished } from "redux/scores";
 import { selectIsEmailCorrect } from "redux/emails";
 import { Email } from "models/Email";
 import { RootState } from "redux/store";
+import { ReactElement } from "react";
 
 const styles = {
   borderBottom: "1px solid lightgrey",
@@ -23,8 +24,8 @@ const textStyle = {
   flexDirection: "column",
   alignItems: "left",
   textAlign: "left",
-  maxWidth: '70%',
-  flex: '1',
+  maxWidth: "70%",
+  flex: "1",
 } as const;
 
 const circleStyle = {
@@ -48,17 +49,26 @@ const timestampStyle = {
   justifyContent: "top",
 } as const;
 
-export default function EmailListItem({ email }: { email: Email }) {
-  const names = email.name.split(' ');
-  const initials = names.length === 1 ? names[0][0] : names[0][0] + names[names.length - 1][0];
-  
-  const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
+export default function EmailListItem({
+  email,
+}: {
+  email: Email;
+}): ReactElement {
+  const names = email.name.split(" ");
+  const initials =
+    names.length === 1 ? names[0][0] : names[0][0] + names[names.length - 1][0];
+
+  const selectedEmail = useSelector(
+    (state: RootState) => state.emails.selectedEmail
+  );
   const isFinished = useSelector((state: RootState) => selectIsFinished(state));
-  const isCorrect = useSelector((state: RootState) => selectIsEmailCorrect(state, email));
+  const isCorrect = useSelector((state: RootState) =>
+    selectIsEmailCorrect(state, email)
+  );
 
-  const isSelected = (selectedEmail != null) && selectedEmail.id === email.id; 
+  const isSelected = selectedEmail != null && selectedEmail.id === email.id;
 
-  const getResult = () => {
+  const getResult = (): ReactElement => {
     return isCorrect ? (
       <CheckCircle style={{ color: "green" }} />
     ) : (
@@ -77,7 +87,7 @@ export default function EmailListItem({ email }: { email: Email }) {
             {},
             styles,
             email.read && { backgroundColor: "#f1f1f1" },
-            isSelected && { backgroundColor: "#c9c7d3" },
+            isSelected && { backgroundColor: "#c9c7d3" }
           )}
         >
           <div
@@ -125,7 +135,9 @@ export default function EmailListItem({ email }: { email: Email }) {
                   alignItems: "flex-end",
                 }}
               >
-                {email.attachment && <AttachFileIcon fontSize="medium" />}
+                {email.attachment != null && (
+                  <AttachFileIcon fontSize="medium" />
+                )}
                 <span
                   style={{
                     position: "sticky",

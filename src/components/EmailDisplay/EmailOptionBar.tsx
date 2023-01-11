@@ -1,10 +1,14 @@
 import { Alert, Icon } from "@mui/material";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import { ArrowBack } from "@mui/icons-material";
-import { useContext } from "react";
+import { ReactElement, useContext } from "react";
 import { WindowWidthContext } from "../../context/WindowWidthContext";
 import { useDispatch, useSelector } from "react-redux";
-import { addSelectedEmailToScamList, deselectEmail, removeSelectedEmailFromScamList } from "../../redux/emails";
+import {
+  addSelectedEmailToScamList,
+  deselectEmail,
+  removeSelectedEmailFromScamList,
+} from "../../redux/emails";
 import { useNavigate } from "react-router-dom";
 import { selectIsFinished } from "../../redux/scores";
 import useModal from "../../hooks/useModal";
@@ -12,27 +16,32 @@ import { MAX_MOBILE_WIDTH, TOTAL_SCAM_EMAILS } from "../../helpers/constants";
 import { RootState } from "redux/store";
 import { Email } from "models/Email";
 
-export default function EmailOptionBar() {
+export default function EmailOptionBar(): ReactElement {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { handleSnackbar } = useModal();
 
   const width = useContext(WindowWidthContext);
-  const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
+  const selectedEmail = useSelector(
+    (state: RootState) => state.emails.selectedEmail
+  );
   const scamList = useSelector((state: RootState) => state.emails.scamList);
   const isFinished = useSelector((state: RootState) => selectIsFinished(state));
 
   const isMobile = width < MAX_MOBILE_WIDTH;
-  const isScamBox = (scamList.findIndex(
-    (email: Email) => (selectedEmail != null) && selectedEmail.id === email.id
-  ) > -1);
+  const isScamBox =
+    scamList.findIndex(
+      (email: Email) => selectedEmail != null && selectedEmail.id === email.id
+    ) > -1;
 
-  const addOrRemoveSelectedEmail = () => {
+  const addOrRemoveSelectedEmail = (): void => {
     if (scamList.length >= TOTAL_SCAM_EMAILS && !isScamBox) {
       handleSnackbar(
         <Alert
-          onClose={() => { handleSnackbar(false); }}
+          onClose={() => {
+            handleSnackbar(false);
+          }}
           severity="error"
           sx={{ width: "100%" }}
         >
@@ -45,7 +54,7 @@ export default function EmailOptionBar() {
       ? dispatch(removeSelectedEmailFromScamList())
       : dispatch(addSelectedEmailToScamList());
     navigate(isScamBox ? "/scambox" : "/inbox");
-  }
+  };
 
   return (
     <>
@@ -83,14 +92,10 @@ export default function EmailOptionBar() {
             }}
             onClick={addOrRemoveSelectedEmail}
           >
-            <p style={{ margin: '0px 5px' }}>
+            <p style={{ margin: "0px 5px" }}>
               {isScamBox ? "remove from scambox" : "add to scambox"}
             </p>
-            <Icon
-              aria-label="done"
-              fontSize="large"
-              style={{ color: "red" }}
-            >
+            <Icon aria-label="done" fontSize="large" style={{ color: "red" }}>
               <ReportGmailerrorredIcon fontSize="large" />
             </Icon>
           </div>

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { ReactElement, Suspense, useContext } from "react";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { getHoursAndMinutes } from "helpers/helper";
@@ -6,18 +6,19 @@ import Template from "components/EmailTemplate/EmailTemplate";
 import EmailOptionBar from "./EmailOptionBar";
 import Attachment from "./Attachment";
 import logo from "assets/black-logo.png";
-import { useContext } from "react";
 import { WindowWidthContext } from "context/WindowWidthContext";
 import { useSelector } from "react-redux";
 import { selectIsFinished } from "redux/scores";
 import { RootState } from "redux/store";
 import { MAX_MOBILE_WIDTH } from "helpers/constants";
 
-export default function EmailDisplay() {
+export default function EmailDisplay(): ReactElement {
   const width = useContext(WindowWidthContext);
   const isMobile = width < MAX_MOBILE_WIDTH;
   const isFinished = useSelector((state: RootState) => selectIsFinished(state));
-  const selectedEmail = useSelector((state: RootState) => state.emails.selectedEmail);
+  const selectedEmail = useSelector(
+    (state: RootState) => state.emails.selectedEmail
+  );
 
   if (selectedEmail != null) {
     return (
@@ -95,16 +96,16 @@ export default function EmailDisplay() {
                 {getHoursAndMinutes(selectedEmail.time)}
               </Typography>
             </div>
-            {selectedEmail.attachment && (
+            {selectedEmail.attachment != null && (
               <Attachment
                 name={selectedEmail.attachmentName}
                 extension={selectedEmail.attachmentExtension}
               ></Attachment>
             )}
             <Divider />
-            <React.Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
               <Template template={selectedEmail.template} />
-            </React.Suspense>
+            </Suspense>
           </div>
         </div>
       </>
@@ -118,11 +119,14 @@ export default function EmailDisplay() {
           justifyContent: "center",
           paddingTop: "5rem",
           alignItems: "center",
-          fontSize: '30px',
-          color: 'grey',
+          fontSize: "30px",
+          color: "grey",
         }}
       >
-        <img src={logo} style={{ width: "70px", marginBottom: "2rem", opacity: '0.6' }}></img>
+        <img
+          src={logo}
+          style={{ width: "70px", marginBottom: "2rem", opacity: "0.6" }}
+        ></img>
         <span>Select an email to read</span>
       </div>
     );

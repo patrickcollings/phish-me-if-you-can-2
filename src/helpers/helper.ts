@@ -1,6 +1,6 @@
 import { Email } from "models/Email";
 
-export function getRandomTime() {
+export function getRandomTime(): Date {
   const start = new Date();
   start.setHours(0, 0, 0, 0);
 
@@ -12,7 +12,7 @@ export function getRandomTime() {
   );
 }
 
-function compare(a: Email, b: Email) {
+function compare(a: Email, b: Email): number {
   const aDate = new Date(a.time);
   const bDate = new Date(b.time);
   if (aDate.getTime() < bDate.getTime()) {
@@ -24,12 +24,12 @@ function compare(a: Email, b: Email) {
   return 0;
 }
 
-export function orderListByTime(emailList: Email[]) {
-  if (!emailList) return;
+export function orderListByTime(emailList: Email[]): void {
+  if (emailList == null) return;
   emailList.sort(compare);
 }
 
-export function getHoursAndMinutes(time: Date) {
+export function getHoursAndMinutes(time: Date): string {
   const date = new Date(time);
   return date.toLocaleTimeString(navigator.language, {
     hour: "2-digit",
@@ -37,7 +37,7 @@ export function getHoursAndMinutes(time: Date) {
   });
 }
 
-export const getScoreTitle = (score: number) => {
+export const getScoreTitle = (score: number): string => {
   if (score < 0) return "time to get off the internet...";
   if (score >= 0 && score < 10) return "ouch...";
   if (score >= 10 && score < 30) return "really?";
@@ -51,11 +51,11 @@ export const getScoreTitle = (score: number) => {
 };
 
 // generate set of random numbers using a seed
-export function cyrb128(str: string) {
+export function cyrb128(str: string): [number, number, number, number] {
   let h1 = 1779033703;
-    let h2 = 3144134277;
-    let h3 = 1013904242;
-    let h4 = 2773480762;
+  let h2 = 3144134277;
+  let h3 = 1013904242;
+  let h4 = 2773480762;
   for (let i = 0, k; i < str.length; i++) {
     k = str.charCodeAt(i);
     h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
@@ -88,11 +88,12 @@ const emailColors = [
   "#5d5909",
 ];
 
-export const getColor = (index: number) => {
-  return emailColors[index];
-};
+export const getColor = (index: number): string => emailColors[index];
 
-export const getYearAndMonth = () => {
+export const isEmptyString = (data: string): boolean =>
+  typeof data === "string" && data.trim().length === 0;
+
+export const getYearAndMonth = (): string => {
   const date = new Date();
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();

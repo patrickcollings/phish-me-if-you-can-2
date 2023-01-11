@@ -4,9 +4,9 @@ export interface Email {
   email: string;
   to: string;
   template: string;
-  attachment: boolean;
-  attachmentExtension: string;
-  attachmentName: string;
+  attachment?: boolean;
+  attachmentExtension?: string;
+  attachmentName?: string;
   description: string;
   id: number;
   read: boolean;

@@ -175,14 +175,14 @@ const random1 = Math.seed(seed);
 const random2 = Math.seed(random1());
 Math.random = Math.seed(random2());
 
-function getRandomInt(min: number, max: number) {
+function getRandomInt(min: number, max: number): number {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min; // not inclusive of the max number
 }
 
-function getRandomIndexes(count: number, max: number) {
-  const arr = [];
+function getRandomIndexes(count: number, max: number): number[] {
+  const arr: number[] = [];
   while (arr.length < count) {
     const r = getRandomInt(0, max);
     if (!arr.includes(r)) arr.push(r);
@@ -204,7 +204,7 @@ const monthlyNormalList = monthlyNormalEmailIndexes.map(
   (index) => normalList[index]
 );
 
-const addDefaults = (email: any, scam: boolean) => {
+const addDefaults = (email: any, scam: boolean): Email => {
   email.read = false;
   email.scam = scam;
   email.time = getRandomTime();
@@ -223,4 +223,4 @@ emails = emails.map((email, index) => {
 
 orderListByTime(emails);
 
-export default <Email[]>emails;
+export default emails;

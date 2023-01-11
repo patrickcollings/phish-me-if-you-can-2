@@ -4,28 +4,27 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { useState, } from "react";
-import { useTour } from '@reactour/tour';
-import { useNavigate } from 'react-router-dom';
+import { ReactElement, useState } from "react";
+import { useTour } from "@reactour/tour";
+import { useNavigate } from "react-router-dom";
 import Subscribe from "components/Subscribe/Subscribe";
-import logo from 'assets/black-logo.png'
+import logo from "assets/black-logo.png";
 import useModal from "hooks/useModal";
 import ConfirmationDialog from "../Modals/ConfirmationDialog/ConfirmationDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { resetEmails } from "redux/emails";
 import { restartCurrentMonth, selectIsFinished } from "redux/scores";
 import { RootState } from "redux/store";
-import { ModalContextType } from "context/ModalContext";
 
-function SideDrawer() {
+function SideDrawer(): ReactElement {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { setIsOpen, setCurrentStep } = useTour();
-  const { handleModal }: ModalContextType = useModal();
+  const { handleModal } = useModal();
   const isFinished = useSelector((state: RootState) => selectIsFinished(state));
 
-  const openConfirmationDialog = () => {
+  const openConfirmationDialog = (): void => {
     handleModal(
       <ConfirmationDialog
         handleClose={(confirm: boolean) => {
@@ -45,18 +44,21 @@ function SideDrawer() {
       onClick: () => {
         window.open("https://www.phishmeifyoucan.com");
       },
+      hide: false,
     },
     {
       name: "Blog",
       onClick: () => {
         window.open("https://www.phishmeifyoucan.com/blog");
       },
+      hide: false,
     },
     {
       name: "FAQ",
       onClick: () => {
         window.open("https://www.phishmeifyoucan.com/faq");
       },
+      hide: false,
     },
     {
       name: "Reset Game",
@@ -74,26 +76,47 @@ function SideDrawer() {
           setIsOpen(true);
         }, 500);
       },
+      hide: false,
     },
   ];
 
-  const getList = () => (
-    <div style={{ width: '100%' }} onClick={() => { setOpen(false); }}>
-      {data.map((item, index) => (
-        !item.hide && 
-        <ListItem button key={index} onClick={() => { item.onClick(); }}>
-          <ListItemText primary={item.name} />
-        </ListItem>
-      ))}
+  const getList = (): ReactElement => (
+    <div
+      style={{ width: "100%" }}
+      onClick={() => {
+        setOpen(false);
+      }}
+    >
+      {data.map(
+        (item, index) =>
+          !item.hide && (
+            <ListItem
+              key={index}
+              onClick={() => {
+                item.onClick();
+              }}
+            >
+              <ListItemText primary={item.name} />
+            </ListItem>
+          )
+      )}
     </div>
   );
   return (
     <div>
       <Menu
         style={{ color: "white", cursor: "pointer" }}
-        onClick={() => { setOpen(true); }}
+        onClick={() => {
+          setOpen(true);
+        }}
       />
-      <Drawer open={open} anchor={"left"} onClose={() => { setOpen(false); }}>
+      <Drawer
+        open={open}
+        anchor={"left"}
+        onClose={() => {
+          setOpen(false);
+        }}
+      >
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <img
             src={logo}
@@ -102,7 +125,9 @@ function SideDrawer() {
           />
           <CloseIcon
             style={{ height: "30px", width: "30px", margin: "15px" }}
-            onClick={() => { setOpen(false); }}
+            onClick={() => {
+              setOpen(false);
+            }}
           />
         </div>
         {getList()}

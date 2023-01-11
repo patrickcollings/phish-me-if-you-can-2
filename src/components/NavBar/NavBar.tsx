@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { ReactElement, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -26,7 +26,7 @@ import { RootState } from "redux/store";
 const date = new Date();
 const month = date.toLocaleString("default", { month: "long" });
 
-export default function NavBar() {
+export default function NavBar(): ReactElement {
   const dispatch = useDispatch();
 
   const { handleModal } = useModal();
@@ -41,7 +41,7 @@ export default function NavBar() {
   const emailList = useSelector((state: RootState) => state.emails.emailList);
   const scamList = useSelector((state: RootState) => state.emails.scamList);
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     if (isFinished) {
       handleModal(<FinishedDialog />);
       return;
@@ -62,7 +62,7 @@ export default function NavBar() {
   };
 
   useEffect(() => {
-    if (!currentResult) return;
+    if (currentResult == null) return;
     isFinished ? handleModal(<FinishedDialog />) : handleModal(<TipDialog />);
   }, [currentResult]);
 

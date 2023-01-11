@@ -24,7 +24,8 @@ export const emailSlice = createSlice({
   reducers: {
     addSelectedEmailToScamList: (state) => {
       const index = state.emailList.findIndex(
-        (email) => (state.selectedEmail != null) && state.selectedEmail.id === email.id
+        (email) =>
+          state.selectedEmail != null && state.selectedEmail.id === email.id
       );
       if (index > -1) state.emailList.splice(index, 1);
       state.scamList.push(JSON.parse(JSON.stringify(state.selectedEmail)));
@@ -32,7 +33,8 @@ export const emailSlice = createSlice({
     },
     removeSelectedEmailFromScamList: (state) => {
       const index = state.scamList.findIndex(
-        (email) => (state.selectedEmail != null) && state.selectedEmail.id === email.id
+        (email) =>
+          state.selectedEmail != null && state.selectedEmail.id === email.id
       );
       if (index > -1) state.scamList.splice(index, 1);
       state.emailList.push(JSON.parse(JSON.stringify(state.selectedEmail)));
@@ -55,7 +57,10 @@ export const emailSlice = createSlice({
   },
 });
 
-export const selectIsEmailCorrect = (state: RootState, email: Email) => {
+export const selectIsEmailCorrect = (
+  state: RootState,
+  email: Email
+): boolean => {
   const inScamList =
     state.emails.scamList.findIndex((e) => email.id === e.id) > -1;
   const inEmailList =
