@@ -7,7 +7,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import { ReactElement, useState } from "react";
 import { useTour } from "@reactour/tour";
 import { useNavigate } from "react-router-dom";
-import Subscribe from "components/Subscribe/Subscribe";
 import logo from "assets/black-logo.png";
 import useModal from "hooks/useModal";
 import ConfirmationDialog from "../Modals/ConfirmationDialog/ConfirmationDialog";
@@ -131,9 +130,6 @@ function SideDrawer(): ReactElement {
           />
         </div>
         {getList()}
-        <div style={{ maxWidth: "300px", padding: "1rem" }}>
-          <Subscribe />
-        </div>
       </Drawer>
     </div>
   );

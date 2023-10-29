@@ -13,7 +13,6 @@ import { getScoreTitle } from "helpers/helper";
 import "./FinishedDialog.css";
 import mixpanel from "mixpanel-browser";
 import { useSelector } from "react-redux";
-import Subscribe from "../../Subscribe/Subscribe";
 import { selectCurrentResult } from "redux/scores";
 import useModal from "hooks/useModal";
 import { Alert, Button, DialogActions } from "@mui/material";
@@ -183,20 +182,6 @@ export function FinishedDialog(): ReactElement {
             >
               <ShareIcon />
             </div>
-          </div>
-          <div
-            style={{
-              marginTop: "3rem",
-              textAlign: "center",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <span style={{ paddingBottom: "10px" }}>
-              Subscribe for free to be reminded about each monthly challenge and
-              get up to date with the latest scams.
-            </span>
-            <Subscribe />
           </div>
         </div>
       </DialogContent>
